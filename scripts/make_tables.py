@@ -53,7 +53,7 @@ if sm or ge:
             if n == 38: txt.append(r'\midrule')
             txt.append(r'%d & $%s$\\' % (n, num(ge[n])))
         txt.append(r'\bottomrule\end{tabular}')
-    txt.append(r'\caption{Numbers of semimodular lattices (A229202) and of geometric lattices (A281574) with $n$ elements.  Values above the rules agree with~\cite{Koh19} and the OEIS; those below are new.}\label{tab:other}')
+    txt.append(r'\caption{Number of semimodular lattices with $n$ elements (A229202).  The values above the rule agree with~\cite{Koh19}; those below are new.}\label{tab:other}')
     txt.append(r'\end{table}')
 o.append(r'\newcommand{\resultsother}{' + '\n'.join(txt) + '}')
 bt = [r'\begin{table}[ht]', r'\begin{tabular}{rrrll}\toprule $W$ & states & edges & growth rate, v.i. & growth rate, all\\\midrule']

@@ -8,7 +8,7 @@ This repository extends five OEIS sequences past their published records:
 | [A072361](https://oeis.org/A072361) | vertically indecomposable ones | n = 49 in OEIS, n = 60 in Kohonen's paper | n = 160 |
 | [A006981](https://oeis.org/A006981) | unlabeled modular lattices with n elements | n = 35 (Kohonen 2021) | n = 38 |
 | [A342132](https://oeis.org/A342132) | vertically indecomposable ones | n = 35 | n = 38 |
-| [A229202](https://oeis.org/A229202) | unlabeled semimodular lattices with n elements | n = 25 (Kohonen 2017) | n = 26 |
+| [A229202](https://oeis.org/A229202) | unlabeled semimodular lattices with n elements | n = 25 (Kohonen 2017) | n = 27 |
 
 The same idea, with a different frontier, also reproduces and extends the
 modular lattices ([A006981](https://oeis.org/A006981), record n = 35); see the
@@ -24,6 +24,7 @@ The tables are `data/b006982.txt` and `data/b072361.txt`. First new terms:
     A006981(37) = 1647135247659
     A006981(38) = 3985106742170   (from the N = 38 run only; not confirmed by a run with larger N)
     A229202(26) = 13759007833
+    A229202(27) = 49997352868   (from the N = 27 run only)
 
 The values are computed, not proved; see "Checks" for what supports them.
 A write-up is in `paper/paper.tex` (`paper/paper.pdf`).
@@ -209,10 +210,11 @@ the two directions of rule 1. So `layers N - usm` counts (upper) semimodular lat
 semimodular ones. The modularity-based pruning is switched off in these modes.
 
 - **Semimodular:** works well from the bottom. N = 24 needs 8.9·10⁵ states for about
-  1.5·10⁹ lattices; N = 26 took 69 min and 7.9 GB (5.9·10⁶ states) and gives one new
-  term. Memory is the limit. Checks: known terms to n = 25, runs with N = 24, 25, 26,
-  and equality with the dual route (`lsm`) for n ≤ 16 (`scripts/assemble_layers.py`,
-  `runs/lay_lsm_16.txt`).
+  1.5·10⁹ lattices; N = 26 took 69 min and 7.9 GB on one core (5.9·10⁶ states). N = 27 used
+  `src/layers2.cpp` (compact state table, no stored transitions, 4 threads, checkpoints):
+  95 min, 9.2 GB, 1.54·10⁷ states. Two new terms; memory is the limit. Checks: known terms
+  to n = 25, runs with N = 24, 25, 26, 27, and equality with the dual route (`lsm`) for
+  n ≤ 16 (`scripts/assemble_layers.py`, `runs/lay_lsm_16.txt`).
 - **Geometric:** known terms reproduced to n = 35, but no advantage: the frontier is
   essentially the whole lattice, so this is plain generation. Not extended.
 - **Graded, and the dual directions:** far too many families or states; not competitive.
@@ -247,6 +249,11 @@ Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
 - `src/brute_rank.cpp`: brute-force tabulation for check 2.
 - `src/modular.cpp`: frontier DP for modular lattices.
 - `src/layers.cpp`: the same program for semimodular, geometric and graded lattices.
+- `src/layers2.cpp`: compact, multi-threaded, checkpointing version; also builds the
+  bounded-layer automata for modular lattices.
+- `src/bounded.cpp`, `src/brute_layers.cpp`, `scripts/run_bounded.sh`,
+  `scripts/bounded_growth.py`, `scripts/bounded_certificate.py`: bounded-layer automata and
+  certified growth bounds.
 - `src/explore.cpp`: an abandoned first attempt (generating prime posets for a
   modular-decomposition count); kept because it shows why generation does not
   scale: the number of prime posets with n down-sets still grows like 1.64^n.

@@ -38,7 +38,7 @@ if os.path.exists(os.path.join(D, 'b229202.txt')):
     sm = rb('b229202.txt')
     o += ["\n## A229202 (semimodular lattices on n nodes)\n",
           f"- DATA: add a(26)..a({max(sm)}).",
-          f"- EXTENSIONS: a(26) from `<name>`, computed with the layer transfer matrix of the modular case without the lower semimodularity rule; a(0)-a(25) agree with Kohonen (2017).\n",
+          f"- EXTENSIONS: a(26)-a({max(sm)}) from `<name>`, computed with the layer transfer matrix of the modular case without the lower semimodularity rule; a(0)-a(25) agree with Kohonen (2017).\n",
           "New terms:\n"]
     o += [f"    a({n}) = {sm[n]}" for n in range(26, max(sm) + 1)]
 open(os.path.join(here, '..', 'docs', 'oeis_submission.md'), 'w').write("\n".join(o) + "\n")

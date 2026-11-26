@@ -59,7 +59,7 @@ New terms:
 ## A229202 (semimodular lattices on n nodes)
 
 - DATA: add a(26)..a(27).
-- EXTENSIONS: a(26) from `<name>`, computed with the layer transfer matrix of the modular case without the lower semimodularity rule; a(0)-a(25) agree with Kohonen (2017).
+- EXTENSIONS: a(26)-a(27) from `<name>`, computed with the layer transfer matrix of the modular case without the lower semimodularity rule; a(0)-a(25) agree with Kohonen (2017).
 
 New terms:
 
