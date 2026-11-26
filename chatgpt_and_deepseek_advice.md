@@ -373,3 +373,33 @@ Once the framing and AI disclosure are in place, the mechanical submission requi
 
 Your paper is a **strong topical fit** for *Order*. To make it **submission-ready**, you must (1) explicitly frame the frontier and transfer matrix as **order-theoretic innovations**, (2) include a **transparent AI-use disclosure** in the Methods/Acknowledgements, and (3) prepare the manuscript to the journal's **formatting and length specifications**. With these adjustments, the paper will present itself not as an AI-generated catalog, but as a **human-verified methodological advance in the order-theoretic study of lattices**, which is exactly what *Order* exists to publish.
 
+
+(what other objects?)
+
+The transfer-matrix/frontier framework you've developed is more than a one-off solution for distributive and modular lattices. Its core design—a layer-by-layer build with a symmetry-aware frontier state—is a general strategy for enumerating any class of graded combinatorial objects where isomorphism is a central challenge.
+
+The general principle is to find a **state** that captures everything about the "lower part" of the object that is relevant to how it can be extended upwards, while remaining small and invariant under isomorphism. Your paper already demonstrates this for two major lattice varieties. This approach can be extended to several other natural classes of ordered structures.
+
+### 🎯 Natural Extensions Within Ordered Structures
+
+The most direct applications are to other classes of graded posets and lattices, where the rank function provides a natural layering.
+
+| Object Class | Why the Method Fits | What the Frontier State Would Be |
+| :--- | :--- | :--- |
+| **Graded Posets** (general) | The transfer-matrix method is already a standard technique for enumerating graded posets. The challenge you've solved is handling **unlabelled** objects via a symmetry-aware state. | The poset of "live" elements (those not in all ideals of the current rank), together with the image of the automorphism group, analogous to your distributive lattice case. |
+| **Avoiding Graded Posets** (e.g., (2+2)- or (3+1)-avoiding) | The enumeration of graded (3+1)-avoiding posets has been achieved using the transfer-matrix method. Your frontier state could potentially be refined to encode the local avoidance conditions. | The frontier poset would need to carry additional "forbidden configuration" markers to ensure the avoidance property is maintained as new layers are added. |
+| **Order-Convex Subsets of Grid Posets** | This is a very recent and direct application. A transfer-matrix dynamic program with a manageable number of states was used to enumerate these objects. | The "frontier" is the boundary line of the partially constructed subset. The state would encode the configuration of occupied/empty sites along this frontier, similar to enumerations of lattice animals. |
+| **Semimodular Lattices** | This is a direct sibling to your modular lattice work. The local rules (U) and (D) you use for modular lattices are closely related to semimodularity. Prior enumeration used orderly algorithms, but a transfer-matrix approach could be viable. | The poset of pairwise meets of the top layer (as in your modular case), but the conditions for extending the lower part would need to be relaxed from modularity to semimodularity. |
+| **Geometric Lattices** | These are a special class of semimodular lattices (finite, atomistic, and semimodular). They have a rich structure tied to matroids. | The frontier state would need to capture the matroid-like dependencies among the atoms in the top layer. This is more complex but potentially very powerful. |
+
+### 💡 Key Requirements for a New Application
+
+To apply your framework to a new class of objects, you would need to identify:
+
+1.  **A Layering**: The objects must be graded, with a rank function that allows them to be built up layer by layer.
+2.  **A Sufficient State**: You need to prove a "frontier lemma" (analogous to your Lemmas 2.2/2.3 and 3.3) stating that the possible extensions of a lower part depend only on a well-defined frontier.
+3.  **Symmetry Handling**: The state must include the image of the automorphism group of the lower part, as you've done with Lemmas 2.4 and 3.4. This is the crucial ingredient for counting **unlabelled** objects.
+
+### 💎 Summary
+
+Your method is a powerful template. Beyond distributive and modular lattices, it is most naturally suited for other **graded** ordered structures. The most promising immediate extensions would be to **graded posets with avoidance conditions** and **semimodular/geometric lattices**, as these share the closest structural DNA with the objects you've already successfully tackled. The core insight—using a symmetry-aware frontier state to merge lower parts—is portable to any graded class where isomorphism is the primary obstacle to efficient enumeration.
