@@ -318,7 +318,9 @@ $d(n) \sim C \beta^n$ with $C = 1/V'(1/\beta)$.
 \end{proposition}
 
 \begin{proof}
-(a) The vertical sum of lattices with $i$ and $j$ elements has $i+j-1$ elements, and
+(a) This is a special case of~\cite[Corollary~11]{EHR}, which applies to every sequence
+defined by a recursion of the form~\eqref{eq:vsum}.  A direct argument: the vertical sum of
+lattices with $i$ and $j$ elements has $i+j-1$ elements, and
 the two summands can be recovered from it and $i$.  So $d(i+j-1) \ge d(i)\,d(j)$, the
 sequence $d(n+1)$ is supermultiplicative, and the limit exists by Fekete's lemma.  It
 is finite by the exponential upper bound of~\cite{EHR}.
@@ -332,7 +334,10 @@ positive, and the term $d_{\mathrm{vi}}(2)\,x$ is present.  The claim follows by
 standard transfer from a dominant simple pole~\cite[Section~V.2]{FS}.
 \end{proof}
 
-The hypothesis of (b) is open.  The data support it strongly:
+Part (b) is the standard behaviour of a supercritical sequence construction and is not
+new either; we state it to make precise what the data suggest.  By~\cite[Corollary~11]{EHR}
+and the canonical $2$-decomposition of~\cite{EHR} the limit of $d_{\mathrm{vi}}(n)^{1/n}$
+exists as well.  The hypothesis of (b) is open.  The data support it strongly:
 $d(\Ndist)/d(\Ndistprev) = \ratiod$, which agrees with the ratio at $n=150$ to twelve
 digits, while $d_{\mathrm{vi}}(\Ndist)/d_{\mathrm{vi}}(\Ndistprev) = \ratiov$.
 Numerically $\beta \approx 1.84337061669$ and $C \approx 0.087745045$.
