@@ -1,13 +1,14 @@
 # Counting distributive and modular lattices by a frontier transfer matrix
 
-This repository extends four OEIS sequences past their published records:
+This repository extends five OEIS sequences past their published records:
 
 | sequence | meaning | previous record | here |
 |---|---|---|---|
 | [A006982](https://oeis.org/A006982) | unlabeled distributive lattices with n elements | n = 60 (Kohonen 2021) | n = 160 |
 | [A072361](https://oeis.org/A072361) | vertically indecomposable ones | n = 49 in OEIS, n = 60 in Kohonen's paper | n = 160 |
-| [A006981](https://oeis.org/A006981) | unlabeled modular lattices with n elements | n = 35 (Kohonen 2021) | n = 37 |
-| [A342132](https://oeis.org/A342132) | vertically indecomposable ones | n = 35 | n = 37 |
+| [A006981](https://oeis.org/A006981) | unlabeled modular lattices with n elements | n = 35 (Kohonen 2021) | n = 38 |
+| [A342132](https://oeis.org/A342132) | vertically indecomposable ones | n = 35 | n = 38 |
+| [A229202](https://oeis.org/A229202) | unlabeled semimodular lattices with n elements | n = 25 (Kohonen 2017) | n = 26 |
 
 The same idea, with a different frontier, also reproduces and extends the
 modular lattices ([A006981](https://oeis.org/A006981), record n = 35); see the
@@ -20,7 +21,9 @@ The tables are `data/b006982.txt` and `data/b072361.txt`. First new terms:
     A006982(63) = 4751419899674101
 
     A006981(36) = 681357605302
-    A006981(37) = 1647135247659   (from the N = 37 run only; not yet confirmed by a run with larger N)
+    A006981(37) = 1647135247659
+    A006981(38) = 3985106742170   (from the N = 38 run only; not confirmed by a run with larger N)
+    A229202(26) = 13759007833
 
 The values are computed, not proved; see "Checks" for what supports them.
 A write-up is in `paper/paper.tex` (`paper/paper.pdf`).
@@ -156,6 +159,7 @@ bounds cut the search.
 | 35 | 3.0·10⁵ | 19 min |
 | 36 | 4.5·10⁵ | 37 min |
 | 37 | 6.9·10⁵ | 73 min |
+| 38 | 1.06·10⁶ | 142 min |
 
 For comparison, Kohonen (2021) reports 63 core-days for n = 35 alone.
 
@@ -170,6 +174,23 @@ budgets N = 36, 38, 40 where the last term is computed with no slack.
 
 There is no independent second method for the non-distributive modular
 lattices with n > 35; the new terms rest on the checks above.
+
+## Semimodular and geometric lattices (A229202, A281574)
+
+`src/layers.cpp` is `modular.cpp` with the class as a parameter. The proof that the
+frontier (pairwise meets of the top layer) suffices does not use modularity: "graded"
+and "meet-semilattice" are separate conditions, and the two semimodularity rules are
+the two directions of rule 1. So `layers N - usm` counts (upper) semimodular lattices,
+`lsm` the dual class, `graded` all graded lattices, `geometric` the atomistic
+semimodular ones. The modularity-based pruning is switched off in these modes.
+
+- **Semimodular:** works well from the bottom. N = 24 needs 8.9·10⁵ states for about
+  1.5·10⁹ lattices; N = 26 took 69 min and 7.9 GB (5.9·10⁶ states) and gives one new
+  term. Memory is the limit. Checks: known terms to n = 25, runs with N = 24, 25, 26,
+  and equality with the dual route (`lsm`) for small n (`scripts/assemble_layers.py`).
+- **Geometric:** known terms reproduced to n = 35, but no advantage: the frontier is
+  essentially the whole lattice, so this is plain generation. Not extended.
+- **Graded, and the dual directions:** far too many families or states; not competitive.
 
 ## Reproduce
 
@@ -200,6 +221,7 @@ Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
 - `src/frontier2.cpp`: production DP.
 - `src/brute_rank.cpp`: brute-force tabulation for check 2.
 - `src/modular.cpp`: frontier DP for modular lattices.
+- `src/layers.cpp`: the same program for semimodular, geometric and graded lattices.
 - `src/explore.cpp`: an abandoned first attempt (generating prime posets for a
   modular-decomposition count); kept because it shows why generation does not
   scale: the number of prime posets with n down-sets still grows like 1.64^n.

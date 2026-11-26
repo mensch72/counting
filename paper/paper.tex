@@ -45,6 +45,8 @@ of states and not with the number of lattices.  For modular lattices the number
 of states is reduced further by a bound that rests on self-duality of the class.
 We obtain the number of distributive lattices up to $\Ndist$ elements and of
 modular lattices up to $\Nmod$ elements; the previous records were $60$ and $35$.
+The frontier for modular lattices also serves for semimodular lattices, for which we
+obtain one further value ($26$ elements).
 The $60$ known values for distributive lattices take $0.1$ seconds and the $35$
 known values for modular lattices take $19$ minutes on one processor core.  The
 new values are supported by the known ones, by duality checks, by brute force
@@ -98,6 +100,8 @@ $1.7\cdot 10^{15}$ of them, are accounted for by $4496$ states.
 \item $d(n)$ and $d_{\mathrm{vi}}(n)$ for all $n \le \Ndist$ (Table~\ref{tab:dist});
   the first new value is\\ $d(61) = 1\,398\,297\,238\,937\,456$.
 \item $m(n)$ and $m_{\mathrm{vi}}(n)$ for all $n \le \Nmod$ (Table~\ref{tab:mod}).
+\item The number of semimodular lattices with $26$ elements (Section~\ref{sec:other}); the
+  previous record was $25$~\cite{Koh19}.
 \end{itemize}
 The complete tables, the programs and the logs of all runs are available as
 ancillary files and at~\cite{code}.  The values are the output of
@@ -549,11 +553,11 @@ bound.
 \subsection{Results}
 Table~\ref{tab:mod} contains the new values.  The run with $N=35$, which reproduces all
 previously known values of $m$ and $m_{\mathrm{vi}}$, took $19$ minutes on one core and
-$0.55$\,GB of memory, with $3.0\cdot 10^5$ states; $N=36$ took $37$ minutes
-($4.5\cdot 10^5$ states) and $N=37$ took $73$ minutes ($6.9\cdot 10^5$ states,
-$1.4$\,GB).  The cost grows by a factor of about $1.9$ per element.  The value for
-$n=36$ was obtained from the runs with $N=36$ and $N=37$; the value for $n=37$ comes
-from the run with $N=37$ alone, where it is computed with no slack in the pruning (see
+$0.55$\,GB of memory, with $3.0\cdot 10^5$ states.  The runs with $N=36$, $37$, $38$ took
+$37$, $73$ and $142$ minutes and used $4.5\cdot 10^5$, $6.9\cdot 10^5$ and $1.06\cdot 10^6$
+states; the cost grows by a factor of about $1.9$ per element.  The values for $n=36$ and
+$n=37$ were each obtained from at least two runs with different $N$.  The value for $n=38$
+comes from the run with $N=38$ alone, where it is computed with no slack in the pruning (see
 Section~\ref{sec:verify}, item~6).  The last
 ratios are $m(\Nmod)/m(\Nmodprev) = \ratiom$ and
 $m_{\mathrm{vi}}(\Nmod)/m_{\mathrm{vi}}(\Nmodprev) = \ratiomv$; they are still increasing,
@@ -593,17 +597,17 @@ bottom) gives the same numbers, which we used as a check for $n \le 14$, but nee
 states.  For graded lattices in general the enumeration of the families is too expensive for
 the method to compete with generation~\cite{Koh19}.
 
-For geometric lattices, which correspond to simple matroids counted by their number of
-flats, two classical facts keep the computation small.  First, by the theorem of Dowling and
-Wilson~\cite{DW} every layer strictly between bottom and top has at least as many elements as
-there are atoms; we add the number of atoms to the state and discard families that are too
-small.  Second, on the atoms all pairs are adjacent, so the next layer is a linear space, and a
-linear space on $v$ points with a line of $k < v$ points has at least $1 + k^2(v-k)/(v-1)$
-lines (the bound of Stanton and Kalbfleisch: each of the $v-k$ points off the line $K$ lies on
-$k$ lines meeting $K$, and by convexity $m$ lines can carry these $k(v-k)$ incidences
-without covering a pair of points twice only if $m \ge k^2(v-k)/(v-1)$).  Geometric lattices
-with more than two elements are vertically indecomposable, so no summation over vertical
-sums is involved.
+The run with $N = 26$ took $69$ minutes on one core and $7.9$\,GB of memory, with
+$5.9\cdot 10^{6}$ states, and gives one new value (Table~\ref{tab:other}); it reproduces the
+values for $n \le 25$ of~\cite{Koh19}.  Memory is the limit here.  The new value is computed
+at $n = N$; since no state is ever discarded in this class, the bound $N$ only truncates the
+enumeration of families.
+
+For geometric lattices (simple matroids counted by their number of flats) the same program
+reproduces the known values for $n \le 35$, but it offers no advantage: these lattices have
+small rank, the frontier is essentially the whole lattice, and the number of states is close
+to the number of lattices.  The cost is then dominated by the enumeration of linear spaces
+on the atoms, and we did not extend that sequence.
 
 \resultsother
 
@@ -641,13 +645,17 @@ symmetry handling or pruning rule.
 \item \emph{Different bounds $N$.}  All pruning depends on $N$, and the value for
 $n = N$ is computed with no slack.  Runs with different $N$ agree on their common range
 (distributive: $N = 120, 130, 150, 160$, the first two also with an independent reference
-implementation; modular: $N = 26, 28, 30, 32, 35, 36, 37$).  The largest value in each
-table, in particular $m(37)$, has no such confirmation from a run with larger $N$; the
-corresponding boundary values $m(N)$ for $N \le 36$ were all correct.
+implementation; modular: $N = 26, 28, 30, 32, 35, 36, 37, 38$; semimodular: $N = 24, 25, 26$).  The largest
+value in each table, in particular $m(38)$, has no such confirmation from a run with larger
+$N$; the corresponding boundary values $m(N)$ for $N \le 37$ were all correct.
 \end{enumerate}
 
+For semimodular lattices the checks are the known values for $n \le 25$, the runs with
+different $N$, and the agreement with the count of the dual class for small $n$.
+
 There is no independent method for distributive lattices of width at least three with more than
-$110$ elements, nor for non-distributive modular lattices with more than $35$ elements; for
+$110$ elements, nor for non-distributive modular lattices with more than $35$ elements or
+semimodular lattices with more than $25$; for
 these the evidence is items (4)--(6).  An independent recomputation would be valuable.
 
 \section{Remarks}
@@ -690,9 +698,6 @@ and as ancillary files.
 
 \bibitem{dBE} N.~G.~de~Bruijn and P.~Erd\H{o}s, On a combinatorial problem,
   \emph{Indag.\ Math.} \textbf{10} (1948), 421--423.
-
-\bibitem{DW} T.~A.~Dowling and R.~M.~Wilson, Whitney number inequalities for geometric
-  lattices, \emph{Proc.\ Amer.\ Math.\ Soc.} \textbf{47} (1975), 504--512.
 
 \bibitem{EHR} M.~Ern\'e, J.~Heitzig and J.~Reinhold, On the number of distributive
   lattices, \emph{Electron.\ J.\ Combin.} \textbf{9} (2002), \#R24.
