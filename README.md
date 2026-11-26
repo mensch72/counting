@@ -1,4 +1,4 @@
-# Counting distributive lattices by a frontier transfer matrix
+# Counting distributive and modular lattices by a frontier transfer matrix
 
 This repository extends two OEIS sequences well past their published records:
 
@@ -6,6 +6,10 @@ This repository extends two OEIS sequences well past their published records:
 |---|---|---|---|
 | [A006982](https://oeis.org/A006982) | unlabeled distributive lattices with n elements | n = 60 (Kohonen 2021) | n = 160 |
 | [A072361](https://oeis.org/A072361) | vertically indecomposable ones | n = 49 in OEIS, n = 60 in Kohonen's paper | n = 160 |
+
+The same idea, with a different frontier, also reproduces and extends the
+modular lattices ([A006981](https://oeis.org/A006981), record n = 35); see the
+section "Modular lattices" below for those results.
 
 The tables are `data/b006982.txt` and `data/b072361.txt`. First new terms:
 

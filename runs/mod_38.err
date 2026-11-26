@@ -1,0 +1,15 @@
+acc=2 states=36 families=0 trans=0 nauty=35 0s
+acc=3 states=309 families=274 trans=274 nauty=323 0s
+acc=4 states=1804 families=5386 trans=2027 nauty=2897 0s
+acc=5 states=8139 families=67486 trans=9699 nauty=26608 2s
+acc=6 states=20857 families=336935 trans=27780 nauty=159418 12s
+acc=7 states=44641 families=986818 trans=73535 nauty=552231 38s
+acc=8 states=109407 families=2480126 trans=193622 nauty=1262031 83s
+acc=9 states=224992 families=4362858 trans=421429 nauty=2135156 136s
+acc=10 states=364457 families=7657588 trans=832206 nauty=3589733 211s
+acc=11 states=503264 families=11964343 trans=1460769 nauty=5321721 292s
+acc=12 states=635815 families=18082461 trans=2484305 nauty=7839410 402s
+acc=13 states=752551 families=25128233 trans=3792734 nauty=10790083 519s
+acc=14 states=848600 families=33802253 trans=5549388 nauty=15078237 671s
+acc=15 states=918437 families=43301071 trans=7714756 nauty=19385901 823s
+acc=16 states=968462 families=53190619 trans=10184083 nauty=24578914 984s
