@@ -1,6 +1,6 @@
 # Counting distributive and modular lattices by a frontier transfer matrix
 
-This repository extends five OEIS sequences past their published records:
+This repository extends eight OEIS sequences past their published records:
 
 | sequence | meaning | previous record | here |
 |---|---|---|---|
@@ -9,6 +9,9 @@ This repository extends five OEIS sequences past their published records:
 | [A006981](https://oeis.org/A006981) | unlabeled modular lattices with n elements | n = 35 (Kohonen 2021) | n = 38 |
 | [A342132](https://oeis.org/A342132) | vertically indecomposable ones | n = 35 | n = 38 |
 | [A229202](https://oeis.org/A229202) | unlabeled semimodular lattices with n elements | n = 25 (Kohonen 2017) | n = 27 |
+| [A368461](https://oeis.org/A368461) | planar modular lattices | n = 34 (Kohonen 2023) | n = 1000 |
+| [A072407](https://oeis.org/A072407) | canonically 2-indecomposable posets with n antichains | n = 49 | n = 160 |
+| [A186808](https://oeis.org/A186808) | n with A006982(n) prime | 10 terms | 12 terms (complete for n ≤ 160) |
 
 The same idea, with a different frontier, also reproduces and extends the
 modular lattices ([A006981](https://oeis.org/A006981), record n = 35); see the
@@ -199,6 +202,22 @@ posets on ≤ 11 points for W = 3..8 (`src/brute_layers.cpp`). The modular autom
 distributive lattices (`aut-dist`) they reproduce the growth rates of `src/bounded` to ten
 digits for W ≤ 6. These are lower bounds only; they do not prove that the two distributive
 growth rates differ, and for modular lattices the rates are still rising with W.
+
+## Supplement: planar modular lattices and dependent sequences
+
+- **A368461, planar modular lattices** (`scripts/planar_modular.py`, `data/b368461.txt`).
+  Not by the transfer matrix: by Grätzer–Quackenbush every planar modular lattice is a
+  planar distributive lattice with "eyes" inserted into covering squares, and planar
+  distributive lattices are regions between two lattice paths; Burnside for the mirror
+  symmetry gives the count. All 34 known terms are reproduced; computed to n = 1000.
+  The vertically indecomposable counts are in `data/planar_modular_vi.txt` (not in OEIS).
+- **A072407** (`data/b072407.txt`, n ≤ 160): determined by A072361 through
+  v(k) = Σ w(k−j)·v(j) (Erné–Heitzig–Reinhold, Corollary 7); the 49 known terms agree.
+- **A186808** (`data/b186808.txt`): n ≤ 160 with A006982(n) prime are
+  4, 5, 6, 10, 12, 13, 18, 21, 23, 26, 66, 88. The last two are new; primality proved
+  with PARI/GP. `scripts/derived.py` produces both files.
+- I searched OEIS for other functions of the extended sequences (differences, partial sums,
+  the sequences that cite them) and found none.
 
 ## Semimodular and geometric lattices (A229202, A281574)
 

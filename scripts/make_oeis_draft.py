@@ -41,5 +41,24 @@ if os.path.exists(os.path.join(D, 'b229202.txt')):
           f"- EXTENSIONS: a(26)-a({max(sm)}) from `<name>`, computed with the layer transfer matrix of the modular case without the lower semimodularity rule; a(0)-a(25) agree with Kohonen (2017).\n",
           "New terms:\n"]
     o += [f"    a({n}) = {sm[n]}" for n in range(26, max(sm) + 1)]
+if os.path.exists(os.path.join(D, 'b368461.txt')):
+    pm = rb('b368461.txt')
+    o += ["\n## A368461 (planar modular lattices on n nodes)\n",
+          f"- b-file: `data/b368461.txt` (n = 1..{max(pm)}; currently n = 1..34).",
+          "- FORMULA / COMMENT: every planar modular lattice is a planar distributive lattice with eyes inserted into covering squares (Graetzer and Quackenbush, 2010); with the lattice-path description of planar distributive lattices and Burnside's lemma for the mirror symmetry this gives a(n) for all n (see scripts/planar_modular.py).",
+          f"- EXTENSIONS: a(35)-a({max(pm)}) from `<name>`.\n", "First new terms:\n"]
+    o += [f"    a({n}) = {pm[n]}" for n in range(35, 41)]
+if os.path.exists(os.path.join(D, 'b072407.txt')):
+    w2 = rb('b072407.txt')
+    o += ["\n## A072407 (canonically 2-indecomposable posets with n antichains)\n",
+          f"- b-file: `data/b072407.txt` (n = 1..{max(w2)}; currently n = 1..49).",
+          "- FORMULA: A072361(k) = Sum_{j=0..k-1} a(k-j)*A072361(j) for k > 1, with A072361(0) = 1 (Erne, Heitzig, Reinhold, Corollary 7).",
+          f"- EXTENSIONS: a(50)-a({max(w2)}) from `<name>`, using the extension of A072361.\n", "First new terms:\n"]
+    o += [f"    a({n}) = {w2[n]}" for n in range(50, 55)]
+if os.path.exists(os.path.join(D, 'b186808.txt')):
+    pr = rb('b186808.txt')
+    o += ["\n## A186808 (n such that A006982(n) is prime)\n",
+          "- DATA: " + ", ".join(str(pr[i]) for i in sorted(pr)) + ".",
+          "- EXTENSIONS: a(11)-a(12) from `<name>`; there are no further terms up to n = 160. Primality proved with PARI/GP."]
 open(os.path.join(here, '..', 'docs', 'oeis_submission.md'), 'w').write("\n".join(o) + "\n")
 print('wrote docs/oeis_submission.md')

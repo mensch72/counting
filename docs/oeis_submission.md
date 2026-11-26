@@ -65,3 +65,37 @@ New terms:
 
     a(26) = 13759007833
     a(27) = 49997352868
+
+## A368461 (planar modular lattices on n nodes)
+
+- b-file: `data/b368461.txt` (n = 1..1000; currently n = 1..34).
+- FORMULA / COMMENT: every planar modular lattice is a planar distributive lattice with eyes inserted into covering squares (Graetzer and Quackenbush, 2010); with the lattice-path description of planar distributive lattices and Burnside's lemma for the mirror symmetry this gives a(n) for all n (see scripts/planar_modular.py).
+- EXTENSIONS: a(35)-a(1000) from `<name>`.
+
+First new terms:
+
+    a(35) = 126716031349
+    a(36) = 292487244620
+    a(37) = 675272703814
+    a(38) = 1559330151206
+    a(39) = 3601426216069
+    a(40) = 8319180224765
+
+## A072407 (canonically 2-indecomposable posets with n antichains)
+
+- b-file: `data/b072407.txt` (n = 1..160; currently n = 1..49).
+- FORMULA: A072361(k) = Sum_{j=0..k-1} a(k-j)*A072361(j) for k > 1, with A072361(0) = 1 (Erne, Heitzig, Reinhold, Corollary 7).
+- EXTENSIONS: a(50)-a(160) from `<name>`, using the extension of A072361.
+
+First new terms:
+
+    a(50) = 2732626377
+    a(51) = 4641069763
+    a(52) = 8002548246
+    a(53) = 13615245266
+    a(54) = 23440714169
+
+## A186808 (n such that A006982(n) is prime)
+
+- DATA: 4, 5, 6, 10, 12, 13, 18, 21, 23, 26, 66, 88.
+- EXTENSIONS: a(11)-a(12) from `<name>`; there are no further terms up to n = 160. Primality proved with PARI/GP.
