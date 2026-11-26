@@ -36,20 +36,22 @@ First terms beyond the current b-file:
 
 ## A006981 (unlabeled modular lattices on n nodes)
 
-- DATA / b-file: add a(36)..a(37) (`data/b006981.txt`).
-- EXTENSIONS: a(36)-a(37) from `<name>`, computed by a transfer matrix over the rank layers whose states are the posets of pairwise meets of a layer; a(0)-a(35) agree with Kohonen (2021).
+- DATA / b-file: add a(36)..a(38) (`data/b006981.txt`).
+- EXTENSIONS: a(36)-a(38) from `<name>`, computed by a transfer matrix over the rank layers whose states are the posets of pairwise meets of a layer; a(0)-a(35) agree with Kohonen (2021).
 
 New terms:
 
     a(36) = 681357605302
     a(37) = 1647135247659
+    a(38) = 3985106742170
 
 ## A342132 (vertically indecomposable modular lattices on n nodes)
 
-- DATA / b-file: add a(36)..a(37) (`data/b342132.txt`).
-- EXTENSIONS: a(36)-a(37) from `<name>`.
+- DATA / b-file: add a(36)..a(38) (`data/b342132.txt`).
+- EXTENSIONS: a(36)-a(38) from `<name>`.
 
 New terms:
 
     a(36) = 90998884153
     a(37) = 218856768070
+    a(38) = 526836817969

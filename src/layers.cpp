@@ -64,6 +64,7 @@ static string dist_profile(int k, const vector<u64>& adj){
   for(int s0=0;s0<k;s0++){ string r; u64 seen=1ull<<s0, fr=seen; int d=0; while(true){ u64 nx=0,f=fr; while(f){ int x=__builtin_ctzll(f); f&=f-1; nx|=adj[x]; } nx&=~seen; if(!nx) break; d++; r.append(__builtin_popcountll(nx),(char)d); seen|=nx; fr=nx; } rows[s0]=r; }
   sort(rows.begin(),rows.end()); string out; for(auto& r: rows){ out+=r; out.push_back((char)255); } return out; }
 static u64 nTrans=0, nFam=0, nNauty=0;
+static const size_t SEENPART_CAP=4000000;
 
 static inline u64 mix64(u64 x){ x^=x>>31; x*=0x7fb5d329728ea185ull; x^=x>>27; x*=0x81dadef4bc2dd44dull; x^=x>>33; return x; }
 static void die(const char* s){ fprintf(stderr,"FATAL: %s\n",s); exit(1); }
@@ -226,7 +227,12 @@ static void expand(int sid, int B){
       else { int n=nt+k; if(n>MAXN) die("family graph too large"); vector<array<u64,2>> arcs(n,array<u64,2>{0,0}); vector<int> col(n);
         for(int x=0;x<nt;x++) col[x]=S.cls[x]; for(int c=0;c<k;c++) col[nt+c]=nt+pc(Dh[c]);
         for(int c=0;c<k;c++){ u64 m=Dh[c]; while(m){ int x=ctz(m); m&=m-1; int v=nt+c; arcs[x][v>>6]|=1ull<<(v&63); arcs[v][x>>6]|=1ull<<(x&63); } }
-        vector<int> lab; nauty_canon(n,arcs,col,lab,&s); s.push_back('N'); }
+        vector<int> lab; nauty_canon(n,arcs,col,lab,nullptr);
+        // compact canonical form: the members as sorted bit masks over the canonical positions of T
+        // (the colour cells of T come first, so these positions are 0..nt-1 and respect the classes)
+        int posT[64]; for(int i=0;i<nt;i++){ if(lab[i]>=nt) die("canonical labelling moved T (family)"); posT[lab[i]]=i; }
+        vector<u64> cm(k); for(int c=0;c<k;c++){ u64 m=Dh[c], r=0; while(m){ int x=ctz(m); m&=m-1; r|=1ull<<posT[x]; } cm[c]=r; }
+        sort(cm.begin(),cm.end()); s.assign((const char*)cm.data(),8*k); s.push_back('N'); }
       if(h==0 || s<best) best=s;
     }
     return best; };
@@ -387,7 +393,11 @@ static void expand(int sid, int B){
       if((int)cl.size()+needL>maxMembers) return; }
     // isomorph rejection of partial clique sets (equivalent partial sets have equivalent completions);
     // done after the cheap bounds because the canonical form is the expensive step
-    if(!trivialG && !cl.empty()){ if(!seenPart.insert(famcanon(cl)).second) return; }
+    if(!trivialG && !cl.empty()){
+      // the table is only a cache: when it is full, new configurations are no longer recorded
+      // (they are then explored again, and duplicates among complete families are still removed)
+      if(seenPart.size()<SEENPART_CAP){ if(!seenPart.insert(famcanon(cl)).second) return; }
+      else if(seenPart.count(famcanon(cl))) return; }
     u64 U_a=required[a]&~cov[a]; int b=ctz(U_a);
     u64 X=Free(a)&Free(b)&~(1ull<<b)&~(1ull<<a);
     vector<int> xs; { u64 m=X; while(m){ xs.push_back(ctz(m)); m&=m-1; } }

@@ -33,5 +33,30 @@ for n in range(33, NM + 1):
     if n == 36: o.append(r'\midrule')
     o.append(r'%d & $%s$ & $%s$\\' % (n, num(m[n]), num(mv[n])))
 o.append(r'\bottomrule\end{tabular}}')
+# semimodular / geometric results (optional)
+def opt(name):
+    q = os.path.join(D, name)
+    return rb(name) if os.path.exists(q) else {}
+sm, ge = opt('b229202.txt'), opt('b281574.txt')
+txt = []
+if sm or ge:
+    txt.append(r'\begin{table}[ht]')
+    if sm:
+        txt.append(r'\begin{tabular}{rr}\toprule $n$ & semimodular\\\midrule')
+        for n in range(23, max(sm) + 1):
+            if n == 26: txt.append(r'\midrule')
+            txt.append(r'%d & $%s$\\' % (n, num(sm[n])))
+        txt.append(r'\bottomrule\end{tabular}\qquad')
+    if ge:
+        txt.append(r'\begin{tabular}{rr}\toprule $n$ & geometric\\\midrule')
+        for n in range(35, max(ge) + 1):
+            if n == 38: txt.append(r'\midrule')
+            txt.append(r'%d & $%s$\\' % (n, num(ge[n])))
+        txt.append(r'\bottomrule\end{tabular}')
+    txt.append(r'\caption{Numbers of semimodular lattices (A229202) and of geometric lattices (A281574) with $n$ elements.  Values above the rules agree with~\cite{Koh19} and the OEIS; those below are new.}\label{tab:other}')
+    txt.append(r'\end{table}')
+o.append(r'\newcommand{\resultsother}{' + '\n'.join(txt) + '}')
+o.append(r'\newcommand{\Nsemi}{%d}' % (max(sm) if sm else 0))
+o.append(r'\newcommand{\Ngeo}{%d}' % (max(ge) if ge else 0))
 open(os.path.join(here, '..', 'paper', 'tables.tex'), 'w').write('\n'.join(o) + '\n')
 print('wrote paper/tables.tex; distributive to', N, 'modular to', NM)

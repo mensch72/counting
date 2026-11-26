@@ -565,6 +565,48 @@ as observed in~\cite{Koh21}.
 the rule agree with~\cite{Koh21}; those below it are new.}\label{tab:mod}
 \end{table}
 
+\section{Semimodular and geometric lattices}\label{sec:other}
+
+The proof of Proposition~\ref{prop:layer} treats its three conditions separately:
+\textup{(i)} makes $X'$ graded, \textup{(iii)} makes it a meet-semilattice, and the two
+directions of \textup{(ii)} are the rules (U) and (D) for the pairs of rank $r$.  So the
+frontier $(Y,T,Y_1)$ of Section~\ref{sec:mod} serves, without change, for the lower parts of
+\begin{itemize}
+\item graded lattices: conditions (i) and (iii);
+\item (upper) semimodular lattices: (i), (iii) and ``adjacent elements lie in a common $D_c$'';
+\item lower semimodular lattices: (i), (iii) and ``the elements of each $D_c$ are pairwise adjacent'';
+\item geometric lattices, i.e.\ semimodular lattices in which every element is a join of atoms:
+      as for semimodular lattices, with $|D_c| \ge 2$ for all $c$ of rank at least two.
+\end{itemize}
+Lemmas~\ref{lem:modfrontier} and~\ref{lem:modsym} and Theorem~\ref{thm:mod} hold for each of
+these classes with the same proofs.  By (iii) two members of a family still share at most
+one element, so the members with at least two elements form a partial linear space on $T$
+which, in the semimodular case, covers all adjacent pairs and may cover others.
+
+The bounds of Section~\ref{sec:mod} that rest on modularity are not available.  In fact a
+semimodular lower part can always be completed by a single top element, so no state can be
+discarded, and the lattices themselves are far more numerous than modular ones.
+Nevertheless the number of states stays moderate when the lattices are built from the bottom:
+for $N = 24$ there are $8.9 \cdot 10^{5}$ states for about $1.5 \cdot 10^{9}$ semimodular
+lattices.  The direction matters.  Counting the dual class (lower semimodular lattices from the
+bottom) gives the same numbers, which we used as a check for $n \le 14$, but needs vastly more
+states.  For graded lattices in general the enumeration of the families is too expensive for
+the method to compete with generation~\cite{Koh19}.
+
+For geometric lattices, which correspond to simple matroids counted by their number of
+flats, two classical facts keep the computation small.  First, by the theorem of Dowling and
+Wilson~\cite{DW} every layer strictly between bottom and top has at least as many elements as
+there are atoms; we add the number of atoms to the state and discard families that are too
+small.  Second, on the atoms all pairs are adjacent, so the next layer is a linear space, and a
+linear space on $v$ points with a line of $k < v$ points has at least $1 + k^2(v-k)/(v-1)$
+lines (the bound of Stanton and Kalbfleisch: each of the $v-k$ points off the line $K$ lies on
+$k$ lines meeting $K$, and by convexity $m$ lines can carry these $k(v-k)$ incidences
+without covering a pair of points twice only if $m \ge k^2(v-k)/(v-1)$).  Geometric lattices
+with more than two elements are vertically indecomposable, so no summation over vertical
+sums is involved.
+
+\resultsother
+
 \section{Verification}\label{sec:verify}
 
 The results are the output of two programs of about $220$ and $400$ lines of C++.  We
@@ -622,8 +664,7 @@ $1.64^n$ (for $n \le 36$), so nothing is gained over~\cite{Koh21}.
 \begin{remark}
 The method needs a grading that is respected by isomorphisms and a bounded description
 of what the upper part can see of the lower part.  It does not apply as it stands to
-all lattices, which are not graded.  Semimodular lattices are graded, but the
-duality bound is not available for them.
+all lattices, which are not graded.
 \end{remark}
 
 \begin{remark}
@@ -649,6 +690,9 @@ and as ancillary files.
 
 \bibitem{dBE} N.~G.~de~Bruijn and P.~Erd\H{o}s, On a combinatorial problem,
   \emph{Indag.\ Math.} \textbf{10} (1948), 421--423.
+
+\bibitem{DW} T.~A.~Dowling and R.~M.~Wilson, Whitney number inequalities for geometric
+  lattices, \emph{Proc.\ Amer.\ Math.\ Soc.} \textbf{47} (1975), 504--512.
 
 \bibitem{EHR} M.~Ern\'e, J.~Heitzig and J.~Reinhold, On the number of distributive
   lattices, \emph{Electron.\ J.\ Combin.} \textbf{9} (2002), \#R24.

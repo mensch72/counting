@@ -11,3 +11,6 @@ mod_35 rc=0 time=1162s peakRSS=547148KB
 mod_36 rc=0 time=2223s peakRSS=867484KB
 mod_37 rc=0 time=4379s peakRSS=1373784KB
 lay_usm_24 rc=0 time=426s peakRSS=1135460KB
+lay_geometric_35 rc=0 time=216s peakRSS=1220400KB
+lay_usm_26 rc=0 time=4119s peakRSS=7874080KB
+mod_38 rc=0 time=8534s peakRSS=2107504KB
