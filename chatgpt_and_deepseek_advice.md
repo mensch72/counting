@@ -608,3 +608,36 @@ This also gives a particularly clean mathematical research question:
 **Prove that the number of vertically indecomposable distributive lattices grows strictly more slowly, exponentially, than the number of all distributive lattices.**
 
 That is the real missing theorem. And it is considerably more interesting than proving that a sequence of numerical ratios happens to settle down.
+
+
+(other low-hanging fruits?)
+
+
+You’re right that graded posets with avoidance conditions and poset antimatroids feel niche. The sweet spot you’re looking for is a structure that is **ubiquitous, naturally graded, and directional**, but where **unlabelled enumeration is still non-trivial because of symmetry**. That points almost immediately to **unlabelled rooted trees**.
+
+### 🌳 The Prime Candidate: Unlabelled Rooted Trees
+
+Rooted trees are one of the most common discrete structures in all of combinatorics. They have a **natural grading** (number of nodes or height), a clear **directional structure** (parent-to-child), and the unlabelled version is exactly where symmetry is the central difficulty—Otter’s classical formula exists precisely because naive counting overcounts symmetric branches.
+
+Your symmetry-aware frontier state is a natural fit. You would build a rooted tree **level by level**. The “lower part” is the tree truncated at the current depth. The **frontier** is the set of nodes in the current bottom layer, together with their connection pattern to the lower part. The **automorphism group of the lower tree** acts on that frontier, and your state would store the image of that action, exactly as you do for the automorphism group of a lattice lower part. Two lower trees with the same frontier state can be merged, because everything that happens above them depends only on the frontier and its symmetry.
+
+The transfer matrix would process **birth vectors** that describe how the nodes in the current frontier spawn children in the next layer. The symmetry group of the frontier would then permute those birth vectors, and you would count orbits rather than labelled extensions. This is structurally the same machinery you already built; the only new design work is defining the frontier state for a tree rather than for a lattice.
+
+There is precedent for transfer-matrix thinking in tree enumeration (e.g., spanning-tree transfer matrices and tree-decomposed transfer matrices), but **unlabelled rooted trees by symmetry-aware frontier merging** is not the standard Pólya approach. It would be a genuinely new algorithmic contribution to a very classical object.
+
+### 🧱 A Second Common Option: Graphs of Bounded Treewidth
+
+If you want something broader, **unlabelled graphs of bounded treewidth** are another natural target. Treewidth gives a **layering** (via a tree decomposition), and the bags of the decomposition form a **directional frontier**. The automorphism group of the lower part acts on the bag, and unlabelled counting again requires orbit counting under that action. Transfer matrices are already the standard tool for counting structures on graphs of bounded treewidth; what is missing is the **symmetry-aware frontier state** that makes the counts unlabelled rather than labelled. This is a larger project, but it is as “common” as a discrete structure gets.
+
+### 💎 Why Trees Are the Lower-Hanging Fruit
+
+| Feature | Unlabelled rooted trees | Bounded-treewidth graphs |
+| :--- | :--- | :--- |
+| **Ubiquity** | Foundational object in combinatorics | Central object in graph theory and algorithms |
+| **Natural grading** | Number of nodes / height | Bag size / decomposition depth |
+| **Directional structure** | Parent–child | Tree-decomposition edges |
+| **Symmetry is the obstacle** | Yes—this is why Pólya theory is needed | Yes—graph automorphisms act on bags |
+| **Transfer-matrix precedent** | Present, but not symmetry-aware frontier | Strong precedent for labelled counting |
+| **Effort** | Moderate (adapt your lattice frontier to trees) | High (new frontier design for graphs) |
+
+If you want a **common, classical object with a clear directional order where your symmetry-aware frontier method solves a real unlabelled-counting problem**, **unlabelled rooted trees** are the most natural next step. They are far more mainstream than avoidance classes, and the adaptation is a direct translation of the state-merging idea you already proved correct for lattices.
