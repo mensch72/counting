@@ -28,7 +28,10 @@ bad1 = [n for n in k1 if n <= N and f[n] != k1[n]]
 bad2 = [n for n in k2 if n <= N and vi[n] != k2[n]]
 print(f'A006982: {len(k1)} known terms (n=0..{max(k1)}), mismatches: {bad1}')
 print(f'A072361: {len(k2)} known terms (n=1..{max(k2)}), mismatches: {bad2}')
-assert not bad1 and not bad2
+k3 = read_b(os.path.join(here, '..', 'data', 'kohonen2021_table2_dvi_50_60.txt'))
+bad3 = [n for n in k3 if n <= N and vi[n] != k3[n]]
+print(f'A072361: values for n=50..60 printed in Kohonen (2021), Table 2, mismatches: {bad3}')
+assert not bad1 and not bad2 and not bad3
 with open(os.path.join(here, '..', 'data', 'b006982.txt'), 'w') as o:
     for n in range(0, N + 1): o.write(f'{n} {f[n]}\n')
 with open(os.path.join(here, '..', 'data', 'b072361.txt'), 'w') as o:

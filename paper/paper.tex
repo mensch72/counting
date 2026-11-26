@@ -32,21 +32,24 @@
 \begin{document}
 
 \begin{abstract}
-We count unlabelled distributive lattices up to $\Ndist$ elements and unlabelled modular
-lattices up to $\Nmod$ elements; the previous records were $60$ and $35$.
-Earlier counts generate the lattices one at a time.  We instead sum over the rank
-layers of the lattice with a transfer matrix.  For a distributive lattice $J(P)$
-the state after rank $r$ is the poset of those join-irreducibles that lie in some
-but not all down-sets of size $r$, together with the symmetry group induced on
-it; for a modular lattice it is the poset of pairwise meets of the elements of
-rank $r$.  All lower parts with the same state are merged, so the work grows with
-the number of states and not with the number of lattices.  The $60$ known terms for
-distributive lattices take $0.1$ seconds, and the $35$ known terms for modular
-lattices take $19$ minutes on one processor core.  For modular lattices the
-number of states is reduced further by a bound that uses self-duality of the
-class.  The results are supported by the known terms, by duality checks, by brute
-force over all posets on at most $11$ points, and by agreement of the two
-programs on distributive lattices.
+We describe a transfer-matrix method for counting unlabelled graded lattices by
+their rank layers, and apply it to distributive and to modular lattices.  Earlier
+counts generate the lattices one at a time.  Here all lower parts of lattices
+that look the same from above are merged into one \emph{state}.  For a
+distributive lattice $J(P)$ the state after rank $r$ is the poset of those elements of
+$P$ that lie in some but not all down-sets of size $r$, together with the
+symmetry group induced on it; for a modular lattice it is the poset of pairwise
+meets of the elements of rank $r$.  We prove that these states determine all
+possible continuations up to isomorphism, so that the work grows with the number
+of states and not with the number of lattices.  For modular lattices the number
+of states is reduced further by a bound that rests on self-duality of the class.
+We obtain the number of distributive lattices up to $\Ndist$ elements and of
+modular lattices up to $\Nmod$ elements; the previous records were $60$ and $35$.
+The $60$ known values for distributive lattices take $0.1$ seconds and the $35$
+known values for modular lattices take $19$ minutes on one processor core.  The
+new values are supported by the known ones, by duality checks, by brute force
+over all posets on at most $11$ points, and by agreement of the two programs on
+distributive lattices.
 \end{abstract}
 
 \maketitle
@@ -303,14 +306,41 @@ for $50 \le n \le 60$ of $d_{\mathrm{vi}}$ and for $n \le 60$ of $d$ agree
 with~\cite{Koh21}.  All values for $n \le \Ndist$ are in the ancillary files.}\label{tab:dist}
 \end{table}
 
-With $F(x) = \sum_{n \ge 1} d(n) x^{n-1}$ and $V(x) = \sum_{k \ge 2} d_{\mathrm{vi}}(k) x^{k-1}$,
-equation~\eqref{eq:vsum} reads $F = 1/(1-V)$.  The observed ratios are
-$d(\Ndist)/d(\Ndistprev) = \ratiod$, which agrees with the ratio at $n=150$ to twelve digits,
-and $d_{\mathrm{vi}}(\Ndist)/d_{\mathrm{vi}}(\Ndistprev) = \ratiov$.  This is the behaviour
-of a simple pole of $F$ inside the disc of convergence of $V$, and it suggests
-$d(n) \sim C\,\beta^n$ with $\beta \approx 1.84337061669$; we have not proved this.
-Kohonen~\cite{Koh21} proved that $d_{\mathrm{vi}}(n) = \Omega(1.7250^n)$ and remarked that
-this bound appears to be close to the truth; the ratio $\ratiov$ supports that.
+\subsection{Growth}
+Let $F(x) = \sum_{n \ge 1} d(n) x^{n-1}$ and $V(x) = \sum_{k \ge 2} d_{\mathrm{vi}}(k) x^{k-1}$.
+Equation~\eqref{eq:vsum} reads $F = 1/(1-V)$.
+
+\begin{proposition}\label{prop:growth}
+\textup{(a)} The limit $\beta = \lim_{n\to\infty} d(n)^{1/n}$ exists and is finite.
+
+\textup{(b)} If $\limsup_{n} d_{\mathrm{vi}}(n)^{1/n} < \beta$, then
+$d(n) \sim C \beta^n$ with $C = 1/V'(1/\beta)$.
+\end{proposition}
+
+\begin{proof}
+(a) The vertical sum of lattices with $i$ and $j$ elements has $i+j-1$ elements, and
+the two summands can be recovered from it and $i$.  So $d(i+j-1) \ge d(i)\,d(j)$, the
+sequence $d(n+1)$ is supermultiplicative, and the limit exists by Fekete's lemma.  It
+is finite by the exponential upper bound of~\cite{EHR}.
+
+(b) Put $\varrho = 1/\beta$.  By assumption $V$ is analytic in a disc of radius larger
+than $\varrho$, while $F$ has radius of convergence $\varrho$ and, having nonnegative
+coefficients, a singularity at $\varrho$.  Hence $V(\varrho) = 1$.  Since
+$V'(\varrho) > 0$ this is a simple pole of $F$, and it is the only singularity on
+$|x| = \varrho$: $V(x) = 1$ with $|x| = \varrho$ forces all terms of $V(x)$ to be
+positive, and the term $d_{\mathrm{vi}}(2)\,x$ is present.  The claim follows by the
+standard transfer from a dominant simple pole~\cite[Section~V.2]{FS}.
+\end{proof}
+
+The hypothesis of (b) is open.  The data support it strongly:
+$d(\Ndist)/d(\Ndistprev) = \ratiod$, which agrees with the ratio at $n=150$ to twelve
+digits, while $d_{\mathrm{vi}}(\Ndist)/d_{\mathrm{vi}}(\Ndistprev) = \ratiov$.
+Numerically $\beta \approx 1.84337061669$ and $C \approx 0.087745045$.
+Kohonen~\cite{Koh21} proved $d_{\mathrm{vi}}(n) = \Omega(1.7250^n)$ and remarked that
+this bound appears to be close to the truth; the ratio $\ratiov$ supports that.  A
+proof that vertically indecomposable distributive lattices have a strictly smaller
+exponential growth rate than all distributive lattices would turn the numerical
+statement into a theorem.
 
 \section{Modular lattices}\label{sec:mod}
 
@@ -537,8 +567,10 @@ list what supports them, and what does not.
 
 \begin{enumerate}
 \item \emph{Known values.}  The distributive program reproduces $d(n)$ for $n \le 60$
-and $d_{\mathrm{vi}}(n)$ for $n \le 49$ as given in the OEIS, and the modular
-program reproduces $m(n)$ and $m_{\mathrm{vi}}(n)$ for $n \le 35$.
+and $d_{\mathrm{vi}}(n)$ for $n \le 49$ as given in the OEIS, and $d_{\mathrm{vi}}(n)$
+for $50 \le n \le 60$ as printed in~\cite[Table~2]{Koh21}.  The modular
+program reproduces $m(n)$ and $m_{\mathrm{vi}}(n)$ for $n \le 35$.  The earlier
+computations are structurally different from ours.
 \item \emph{Brute force beyond the known range.}  We generated all $49\,519\,391$ posets on at
 most $11$ points with \texttt{genposetg} from the \texttt{nauty} package and tabulated those whose down-set lattice
 is vertically indecomposable by (number of down-sets, number of points).  The
@@ -615,6 +647,9 @@ and as ancillary files.
 
 \bibitem{EHR} M.~Ern\'e, J.~Heitzig and J.~Reinhold, On the number of distributive
   lattices, \emph{Electron.\ J.\ Combin.} \textbf{9} (2002), \#R24.
+
+\bibitem{FS} P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics}, Cambridge
+  University Press, 2009.
 
 \bibitem{GT} V.~Gebhardt and S.~Tawn, Constructing unlabelled lattices,
   \emph{J.\ Algebra} \textbf{545} (2020), 213--236.

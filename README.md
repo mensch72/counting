@@ -78,8 +78,9 @@ remaining weight is the number of down-sets of Λ larger than ρ, which is exact
 
 ## Checks
 
-1. **Known terms.** All 61 terms of A006982 (n = 0..60) and all 49 of A072361 are
-   reproduced from scratch (`scripts/assemble.py` asserts this).
+1. **Known terms.** All 61 terms of A006982 (n = 0..60), all 49 terms of A072361
+   in the OEIS, and the values of A072361 for n = 50..60 printed in Kohonen
+   (2021), Table 2, are reproduced from scratch (`scripts/assemble.py` asserts this).
 2. **Brute force beyond 60.** `src/brute_rank.cpp` reads all 49 519 391 posets on
    ≤ 11 points from nauty's `genposetg`, and tabulates the vertically
    indecomposable ones by (number of down-sets, number of points). The DP,
@@ -187,7 +188,7 @@ Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
     # modular lattices
     g++ -O2 -march=native -o modular modular.cpp -lnauty
     ./modular 36 ../runs/mod_dual_36.txt > ../runs/mod_36.txt      # 37 min
-    python3 ../scripts/assemble_mod.py ../runs/mod_3[5-9].txt
+    python3 ../scripts/assemble_mod.py ../runs/mod_35.txt ../runs/mod_36.txt ../runs/mod_37.txt
     ./modular 40 /dev/null dist > ../runs/moddist_40.txt           # distributive cross-check
     # brute-force check
     for k in 1 2 3 4 5 6 7 8 9 10 11; do nauty-genposetg $k t q; done | ./brute_rank 110 > brute.txt
@@ -204,6 +205,7 @@ Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
   scale: the number of prime posets with n down-sets still grows like 1.64^n.
 - `scripts/assemble.py`, `scripts/check_dual.py`, `scripts/planar_check.py`: assembly and checks.
 - `docs/oeis_submission.md`: draft text for the OEIS edits (not submitted).
+- `paper/`: the write-up (`paper.tex`, `paper.pdf`); `scripts/make_tables.py` regenerates its tables from `data/`.
 - `data/`: the new b-files, and the OEIS b-files used as reference.
 - `runs/`: raw outputs and logs.
 
