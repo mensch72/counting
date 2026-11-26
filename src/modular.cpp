@@ -16,7 +16,9 @@
 // full symmetric group on each class) plus the explicit list H of the elements
 // that are monotone on every class.
 //
-// usage: modular N [v]
+// usage: modular N [dualfile]
+//   prints n, vi(n), f(n); with dualfile also writes "n atoms coatoms count" for the
+//   vertically indecomposable lattices (must be symmetric in atoms/coatoms: the class is self-dual)
 #include <bits/stdc++.h>
 #define MAXN 128
 #include <nauty/nauty.h>
@@ -194,6 +196,23 @@ static void expand(int sid, int B){
     while(rem){ int best=-1, bd=1000; u64 m=rem; while(m){ int x=ctz(m); m&=m-1; int d=pc(g[x]&rem); if(d<bd){ bd=d; best=x; } } gi++; rem&=~(g[best]|1ull<<best); }
     return k+max(2*(diam-1)+1, gi+2*(diam-2)+1); };
 
+  // canonical form of a family of subsets of T under Gamma = N.H
+  auto famcanon=[&](const vector<u64>& D)->string{
+    int k=D.size(); string best;
+    for(int h=0;h<nH;h++){
+      vector<u64> Dh(k); for(int c=0;c<k;c++){ u64 m=D[c], r=0; while(m){ int x=ctz(m); m&=m-1; r|=1ull<<S.H[h][x]; } Dh[c]=r; }
+      string s;
+      if(trivialN){ sort(Dh.begin(),Dh.end()); s.assign((const char*)Dh.data(),8*k); }
+      else if(fam_fast(nt,k,Dh,S.cls,s)){ }
+      else { int n=nt+k; if(n>MAXN) die("family graph too large"); vector<array<u64,2>> arcs(n,array<u64,2>{0,0}); vector<int> col(n);
+        for(int x=0;x<nt;x++) col[x]=S.cls[x]; for(int c=0;c<k;c++) col[nt+c]=nt+pc(Dh[c]);
+        for(int c=0;c<k;c++){ u64 m=Dh[c]; while(m){ int x=ctz(m); m&=m-1; int v=nt+c; arcs[x][v>>6]|=1ull<<(v&63); arcs[v][x>>6]|=1ull<<(x&63); } }
+        vector<int> lab; nauty_canon(n,arcs,col,lab,&s); s.push_back('N'); }
+      if(h==0 || s<best) best=s;
+    }
+    return best; };
+  unordered_set<string> seenPart;
+
   // ---- process one complete family (all lattice conditions already hold) ----
   auto process=[&](){
     nFam++;
@@ -217,18 +236,7 @@ static void expand(int sid, int B){
       if(it==firstA.end()) firstA.emplace(move(prof),anow); }
     // ---- orbit representative test: canonical form of the family under Gamma ----
     if(!trivialG){
-      string best;
-      for(int h=0;h<nH;h++){
-        vector<u64> Dh(k); for(int c=0;c<k;c++){ u64 m=D[c], r=0; while(m){ int x=ctz(m); m&=m-1; r|=1ull<<S.H[h][x]; } Dh[c]=r; }
-        string s;
-        if(trivialN){ sort(Dh.begin(),Dh.end()); s.assign((const char*)Dh.data(),8*k); }
-        else if(fam_fast(nt,k,Dh,S.cls,s)){ }
-        else { int n=nt+k; if(n>MAXN) die("family graph too large"); vector<array<u64,2>> arcs(n,array<u64,2>{0,0}); vector<int> col(n);
-          for(int x=0;x<nt;x++) col[x]=S.cls[x]; for(int c=0;c<k;c++) col[nt+c]=nt+pc(Dh[c]);
-          for(int c=0;c<k;c++){ u64 m=Dh[c]; while(m){ int x=ctz(m); m&=m-1; int v=nt+c; arcs[x][v>>6]|=1ull<<(v&63); arcs[v][x>>6]|=1ull<<(x&63); } }
-          vector<int> lab; nauty_canon(n,arcs,col,lab,&s); s.push_back('N'); }
-        if(h==0 || s<best) best=s;
-      }
+      string best=famcanon(D);
       if(!seenFam.insert(best).second) return;
     }
     nTrans++;
@@ -302,8 +310,18 @@ static void expand(int sid, int B){
       { int c=famcost(); if(c<0 || c>B){ for(int x=0;x<nt;x++) msing[x]=0; return; } }
       rec_s(0); for(int x=0;x<nt;x++) msing[x]=0; return; }
     if((int)cl.size()+1>maxMembers) return;
+    // isomorph rejection of partial clique sets (equivalent partial sets have equivalent completions)
+    if(!trivialG && !cl.empty()){ if(!seenPart.insert(famcanon(cl)).second) return; }
     { int need=1; for(int x=0;x<nt;x++){ u64 u=adj[x]&~cov[x]; if(!u) continue; for(u64 K: cl) if(!(K>>x&1)) need=max(need,pc(u&K)); }
       if((int)cl.size()+need>maxMembers) return; }
+    { // pair-counting bound: a future line avoids every saturated point z, and meets each line
+      // through z at most once, so it has at most r_z points adjacent to z.
+      int P=0, maxdeg=0; u64 unsat=0; for(int x=0;x<nt;x++){ int d=pc(adj[x]&~cov[x]); P+=d; maxdeg=max(maxdeg,d); if(d) unsat|=1ull<<x; } P/=2;
+      int Lmax=maxdeg+1;
+      for(int z=0;z<nt;z++) if(adj[z] && !(unsat>>z&1)){ int rz=0; for(u64 K: cl) if(K>>z&1) rz++; Lmax=min(Lmax, rz+pc(unsat&~adj[z])); }
+      if(Lmax<2) Lmax=2;
+      int per=Lmax*(Lmax-1)/2; int needL=(P+per-1)/per;
+      if((int)cl.size()+needL>maxMembers) return; }
     u64 U_a=adj[a]&~cov[a]; int b=ctz(U_a);
     u64 X=U_a&(adj[b]&~cov[b])&~(1ull<<b);
     vector<int> xs; { u64 m=X; while(m){ xs.push_back(ctz(m)); m&=m-1; } }
@@ -320,6 +338,15 @@ static void expand(int sid, int B){
         // lattice condition against the cliques chosen so far
         int ncl=cl.size(); vector<int> row(ncl+1,-1);
         for(int j=0;j<ncl;j++){ int y=setmeet(K,cl[j]); if(y<0) return; row[j]=y; }
+        // Plane condition (a consequence of modularity, one layer ahead): if lines l1, l2 meet in a
+        // point, every line containing two points of l1 u l2 lies below l1 v l2, which has rank r+2,
+        // so any two such lines meet in a point.
+        for(int j=0;j<ncl;j++) if(pc(cl[j]&K)==1){ u64 un=cl[j]|K; int np=0; u64 Pi[64];
+            for(int t=0;t<ncl;t++) if(pc(cl[t]&un)>=2) Pi[np++]=cl[t];
+            for(int t=0;t<np;t++){ if(!(Pi[t]&K)) return; }
+            for(int t=0;t<np;t++) for(int u=t+1;u<np;u++) if(!(Pi[t]&Pi[u])) return; }
+        for(int j=0;j<ncl;j++) for(int t=j+1;t<ncl;t++) if(pc(cl[j]&cl[t])==1){ u64 un=cl[j]|cl[t]; if(pc(K&un)<2) continue;
+            for(int u=0;u<ncl;u++) if(pc(cl[u]&un)>=2 && !(cl[u]&K)) return; }
         vector<u64> save=cov; u64 m=K; while(m){ int x=ctz(m); m&=m-1; cov[x]|=K&~(1ull<<x); }
         cl.push_back(K); for(int j=0;j<ncl;j++) clmeet[j].push_back(row[j]); clmeet.push_back(row);
         rec_c();
@@ -336,26 +363,30 @@ static void expand(int sid, int B){
 }
 
 int main(int argc,char**argv){
-  N=atoi(argv[1]); verbose=argc>2;
+  N=atoi(argv[1]); const char* dualfile=argc>2?argv[2]:nullptr; verbose=true;
   { State s; s.ny=1; s.nt=1; s.below={1}; s.lev1=0; s.cls={0}; s.H={Perm{0}}; s.fut=0; states.push_back(s); idx["__single__"]=0; }
-  vector<unordered_map<int,u128>> by(N+2); vector<u128> vi(N+2,0);
+  // counts are tagged by the number of atoms m (key = state id * 256 + m)
+  vector<unordered_map<u64,u128>> by(N+2); vector<u128> vi(N+2,0); map<array<int,3>,u128> viAB;
   // from the single-element frontier: m >= 1 new elements all covering it
   // (m = 1 gives the 2-element chain)
-  { for(int m=1;1+m+(m>1?1:0)<=N;m++){ if(m==1){ vi[2]+=1; continue; }
+  { for(int m=1;1+m+(m>1?1:0)<=N;m++){ if(m==1){ vi[2]+=1; viAB[{2,1,1}]+=1; continue; }
+      if(m>255) die("too many atoms");
       State NS; NS.nt=m; NS.ny=m+1; NS.below.assign(m+1,0); for(int c=0;c<m;c++) NS.below[c]=(1ull<<c)|(1ull<<m); NS.below[m]=1ull<<m; NS.lev1=1ull<<m;
       NS.cls.assign(m,0); Perm id(m); iota(id.begin(),id.end(),0); NS.H={id}; NS.fut=1;
       { vector<u64> full(m); for(int c=0;c<m;c++) full[c]=((1ull<<m)-1)&~(1ull<<c); firstA.emplace(dist_profile(m,full),1); }
-      int t=intern(NS); by[1+m][t]+=1; } }
+      int t=intern(NS); by[1+m][((u64)t<<8)|m]+=1; } }
+  time_t t0=time(0);
   for(int a=2;a<=N;a++){
-    vector<pair<int,u128>> items(by[a].begin(),by[a].end()); unordered_map<int,u128>().swap(by[a]);
-    sort(items.begin(),items.end(),[](const pair<int,u128>&x,const pair<int,u128>&y){return x.first<y.first;});
-    for(auto& it: items){ int sid=it.first; u128 c=it.second;
+    vector<pair<u64,u128>> items(by[a].begin(),by[a].end()); unordered_map<u64,u128>().swap(by[a]);
+    sort(items.begin(),items.end(),[](const pair<u64,u128>&x,const pair<u64,u128>&y){return x.first<y.first;});
+    for(auto& it: items){ int sid=it.first>>8; int m=it.first&255; u128 c=it.second;
       if(!states[sid].expanded) expand(sid,N-a);
-      const vector<int> tr=states[sid].tr;
-      for(int t: tr){ if(t==SINGLE){ if(a+1<=N) vi[a+1]+=c; } else { int a2=a+states[t].nt; if(a2+states[t].fut<=N) by[a2][t]+=c; } }
+      const vector<int> tr=states[sid].tr; int ntop=states[sid].nt;
+      for(int t: tr){ if(t==SINGLE){ if(a+1<=N){ vi[a+1]+=c; viAB[{a+1,m,ntop}]+=c; } } else { int a2=a+states[t].nt; if(a2+states[t].fut<=N) by[a2][((u64)t<<8)|m]+=c; } }
     }
-    if(verbose) fprintf(stderr,"acc=%d states=%zu families=%llu trans=%llu nauty=%llu\n",a,states.size(),(unsigned long long)nFam,(unsigned long long)nTrans,(unsigned long long)nNauty);
+    if(verbose) fprintf(stderr,"acc=%d states=%zu families=%llu trans=%llu nauty=%llu %lds\n",a,states.size(),(unsigned long long)nFam,(unsigned long long)nTrans,(unsigned long long)nNauty,(long)(time(0)-t0));
   }
+  if(dualfile){ FILE* fo=fopen(dualfile,"w"); for(auto& kv: viAB) fprintf(fo,"%d %d %d %s\n",kv.first[0],kv.first[1],kv.first[2],to_s(kv.second).c_str()); fclose(fo); }
   vector<u128> f(N+2,0); f[1]=1;
   for(int n=2;n<=N;n++){ u128 s=0; for(int k=2;k<=n;k++) s+=vi[k]*f[n-k+1]; f[n]=s; }
   for(int n=1;n<=N;n++) printf("%d %s %s\n",n,to_s(vi[n]).c_str(),to_s(f[n]).c_str());

@@ -1,0 +1,9 @@
+acc=2 states=34 families=0 trans=0 nauty=33 0s
+acc=3 states=275 families=242 trans=242 nauty=288 0s
+acc=4 states=1490 families=4398 trans=1684 nauty=2441 0s
+acc=5 states=6193 families=50051 trans=7510 nauty=20755 2s
+acc=6 states=14836 families=225341 trans=20403 nauty=110792 7s
+acc=7 states=30549 families=599121 trans=52218 nauty=335996 20s
+acc=8 states=70090 families=1400462 trans=129244 nauty=706516 39s
+acc=9 states=130739 families=2338487 trans=261313 nauty=1134917 61s
+acc=10 states=192997 families=3892434 trans=486816 nauty=1816940 89s

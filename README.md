@@ -94,6 +94,53 @@ What is not covered: for n > 110 and width ≥ 3 the checks are duality and
 agreement between runs with different N, not an independent method. An
 independent recomputation would be welcome.
 
+## Modular lattices (A006981, A342132)
+
+`src/modular.cpp` applies the same idea to modular lattices. A finite lattice
+is modular iff it is upper and lower semimodular, and such lattices are graded,
+so the lattice can again be built layer by layer.
+
+*State.* Let T = L_r be the top layer of the lower part, and
+Y = {a ∧ b : a, b ∈ T} with its order, the elements of rank r−1 marked. Call
+a, b ∈ T adjacent if a ∧ b has rank r−1.
+
+*Step.* The next layer is a family of sets D_c ⊆ T (the lower covers of the new
+elements c) such that
+
+1. the D_c with |D_c| ≥ 2 partition the adjacent pairs into cliques
+   (the two semimodularity conditions),
+2. every element of T lies in some D_c (graded),
+3. for all c ≠ d the set {a ∧ b : a ∈ D_c, b ∈ D_d} has a maximum (it is c ∧ d;
+   this makes the result a lattice).
+
+The new Y′ consists of the new layer and these maxima, so everything is local
+to (Y, marks). The symmetry group Γ is stored as twin classes (on which Γ acts
+as the full symmetric group) plus an explicit list of the remaining elements;
+this matters because modular lattices contain large M_k's.
+
+*Pruning.* A frontier is dropped if it cannot be completed within N elements.
+Two lower bounds are used:
+
+- the adjacency graph of a layer has diameter Δ equal to the number of layers
+  still needed, and layer j above must contain a set of elements with pairwise
+  distance > j;
+- **duality**: rank(a ∨ b) − r = r − rank(a ∧ b) = distance of a and b in the
+  adjacency graph. The part of the lattice above a layer is, upside down, a
+  lower part of the dual modular lattice with the same distance matrix. So a
+  frontier needs at least as many further elements as the smallest lower part
+  seen so far with the same distance profile (the DP runs in increasing weight,
+  so "first seen" is "smallest"). This removes about three quarters of the
+  states.
+
+Enumerating the clique partitions (linear spaces) is the expensive part; partial
+partitions are rejected up to isomorphism, and de Bruijn–Erdős and pair-counting
+bounds cut the search.
+
+*Checks.* `scripts/assemble_mod.py` asserts: all known terms of A006981 (n ≤ 35)
+and A342132; symmetry of the (atoms, coatoms) table; agreement between runs with
+different N (the pruning depends on N, and the largest n of each run is computed
+with no slack). There is no independent second method for n > 35.
+
 ## Reproduce
 
 Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
@@ -117,6 +164,7 @@ Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
 - `src/frontier.cpp`: reference DP, with the `dual` and `rank` refinements.
 - `src/frontier2.cpp`: production DP.
 - `src/brute_rank.cpp`: brute-force tabulation for check 2.
+- `src/modular.cpp`: frontier DP for modular lattices.
 - `src/explore.cpp`: an abandoned first attempt (generating prime posets for a
   modular-decomposition count); kept because it shows why generation does not
   scale: the number of prime posets with n down-sets still grows like 1.64^n.
