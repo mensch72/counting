@@ -14,3 +14,7 @@ paper/*.out
 runs/mod_38.err
 runs/mod_38.txt
 runs/mod_dual_38.txt
+/src/layers
+/src/layers_run
+runs/lay_*.err
+/src/layers_geo
