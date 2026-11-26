@@ -163,3 +163,176 @@ And there is a distinction I would emphasise:
 I would therefore not let the ease of generating extensions discourage you. I would instead use that ease to aim for more ambitious extensions and accompanying mathematical results.
 
 One further possibility is particularly attractive: **contributing not just new terms, but new methods of computation that make previously inaccessible parts of the OEIS mathematically accessible.** That seems like a contribution whose value should survive quite a few generations of increasingly capable AI systems.
+
+
+(me: does this pass the bar?)
+
+**Yes. Based on this description, I think it comfortably passes the bar for a substantial OEIS contribution, particularly for the distributive-lattice sequences.** It is considerably more than an AI-assisted extension of known data.
+
+The central contribution is not the additional terms but the change in computational approach: replacing the enumeration of individual lattices with a dynamic programme that merges partial constructions whenever they have the same mathematically sufficient frontier state.
+
+That is a genuine algorithmic contribution, with a plausible explanation for why it achieves orders-of-magnitude improvements.
+
+I would nevertheless distinguish three questions:
+
+1. Is this mathematically interesting enough to belong in OEIS? Yes.
+2. Is the computational evidence sufficiently convincing to publish the new terms? Mostly, with some qualifications.
+3. Is the documentation ready for other mathematicians to reproduce and build on? Nearly, but I would strengthen a few things.
+
+## **1. The strongest aspects**
+
+**The distributive-lattice algorithm is the main achievement.**
+
+The mathematical compression is substantial:
+
+- The old approach explicitly generates objects and deals with isomorphisms.
+- Your approach counts histories through equivalence classes of frontier states.
+- The automorphism-group information \\(\Gamma\\) ensures that merging states does not lose the isomorphism distinctions relevant to future extensions.
+- The exact remaining-weight bound provides a mathematically justified pruning rule.
+
+This is a reusable algorithmic idea, not just a specialised optimisation.&#x20;
+
+Pasted text.txt
+
+
+
+The evidence is also unusually good for a computational enumeration:
+
+| Check                                      | My assessment                       |
+| ------------------------------------------ | ----------------------------------- |
+| Reproducing old counts                     | Essential and useful                |
+| Brute-force comparison on small posets     | Strong independent check            |
+| Independent planar enumeration through 160 | Particularly valuable               |
+| Duality symmetry                           | Useful structural check             |
+| Two implementations                        | Good implementation-level safeguard |
+| Different-budget consistency               | Good check of pruning               |
+| Explicitly documenting remaining gaps      | Good scientific practice            |
+
+Pasted text.txt
+
+## **2. One important omission in the validation**
+
+I found something I would definitely correct.
+
+Your README says that all 49 known terms of A072361 are reproduced. That is correct with respect to the current OEIS entry, which only has terms through \\(n=49\\).&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://oeis.org\&sz=32)
+
+OEIS
+
+
+
+However, **Kohonen's 2021 paper actually publishes the vertically indecomposable distributive-lattice counts through&#x20;**\\(n=60\\), in Table 2, under the row `vi-latt.`.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://link.springer.com\&sz=32)
+
+Springer+1
+
+
+
+Consequently, you have eleven additional published values against which to check your algorithm:
+
+| n  | A072361(n)        |
+| -- | ----------------- |
+| 50 | 8,863,372,090     |
+| 51 | 15,066,614,003    |
+| 52 | 26,376,230,858    |
+| 53 | 44,977,519,230    |
+| 54 | 78,519,416,987    |
+| 55 | 134,229,841,861   |
+| 56 | 233,808,824,537   |
+| 57 | 400,499,677,825   |
+| 58 | 696,369,403,331   |
+| 59 | 1,194,743,687,703 |
+| 60 | 2,074,408,477,477 |
+
+These are particularly important because Kohonen's approach is structurally different from yours.
+
+I would add an explicit assertion comparing all 60 terms against that publication, and change the README accordingly.
+
+This is probably the single most useful improvement you could make to the validation section.
+
+## **3. The remaining mathematical issues**
+
+There are two areas where I would want more evidence before considering the computations fully established.
+
+**Distributive lattices,&#x20;**\\(n>110\\)**.**
+
+The independent brute-force check and planar check are valuable, but the general width-three-and-higher case above 110 is not independently verified. You acknowledge this correctly.&#x20;
+
+Pasted text.txt
+
+
+
+**Modular lattices,&#x20;**\\(n>35\\)**.**
+
+Here the situation is weaker: the new computation goes beyond the existing record by one element, but there is no independent second method for the non-distributive modular case.&#x20;
+
+Pasted text.txt
+
+
+
+Neither issue disqualifies the OEIS contribution. But I would be careful to distinguish exact exhaustive computation with a well-justified algorithm from independent computational confirmation.
+
+For a mathematical publication, I would want a formal account of two central results:
+
+1. A sufficiency theorem for the distributive frontier: why two partial posets with the same \\((\Lambda,\rho,\Gamma)\\) have exactly the same possibilities for future extensions, in the relevant isomorphism-class sense.
+2. A corresponding completeness and soundness theorem for the modular frontier, including the characterisation of admissible families \\(D_c\\).
+
+The README provides a good outline, but these are the mathematical core of the work and deserve explicit proofs.
+
+
+
+Pasted text.txt
+
+Pasted text.txt
+
+
+
+## **4. How I would package it**
+
+I would make the repository a companion to a proper mathematical paper or preprint, rather than treating the entire result as an OEIS update.
+
+For OEIS itself, I would:
+
+- Submit the four b-files with appropriate provenance and references.
+- Link to the source repository and, ideally, an immutable release or archived version.
+- Include a concise description of the new computational method.
+- Make clear which terms are independently checked and which are not.
+
+This fits OEIS's own guidance: it explicitly encourages providing the programs used to generate b-files and insists that contributions meet the standards of a mathematical reference work.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://oeis.org\&sz=32)
+
+OEIS
+
+
+
+One minor documentation issue: your reproduction instructions refer to modular runs for \\(N=35,\ldots,39\\), whereas the performance table stops at \\(N=36\\). I would clarify exactly which values are included in the submitted modular b-files.
+
+## **Verdict**
+
+**OEIS contribution**
+
+Pass
+
+Strong, particularly for A006982 and A072361.
+
+**Computational mathematics**
+
+Pass
+
+A substantial algorithmic result, with interesting opportunities for further generalisation.
+
+**Research publication**
+
+Promising
+
+Deserves a formal treatment of the frontier-state theorems and careful presentation of the verification limits.
+
+My broader point is that this is precisely the sort of contribution that remains worthwhile when AI makes implementation cheap.
+
+The interesting intellectual achievement is recognising the right equivalence relation on partial mathematical objects, proving that it preserves everything relevant to subsequent extensions, and exploiting it computationally.
+
+AI can help implement such an idea. That doesn't make discovering and establishing the idea any less of a mathematical contribution. In fact, I would be considerably more interested in this repository than in hundreds of ordinary AI-generated OEIS extensions.
+
