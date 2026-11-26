@@ -1,0 +1,16 @@
+acc=10 states=11 (group 10) trans=11 nauty=10  0s
+acc=20 states=11 (group 10) trans=11 nauty=10  0s
+acc=30 states=33 (group 32) trans=33 nauty=32  0s
+acc=40 states=33 (group 32) trans=33 nauty=32  0s
+acc=50 states=457 (group 418) trans=457 nauty=432  0s
+acc=60 states=2694 (group 2204) trans=2694 nauty=2308  0s
+acc=70 states=19553 (group 15134) trans=21484 nauty=17427  0s
+acc=80 states=123578 (group 83012) trans=242518 nauty=175064  1s
+acc=90 states=312041 (group 196001) trans=1065141 nauty=698886  5s
+acc=100 states=566935 (group 349508) trans=2554267 nauty=1613288  11s
+acc=110 states=732003 (group 452957) trans=4079986 nauty=2540808  19s
+acc=120 states=801199 (group 500312) trans=5091576 nauty=3177448  24s
+acc=130 states=818107 (group 512715) trans=5464650 nauty=3432899  26s
+acc=140 states=820214 (group 514469) trans=5553742 nauty=3501686  27s
+acc=150 states=820454 (group 514697) trans=5563643 nauty=3510671  27s
+acc=160 states=820466 (group 514709) trans=5564169 nauty=3511164  27s

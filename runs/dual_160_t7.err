@@ -1,0 +1,16 @@
+acc=10 states=8 (group 7) trans=8 nauty=7  0s
+acc=20 states=8 (group 7) trans=8 nauty=7  0s
+acc=30 states=10 (group 9) trans=10 nauty=9  0s
+acc=40 states=10 (group 9) trans=10 nauty=9  0s
+acc=50 states=10 (group 9) trans=10 nauty=9  0s
+acc=60 states=10 (group 9) trans=10 nauty=9  0s
+acc=70 states=13 (group 12) trans=13 nauty=12  0s
+acc=80 states=13 (group 12) trans=13 nauty=12  0s
+acc=90 states=13 (group 12) trans=13 nauty=12  0s
+acc=100 states=30 (group 29) trans=30 nauty=29  0s
+acc=110 states=31 (group 30) trans=31 nauty=30  0s
+acc=120 states=54 (group 53) trans=54 nauty=53  0s
+acc=130 states=263 (group 243) trans=293 nauty=277  0s
+acc=140 states=889 (group 734) trans=2473 nauty=2147  0s
+acc=150 states=1000 (group 823) trans=4071 nauty=3552  0s
+acc=160 states=1008 (group 831) trans=4213 nauty=3683  0s
