@@ -17,3 +17,4 @@ mod_38 rc=0 time=8534s peakRSS=2107504KB
 lay_lsm_16 rc=0 time=526s peakRSS=5984KB
 lay_usm_25 rc=0 time=1286s peakRSS=2936700KB
 lay2_usm_25 threads=4 rc=0 time=376s peakRSS=2088752KB
+lay2_usm_27 threads=4 rc=0 time=5713s peakRSS=9248752KB (time since last (re)start)

@@ -46,7 +46,7 @@ of states is reduced further by a bound that rests on self-duality of the class.
 We obtain the number of distributive lattices up to $\Ndist$ elements and of
 modular lattices up to $\Nmod$ elements; the previous records were $60$ and $35$.
 The frontier for modular lattices also serves for semimodular lattices, for which we
-obtain one further value ($26$ elements).
+obtain two further values ($26$ and $27$ elements).
 For distributive lattices with layers of bounded size the transfer matrix is a finite
 automaton; from it we derive the certified bounds $1.7265363$ and $1.84337061$ for the
 exponential growth rates of the vertically indecomposable and of all distributive lattices
@@ -105,8 +105,8 @@ $1.7\cdot 10^{15}$ of them, are accounted for by $4496$ states.
 \item $d(n)$ and $d_{\mathrm{vi}}(n)$ for all $n \le \Ndist$ (Table~\ref{tab:dist});
   the first new value is\\ $d(61) = 1\,398\,297\,238\,937\,456$.
 \item $m(n)$ and $m_{\mathrm{vi}}(n)$ for all $n \le \Nmod$ (Table~\ref{tab:mod}).
-\item The number of semimodular lattices with $26$ elements (Section~\ref{sec:other}); the
-  previous record was $25$~\cite{Koh19}.
+\item The numbers of semimodular lattices with $26$ and $27$ elements
+  (Section~\ref{sec:other}); the previous record was $25$~\cite{Koh19}.
 \end{itemize}
 The complete tables, the programs and the logs of all runs are available as
 ancillary files and at~\cite{code}.  The values are the output of
@@ -715,10 +715,14 @@ states.  For graded lattices in general the enumeration of the families is too e
 the method to compete with generation~\cite{Koh19}.
 
 The run with $N = 26$ took $69$ minutes on one core and $7.9$\,GB of memory, with
-$5.9\cdot 10^{6}$ states, and gives one new value (Table~\ref{tab:other}); it reproduces the
-values for $n \le 25$ of~\cite{Koh19}.  Memory is the limit here.  The new value is computed
-at $n = N$; since no state is ever discarded in this class, the bound $N$ only truncates the
-enumeration of families.
+$5.9\cdot 10^{6}$ states.  For $N = 27$ we used a version of the program that stores each
+state only as its canonical key, does not store transitions (a state is expanded again
+whenever it is reached with a new weight, about $1.6$ times on average), and expands the
+states of one weight level on four threads; it took $95$ minutes and $9.2$\,GB, with
+$1.54\cdot 10^{7}$ states.  The runs reproduce the values for $n \le 25$ of~\cite{Koh19} and
+give two new values (Table~\ref{tab:other}).  Memory is the limit here.  The value for $n=27$
+is computed at $n = N$; since no state is ever discarded in this class, the bound $N$ only
+truncates the enumeration of families.
 
 For geometric lattices (simple matroids counted by their number of flats) the same program
 reproduces the known values for $n \le 35$, but it offers no advantage: these lattices have
@@ -762,7 +766,7 @@ symmetry handling or pruning rule.
 \item \emph{Different bounds $N$.}  All pruning depends on $N$, and the value for
 $n = N$ is computed with no slack.  Runs with different $N$ agree on their common range
 (distributive: $N = 120, 130, 150, 160$, the first two also with an independent reference
-implementation; modular: $N = 26, 28, 30, 32, 35, 36, 37, 38$; semimodular: $N = 24, 25, 26$).  The largest
+implementation; modular: $N = 26, 28, 30, 32, 35, 36, 37, 38$; semimodular: $N = 24, 25, 26, 27$).  The largest
 value in each table, in particular $m(38)$, has no such confirmation from a run with larger
 $N$; the corresponding boundary values $m(N)$ for $N \le 37$ were all correct.
 \end{enumerate}
