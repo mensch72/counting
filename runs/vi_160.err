@@ -1,0 +1,8 @@
+acc=10 states=919 (group 855) trans=1587 nauty=1537  0s
+acc=20 states=28391 (group 22244) trans=67966 nauty=59162  1s
+acc=30 states=254380 (group 169030) trans=783640 nauty=607736  4s
+acc=40 states=1116027 (group 653586) trans=4094140 nauty=2894004  19s
+acc=50 states=3116944 (group 1706070) trans=13515396 nauty=8953009  68s
+acc=60 states=6299935 (group 3297311) trans=31459072 nauty=20033677  167s
+acc=70 states=9974049 (group 5178843) trans=58116367 nauty=36215285  330s
+acc=80 states=13279579 (group 6894561) trans=87654900 nauty=53932030  523s
