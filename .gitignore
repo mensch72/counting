@@ -10,3 +10,7 @@
 paper/*.aux
 paper/*.log
 paper/*.out
+# N=38 modular run in progress; remove these lines and commit the files once it has finished
+runs/mod_38.err
+runs/mod_38.txt
+runs/mod_dual_38.txt
