@@ -16,7 +16,10 @@
 // full symmetric group on each class) plus the explicit list H of the elements
 // that are monotone on every class.
 //
-// usage: modular N [dualfile]
+// usage: modular N [dualfile] [dist]
+//   with a third argument only distributive lattices are counted (no interval of length 2
+//   with three atoms); the result must equal A072361/A006982, which checks this program
+//   against the independent distributive DP.
 //   prints n, vi(n), f(n); with dualfile also writes "n atoms coatoms count" for the
 //   vertically indecomposable lattices (must be symmetric in atoms/coatoms: the class is self-dual)
 #include <bits/stdc++.h>
@@ -25,7 +28,7 @@
 #include <nauty/nautinv.h>
 using namespace std;
 typedef uint8_t u8; typedef uint32_t u32; typedef uint64_t u64; typedef unsigned __int128 u128;
-static int N; static bool verbose=false;
+static int N; static bool verbose=false; static bool DIST=false;
 static inline int pc(u64 x){ return __builtin_popcountll(x); }
 static inline int ctz(u64 x){ return __builtin_ctzll(x); }
 typedef vector<u8> Perm;
@@ -335,6 +338,9 @@ static void expand(int sid, int B){
     function<void(int,u64)> sub=[&](int i,u64 K){
       if(i==(int)xs.size()){
         for(int x=0;x<nt;x++) if(!(K>>x&1)) for(int y=x+1;y<nt;y++) if((K>>y&1) && S.cls[y]==S.cls[x] && memb[y]==memb[x]) return;
+        if(DIST){ // distributive: no three elements of a line with a common pairwise meet
+          int e[64], ne=0; u64 mm=K; while(mm){ e[ne++]=ctz(mm); mm&=mm-1; }
+          for(int p=0;p<ne;p++) for(int q2=p+1;q2<ne;q2++) for(int r2=q2+1;r2<ne;r2++) if(meet[e[p]][e[q2]]==meet[e[p]][e[r2]] && meet[e[p]][e[q2]]==meet[e[q2]][e[r2]]) return; }
         // lattice condition against the cliques chosen so far
         int ncl=cl.size(); vector<int> row(ncl+1,-1);
         for(int j=0;j<ncl;j++){ int y=setmeet(K,cl[j]); if(y<0) return; row[j]=y; }
@@ -363,7 +369,7 @@ static void expand(int sid, int B){
 }
 
 int main(int argc,char**argv){
-  N=atoi(argv[1]); const char* dualfile=argc>2?argv[2]:nullptr; verbose=true;
+  N=atoi(argv[1]); const char* dualfile=argc>2?argv[2]:nullptr; verbose=true; DIST=argc>3;
   { State s; s.ny=1; s.nt=1; s.below={1}; s.lev1=0; s.cls={0}; s.H={Perm{0}}; s.fut=0; states.push_back(s); idx["__single__"]=0; }
   // counts are tagged by the number of atoms m (key = state id * 256 + m)
   vector<unordered_map<u64,u128>> by(N+2); vector<u128> vi(N+2,0); map<array<int,3>,u128> viAB;
