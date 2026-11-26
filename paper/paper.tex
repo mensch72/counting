@@ -50,7 +50,8 @@ obtain one further value ($26$ elements).
 For distributive lattices with layers of bounded size the transfer matrix is a finite
 automaton; from it we derive the certified bounds $1.7265363$ and $1.84337061$ for the
 exponential growth rates of the vertically indecomposable and of all distributive lattices
-(previously $1.7250$ and $1.84$).
+(previously $1.7250$ and $1.84$), and $2.3951$ for vertically indecomposable modular
+lattices (previously $2.3122$).
 The $60$ known values for distributive lattices take $0.1$ seconds and the $35$
 known values for modular lattices take $19$ minutes on one processor core.  The
 new values are supported by the known ones, by duality checks, by brute force
@@ -652,6 +653,38 @@ as observed in~\cite{Koh21}.
 \caption{Values of $m(n)$ (A006981) and $m_{\mathrm{vi}}(n)$ (A342132).  The values above
 the rule agree with~\cite{Koh21}; those below it are new.}\label{tab:mod}
 \end{table}
+
+\subsection{Growth rate}
+The construction of Section~\ref{sec:bounded} applies to modular lattices as well, and here
+finiteness is clear: if every layer has at most $W$ elements, a frontier $Y$ has at most
+$W + \binom{W}{2}$ elements, so there are finitely many states.  Let $\mathcal{A}^{\mathrm{mod}}_W$
+be the automaton of the modular lattices all of whose layers have at most $W$ elements
+(vertices: the states reachable from the one-element layer; weights: $|T|$).
+
+\begin{theorem}\label{thm:modgrowth}
+$\limsup_n m_{\mathrm{vi}}(n)^{1/n} \ge 2.3951$ and $\lim_n m(n)^{1/n} \ge 2.4182$.  More precisely
+$m_{\mathrm{vi}}(n) = \Omega(c^n)$ for every $c < 2.3951$.
+\end{theorem}
+
+\begin{proof}
+As for Theorem~\ref{thm:growth}, with $\mathcal{A}^{\mathrm{mod}}_8$, which has $31\,435$
+vertices, and its strong components with $29\,740$ (without the one-element layer) and
+$29\,742$ vertices.  The limit for $m$ exists in $(0,\infty]$ because $m(n+1)$ is
+supermultiplicative.  The components have period one, i.e.\ the weights of their closed
+walks have greatest common divisor one; the numbers $c_s(n)$ of Lemma~\ref{lem:cw} are
+supermultiplicative and positive for all large $n$, so $c_s(n)^{1/n}$ converges to its
+supremum, which gives the last statement.
+\end{proof}
+
+The previous lower bound was $\Omega(2.3122^n)$~\cite{Koh21}; no exponential upper bound is
+known.  Table~\ref{tab:boundedmod} shows the growth rates for $W \le 8$.  Unlike in the
+distributive case they have not converged; their increments ($0.042$, $0.027$ for
+$W = 7, 8$) decrease, but we cannot tell from these data whether they stay bounded.  As a
+check of the two automaton programs, $\mathcal{A}^{\mathrm{mod}}_W$ restricted to distributive
+lattices has the same growth rates as $\mathcal{A}_W$ for $W \le 6$, to all ten computed digits,
+although its states are different.
+
+\boundedtablemod
 
 \section{Semimodular and geometric lattices}\label{sec:other}
 

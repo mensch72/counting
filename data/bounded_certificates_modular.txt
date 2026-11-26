@@ -1,0 +1,12 @@
+floating point: spectral radius at x = 1/L is 1.000082327929 (must exceed 1)
+period of C: 1 (aperiodic: closed walks of every large weight exist, so the bound holds as Omega(L1^n) for every L1 < L)
+exact check passed on 769 states: (M U)_s >= U_s for all s in C (smallest ratio 1.000082327929)
+certified: growth rate of the vertically indecomposable lattices with all layers <= 6 is at least 11631/5000 = 2.3262
+floating point: spectral radius at x = 1/L is 1.000065383850 (must exceed 1)
+period of C: 1 (aperiodic: closed walks of every large weight exist, so the bound holds as Omega(L1^n) for every L1 < L)
+exact check passed on 29740 states: (M U)_s >= U_s for all s in C (smallest ratio 1.000065383850)
+certified: growth rate of the vertically indecomposable lattices with all layers <= 8 is at least 23951/10000 = 2.3951
+floating point: spectral radius at x = 1/L is 1.000042987856 (must exceed 1)
+period of C: 1 (aperiodic: closed walks of every large weight exist, so the bound holds as Omega(L1^n) for every L1 < L)
+exact check passed on 29742 states: (M U)_s >= U_s for all s in C (smallest ratio 1.000042987856)
+certified: growth rate of the lattices with all layers <= 8 is at least 12091/5000 = 2.4182

@@ -64,6 +64,18 @@ s0 = C[0]
 assert reach(s0, succ) == inC and reach(s0, pred) == inC, 'C is not strongly connected'
 if mode == 'vi': assert 0 not in inC and in0 and out0, 'C must avoid state 0 and be linked to it'
 else: assert 0 in inC
+# period: gcd of the weights of the closed walks in C (weight of a walk = sum of weights of entered states).
+# With potentials d from a search tree, it is the gcd of d[s] + weight(t) - d[t] over all edges s -> t.
+from math import gcd
+d = {s0: 0}; st = [s0]
+while st:
+    v = st.pop()
+    for w2 in succ[v]:
+        if w2 not in d: d[w2] = d[v] + int(wt[w2]); st.append(w2)
+per = 0
+for s in C:
+    for t in succ[s]: per = gcd(per, abs(d[s] + int(wt[t]) - d[t]))
+print(f'period of C: {per}' + (' (aperiodic: closed walks of every large weight exist, so the bound holds as Omega(L1^n) for every L1 < L)' if per == 1 else ''))
 # integer vector: scale the floats, round down, keep at least 1
 scale = 2 ** 200 / float(u[keep].min())
 U = {s: max(1, int(Fraction(float(u[s])) * Fraction(scale))) for s in C}

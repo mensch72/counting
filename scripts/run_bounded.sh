@@ -16,3 +16,16 @@ done
 { python3 scripts/bounded_certificate.py $DIR/a6.txt vi 1.7262
   python3 scripts/bounded_certificate.py $DIR/a$WMAX.txt vi 1.7265363
   python3 scripts/bounded_certificate.py $DIR/a$WMAX.txt all 1.84337061; } | tee data/bounded_certificates.txt
+
+# ---- modular lattices: automata from src/layers2 (mode aut-modular), W = 2..8 ----
+[ -x src/layers2 ] || g++ -O2 -march=native -pthread -o src/layers2 src/layers2.cpp -lnauty
+: > data/bounded_growth_modular.txt
+for w in 2 3 4 5 6 7 8; do
+  src/layers2 $w $DIR/m$w.txt aut-modular 2> $DIR/m$w.err
+  st=$(sed -n 's/.*states=\([0-9]*\) transitions=\([0-9]*\).*/\1 \2/p' $DIR/m$w.err)
+  g=$(python3 scripts/bounded_growth.py $DIR/m$w.txt 30 | sed -n 's/^growth rate.*: //p' | tr '\n' ' ')
+  echo "$w $st $g" | tee -a data/bounded_growth_modular.txt
+done
+{ python3 scripts/bounded_certificate.py $DIR/m6.txt vi 2.3262
+  python3 scripts/bounded_certificate.py $DIR/m8.txt vi 2.3951
+  python3 scripts/bounded_certificate.py $DIR/m8.txt all 2.4182; } | tee data/bounded_certificates_modular.txt

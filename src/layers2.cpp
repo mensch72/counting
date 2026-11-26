@@ -44,6 +44,7 @@ typedef uint8_t u8; typedef uint32_t u32; typedef uint64_t u64; typedef unsigned
 static int N; static bool verbose=false; static bool DIST=false;
 // Class of graded lattices counted (see usage): U = upper semimodular rule, D = lower semimodular rule
 static bool modeU=true, modeD=true, ATOM=false, COATOM=false;
+static int AUTW=0;   // automaton mode: bound on the size of every layer instead of a bound on the number of elements
 static inline int pc(u64 x){ return __builtin_popcountll(x); }
 static inline int ctz(u64 x){ return __builtin_ctzll(x); }
 typedef vector<u8> Perm;
@@ -222,6 +223,7 @@ static void expand(int sid, int B, vector<Pending>& out){
   auto famcost=[&]()->int{
     int ncl=cl.size(); int k=ncl; bool twin=false; vector<int> pts;
     for(int a=0;a<nt;a++) if(msing[a]>0){ k+=msing[a]; pts.push_back(a); if(msing[a]>1) twin=true; }
+    if(AUTW && k>AUTW) return -1;
     if(k<=1) return k;
     if(!mod) return k+1;
     int nv=ncl+pts.size(); if(nv>64) die("compressed layer too wide");
@@ -276,11 +278,12 @@ static void expand(int sid, int B, vector<Pending>& out){
     int fb=1;
     if(mod){
       fb=diameter_bound(k,nadj); if(fb<0) return; if(k+fb>B) return;
+      if(AUTW){ fb=1; if(k>AUTW) return; } else {
       string prof=dist_profile(k,nadj); auto it=firstA.find(prof); int anow=N-B;
       int w = (it==firstA.end())? anow : it->second;
       if(w>fb) fb=w;
       if(k+fb>B) return;
-      if(it==firstA.end()) firstA.emplace(move(prof),anow);
+      if(it==firstA.end()) firstA.emplace(move(prof),anow); }
     } else {
       // lower semimodular: elements without a common lower cover have no common upper cover
       if(modeD){ u64 fk=(1ull<<k)-1; for(int c=0;c<k;c++) if(nadj[c]!=(fk&~(1ull<<c))){ fb=3; break; } }
@@ -452,6 +455,7 @@ static void expand(int sid, int B, vector<Pending>& out){
     sub(0,(1ull<<a)|(1ull<<b));
   };
   maxMembers = B-1; if(maxMembers<1) maxMembers=1;
+  if(AUTW) maxMembers=AUTW;
   if(ATOM && S.nat>B-1){ // by Dowling-Wilson only the top can follow
     out.push_back(Pending{string(),1,0}); nTrans++; return; }
   setOkSize();
@@ -465,7 +469,22 @@ int main(int argc,char**argv){
   else if(mode=="usm"){ modeD=false; } else if(mode=="lsm"){ modeU=false; }
   else if(mode=="graded"){ modeU=modeD=false; }
   else if(mode=="geometric"){ modeD=false; ATOM=true; } else if(mode=="cogeometric"){ modeU=false; COATOM=true; }
+  else if(mode=="aut-modular"){ AUTW=N; } else if(mode=="aut-dist"){ AUTW=N; DIST=true; }
   else { fprintf(stderr,"unknown mode\n"); return 1; }
+  if(AUTW){
+    // layers2 W out.txt aut-modular|aut-dist : the finite automaton of the modular (distributive) lattices
+    // all of whose layers have at most W elements; output format as for src/bounded (state 0 = one-element layer)
+    int Wb=AUTW; N=1000000; const char* outf=argv[2];
+    { static string single="__single__"; idx[single]=0; slots.push_back({&idx.find(single)->first,0,0,1,0,true}); }
+    vector<vector<u32>> trs(1); trs[0].push_back(0);          // one new element above a one-element layer
+    for(int m=2;m<=Wb;m++){ State NS; NS.nt=m; NS.ny=m+1; NS.below.assign(m+1,0); for(int c=0;c<m;c++) NS.below[c]=(1ull<<c)|(1ull<<m); NS.below[m]=1ull<<m; NS.lev1=1ull<<m;
+      NS.cls.assign(m,0); Perm id(m); iota(id.begin(),id.end(),0); NS.H={id}; NS.fut=1; trs[0].push_back(intern_key(make_key(NS),m,1)); }
+    for(size_t sid=1; sid<slots.size(); sid++){ vector<Pending> pend; expand(sid,100000,pend); trs.emplace_back();
+      for(auto& p: pend) trs[sid].push_back(p.key.empty()? 0 : (u32)intern_key(p.key,p.nt,p.fut));
+      if(sid%100000==0) fprintf(stderr,"expanded %zu of %zu states\n",sid,slots.size()); }
+    FILE* f=fopen(outf,"w"); fprintf(f,"%zu\n",slots.size()); unsigned long long ntr=0;
+    for(size_t sid=0; sid<slots.size(); sid++){ fprintf(f,"%zu %d %zu",sid,(int)slots[sid].nt,trs[sid].size()); for(u32 t: trs[sid]) fprintf(f," %u",t); fprintf(f,"\n"); ntr+=trs[sid].size(); }
+    fclose(f); fprintf(stderr,"W=%d states=%zu transitions=%llu\n",Wb,slots.size(),ntr); return 0; }
   if(dualfile && !strcmp(dualfile,"-")) dualfile=nullptr;
   int nthreads=argc>4?atoi(argv[4]):1;
   const char* ckfile=argc>5?argv[5]:nullptr;

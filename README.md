@@ -186,14 +186,18 @@ excursions away from the empty frontier bound the vertically indecomposable ones
 |---|---|---|---|
 | vertically indecomposable | 1.7250 (Kohonen 2021) | **1.7265363** | 1.72653630… |
 | all distributive lattices | 1.84 (Erné–Heitzig–Reinhold 2002) | **1.84337061** | 1.84337061669… |
+| v.i. modular lattices | 2.3122 (Kohonen 2021) | **2.3951** | not converged (W = 8) |
+| all modular lattices | 2.3122 | **2.4182** | not converged (W = 8) |
 
 `scripts/run_bounded.sh` builds the automata for W = 2..12, computes the growth rates
 (`data/bounded_growth.txt`) and verifies the bounds in exact integer arithmetic
 (`scripts/bounded_certificate.py`, output in `data/bounded_certificates.txt`): a positive
 integer vector u with M u ≥ u on a strongly connected set of states, where M is the weighted
 transfer matrix at x = 1/bound. The automata were checked against brute force over all
-posets on ≤ 11 points for W = 3..8 (`src/brute_layers.cpp`). These are lower bounds only;
-they do not prove that the two growth rates differ.
+posets on ≤ 11 points for W = 3..8 (`src/brute_layers.cpp`). The modular automata come from `src/layers2 W file aut-modular`; restricted to
+distributive lattices (`aut-dist`) they reproduce the growth rates of `src/bounded` to ten
+digits for W ≤ 6. These are lower bounds only; they do not prove that the two distributive
+growth rates differ, and for modular lattices the rates are still rising with W.
 
 ## Semimodular and geometric lattices (A229202, A281574)
 
