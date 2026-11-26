@@ -15,3 +15,8 @@ paper/*.out
 runs/lay_*.err
 /src/layers_geo
 /src/layers_geo2
+/src/layers2
+/src/layers2_run
+runs/lay2_*.err
+runs/ck_*.bin
+runs/ck_*.tmp
