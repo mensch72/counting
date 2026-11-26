@@ -8,6 +8,8 @@
 //        frontier2 N t      only lattices with exactly t atoms; prints
 //                           "n b count" = number of v.i. distributive lattices
 //                           with n elements, t atoms and b coatoms (duality check).
+//        frontier2 N 0 W    only lattices J(P) with P of width <= W, i.e. every
+//                           element has at most W upper covers (W = 2: planar check).
 #include <bits/stdc++.h>
 #define MAXN 64
 #include <nauty/nauty.h>
@@ -15,7 +17,7 @@
 using namespace std;
 typedef uint8_t u8; typedef uint16_t u16; typedef uint32_t u32; typedef uint64_t u64; typedef unsigned __int128 u128;
 static const int L = 32;
-static int N;
+static int N, WMAX=0;
 static inline int pc(u32 x){ return __builtin_popcount(x); }
 typedef array<u8, L> Perm;
 
@@ -126,6 +128,7 @@ static void expand(int sid, int a){
   for(int g=0;g<ng;g++) for(int j=0;j<w;j++){ u32 K=Jl[j], im=0; while(K){ int x=__builtin_ctz(K); K&=K-1; im|=1u<<SG[g][x]; }
     int p=lower_bound(Jl.begin(),Jl.end(),im)-Jl.begin(); if(p>=w||Jl[p]!=im){ fprintf(stderr,"group action error\n"); exit(1);} gact[g][j]=p; }
   int m[64]; for(int j=0;j<w;j++) m[j]=0;
+  int up0[64]; for(int j=0;j<w;j++){ up0[j]=0; for(size_t i=0;i<c1.size();i++) if(c1[i]>>j&1) up0[j]++; }
   vector<u32> out;
   auto cost=[&](long long limit)->long long{
     long long t=0, f=0; for(int j=0;j<w;j++){ t+=m[j]; if(m[j]>=2){ if(m[j]>40) return limit+1; f+=(1ll<<m[j])-1-m[j]; } }
@@ -179,7 +182,7 @@ static void expand(int sid, int a){
       out.push_back(tid);
       return;
     }
-    for(int v=0;;v++){ m[j]=v; if(cost(B)>B) break; rec_(j+1); }
+    for(int v=0;;v++){ if(WMAX && up0[j]+v>WMAX) break; m[j]=v; if(cost(B)>B) break; rec_(j+1); }
     m[j]=0;
   };
   rec_(0);
@@ -188,7 +191,7 @@ static void expand(int sid, int a){
 
 int main(int argc,char**argv){
   N=atoi(argv[1]); if(N>250){ fprintf(stderr,"N too large\n"); return 1; }
-  int atoms=argc>2?atoi(argv[2]):0;
+  int atoms=argc>2?atoi(argv[2]):0; if(argc>3) WMAX=atoi(argv[3]);
   vector<C160> vib; if(atoms){ vib.resize((size_t)(N+3)*65); memset(vib.data(),0,sizeof(C160)*vib.size()); }
   ht.assign(1<<16,0xffffffffu); htMask=ht.size()-1;
   { u8 r[4]={0,0,0,0}; add_state(r,4,1,N,1); }

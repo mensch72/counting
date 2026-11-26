@@ -60,9 +60,9 @@ than the number of lattices:
 | 100 | 1.9·10⁵ | 9 s | – |
 | 120 | 9.7·10⁵ | 41 s | 0.4 GB |
 | 150 | 8.8·10⁶ | 7.5 min | 3.9 GB |
-| 160 | see `runs/runs.log` | | |
+| 160 | 1.75·10⁷ | 16 min | 7.9 GB |
 
-States grow by about ×2.1 per 10 elements; the lattices themselves by ×445.
+States grow by about ×2.1 per 10 elements; the lattices themselves by ×450.
 A state is kept only if it can still be completed within N elements (the forced
 remaining weight is the number of down-sets of Λ larger than ρ, which is exact).
 
@@ -78,14 +78,21 @@ remaining weight is the number of down-sets of Λ larger than ρ, which is exact
 3. **Duality.** The DP is bottom-up and not manifestly self-dual. The number of
    v.i. lattices with n elements, a atoms and b coatoms must be symmetric in
    (a, b). `scripts/check_dual.py` asserts this for every cell up to the full N.
-4. **Two implementations.** `src/frontier.cpp` (reference, `unordered_map`,
+4. **Planar case.** Restricted to posets of width ≤ 2 the automaton has only 23
+   states. Its counts agree for every n ≤ 160 with an independent count of
+   regions between two lattice paths (`scripts/planar_check.py`). This tests
+   the long, thin regime that brute force cannot reach.
+5. **Two implementations.** `src/frontier.cpp` (reference, `unordered_map`,
    nauty for every canonical form) and `src/frontier2.cpp` (compact, hashed
    invariants with nauty as fallback) agree for all n ≤ 120.
-5. **Guards.** The programs abort rather than continue on counter overflow
+6. **Runs with different N** (120, 150, 160) agree on their common range,
+   although the pruning depends on N.
+7. **Guards.** The programs abort rather than continue on counter overflow
    (160 bits), more than 32 live elements, or a layer wider than 64.
 
-What is not covered: for n > 110 the only checks are duality and agreement
-between runs with different N. An independent recomputation would be welcome.
+What is not covered: for n > 110 and width ≥ 3 the checks are duality and
+agreement between runs with different N, not an independent method. An
+independent recomputation would be welcome.
 
 ## Reproduce
 
@@ -100,6 +107,7 @@ Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
     python3 ../scripts/assemble.py ../runs/vi_160.txt      # b-files + check of known terms
     for t in 1 2 3 4 5 6 7; do ./frontier2 160 $t > ../runs/dual_160_t$t.txt; done
     python3 ../scripts/check_dual.py ../runs/vi_160.txt ../runs/dual_160_t*.txt
+    ./frontier2 160 0 2 > planar.txt && python3 ../scripts/planar_check.py 160 planar.txt
     # brute-force check
     for k in 1 2 3 4 5 6 7 8 9 10 11; do nauty-genposetg $k t q; done | ./brute_rank 110 > brute.txt
     ./frontier 110 rank > rank.txt      # compare "n k count" with "n k 0 count"
@@ -112,7 +120,8 @@ Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
 - `src/explore.cpp`: an abandoned first attempt (generating prime posets for a
   modular-decomposition count); kept because it shows why generation does not
   scale: the number of prime posets with n down-sets still grows like 1.64^n.
-- `scripts/assemble.py`, `scripts/check_dual.py`: assembly and checks.
+- `scripts/assemble.py`, `scripts/check_dual.py`, `scripts/planar_check.py`: assembly and checks.
+- `docs/oeis_submission.md`: draft text for the OEIS edits (not submitted).
 - `data/`: the new b-files, and the OEIS b-files used as reference.
 - `runs/`: raw outputs and logs.
 

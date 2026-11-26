@@ -3,3 +3,4 @@
 /src/brute_rank
 /src/frontier2
 *.o
+/src/frontier2b
