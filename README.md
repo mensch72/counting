@@ -187,7 +187,8 @@ semimodular ones. The modularity-based pruning is switched off in these modes.
 - **Semimodular:** works well from the bottom. N = 24 needs 8.9·10⁵ states for about
   1.5·10⁹ lattices; N = 26 took 69 min and 7.9 GB (5.9·10⁶ states) and gives one new
   term. Memory is the limit. Checks: known terms to n = 25, runs with N = 24, 25, 26,
-  and equality with the dual route (`lsm`) for small n (`scripts/assemble_layers.py`).
+  and equality with the dual route (`lsm`) for n ≤ 16 (`scripts/assemble_layers.py`,
+  `runs/lay_lsm_16.txt`).
 - **Geometric:** known terms reproduced to n = 35, but no advantage: the frontier is
   essentially the whole lattice, so this is plain generation. Not extended.
 - **Graded, and the dual directions:** far too many families or states; not competitive.

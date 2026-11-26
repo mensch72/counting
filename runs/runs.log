@@ -14,3 +14,5 @@ lay_usm_24 rc=0 time=426s peakRSS=1135460KB
 lay_geometric_35 rc=0 time=216s peakRSS=1220400KB
 lay_usm_26 rc=0 time=4119s peakRSS=7874080KB
 mod_38 rc=0 time=8534s peakRSS=2107504KB
+lay_lsm_16 rc=0 time=526s peakRSS=5984KB
+lay_usm_25 rc=0 time=1286s peakRSS=2936700KB
