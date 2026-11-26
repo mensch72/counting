@@ -6,8 +6,8 @@ This repository extends four OEIS sequences past their published records:
 |---|---|---|---|
 | [A006982](https://oeis.org/A006982) | unlabeled distributive lattices with n elements | n = 60 (Kohonen 2021) | n = 160 |
 | [A072361](https://oeis.org/A072361) | vertically indecomposable ones | n = 49 in OEIS, n = 60 in Kohonen's paper | n = 160 |
-| [A006981](https://oeis.org/A006981) | unlabeled modular lattices with n elements | n = 35 (Kohonen 2021) | see `data/b006981.txt` |
-| [A342132](https://oeis.org/A342132) | vertically indecomposable ones | n = 35 | see `data/b342132.txt` |
+| [A006981](https://oeis.org/A006981) | unlabeled modular lattices with n elements | n = 35 (Kohonen 2021) | n = 37 |
+| [A342132](https://oeis.org/A342132) | vertically indecomposable ones | n = 35 | n = 37 |
 
 The same idea, with a different frontier, also reproduces and extends the
 modular lattices ([A006981](https://oeis.org/A006981), record n = 35); see the
@@ -19,7 +19,11 @@ The tables are `data/b006982.txt` and `data/b072361.txt`. First new terms:
     A006982(62) = 2577577210993326
     A006982(63) = 4751419899674101
 
+    A006981(36) = 681357605302
+    A006981(37) = 1647135247659   (from the N = 37 run only; not yet confirmed by a run with larger N)
+
 The values are computed, not proved; see "Checks" for what supports them.
+A write-up is in `paper/paper.tex` (`paper/paper.pdf`).
 
 ## Why the old methods stop at 60
 
@@ -150,6 +154,7 @@ bounds cut the search.
 | 32 | 8.4·10⁴ | 2.7 min |
 | 35 | 3.0·10⁵ | 19 min |
 | 36 | 4.5·10⁵ | 37 min |
+| 37 | 6.9·10⁵ | 73 min |
 
 For comparison, Kohonen (2021) reports 63 core-days for n = 35 alone.
 

@@ -7,3 +7,6 @@
 /src/modular
 /src/modular2
 /src/modular_run
+paper/*.aux
+paper/*.log
+paper/*.out
