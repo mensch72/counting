@@ -212,6 +212,7 @@ int main(int argc,char**argv){
           if(dual && t.tgt==EMPTY){ viTag[{a+1,tag,states[sid].wt}]+=c; vi[a+1]+=0; }
           by[a+t.w][(u64)t.tgt<<8|(rk?tag+1:tag)]+=c; } }
     }
+    { static unsigned long long cells=0; cells+=items.size(); if(a==N) fprintf(stderr,"cells=%llu\n",cells); }
     if(verbose) fprintf(stderr,"acc=%d states=%zu (with group %llu) transitions=%llu\n",a,states.size(),(unsigned long long)n_states_group,(unsigned long long)n_trans);
   }
   vector<u128> f(N+2,0); f[1]=1;
