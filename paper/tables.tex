@@ -56,5 +56,21 @@
 \bottomrule\end{tabular}\qquad
 \caption{Numbers of semimodular lattices (A229202) and of geometric lattices (A281574) with $n$ elements.  Values above the rules agree with~\cite{Koh19} and the OEIS; those below are new.}\label{tab:other}
 \end{table}}
+\newcommand{\boundedtable}{\begin{table}[ht]
+\begin{tabular}{rrrll}\toprule $W$ & states & edges & growth rate, v.i. & growth rate, all\\\midrule
+2 & $3$ & $7$ & $1.4142135624$ & $1.7106440950$\\
+3 & $13$ & $52$ & $1.6616501964$ & $1.8211213614$\\
+4 & $25$ & $143$ & $1.7168846567$ & $1.8411147093$\\
+5 & $50$ & $351$ & $1.7235737135$ & $1.8425913201$\\
+6 & $266$ & $2\,327$ & $1.7262480148$ & $1.8433325496$\\
+7 & $735$ & $7\,031$ & $1.7264936580$ & $1.8433671106$\\
+8 & $2\,203$ & $23\,668$ & $1.7265344528$ & $1.8433705132$\\
+9 & $6\,616$ & $70\,646$ & $1.7265353517$ & $1.8433705490$\\
+10 & $22\,620$ & $263\,509$ & $1.7265362224$ & $1.8433706134$\\
+11 & $81\,606$ & $971\,174$ & $1.7265363005$ & $1.8433706166$\\
+12 & $274\,115$ & $3\,309\,503$ & $1.7265363021$ & $1.8433706167$\\
+\bottomrule\end{tabular}
+\caption{The automata $\mathcal{A}_W$ and the exponential growth rates of the distributive lattices all of whose layers have at most $W$ elements (floating point values; the certified bounds are in Theorem~\ref{thm:growth}).}\label{tab:bounded}
+\end{table}}
 \newcommand{\Nsemi}{26}
 \newcommand{\Ngeo}{0}

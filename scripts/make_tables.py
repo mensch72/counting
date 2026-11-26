@@ -56,6 +56,12 @@ if sm or ge:
     txt.append(r'\caption{Numbers of semimodular lattices (A229202) and of geometric lattices (A281574) with $n$ elements.  Values above the rules agree with~\cite{Koh19} and the OEIS; those below are new.}\label{tab:other}')
     txt.append(r'\end{table}')
 o.append(r'\newcommand{\resultsother}{' + '\n'.join(txt) + '}')
+bt = [r'\begin{table}[ht]', r'\begin{tabular}{rrrll}\toprule $W$ & states & edges & growth rate, v.i. & growth rate, all\\\midrule']
+for l in open(os.path.join(D, 'bounded_growth.txt')):
+    w, st, tr, gall, gvi = l.split()
+    bt.append(r'%s & $%s$ & $%s$ & $%s$ & $%s$\\' % (w, num(int(st)), num(int(tr)), gvi, gall))
+bt += [r'\bottomrule\end{tabular}', r'\caption{The automata $\mathcal{A}_W$ and the exponential growth rates of the distributive lattices all of whose layers have at most $W$ elements (floating point values; the certified bounds are in Theorem~\ref{thm:growth}).}\label{tab:bounded}', r'\end{table}']
+o.append(r'\newcommand{\boundedtable}{' + '\n'.join(bt) + '}')
 o.append(r'\newcommand{\Nsemi}{%d}' % (max(sm) if sm else 0))
 o.append(r'\newcommand{\Ngeo}{%d}' % (max(ge) if ge else 0))
 open(os.path.join(here, '..', 'paper', 'tables.tex'), 'w').write('\n'.join(o) + '\n')

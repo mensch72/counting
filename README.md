@@ -175,6 +175,26 @@ budgets N = 36, 38, 40 where the last term is computed with no slack.
 There is no independent second method for the non-distributive modular
 lattices with n > 35; the new terms rest on the checks above.
 
+## Growth rates: certified lower bounds
+
+For distributive lattices all of whose rank layers have at most W elements the transfer
+matrix is a finite automaton (`src/bounded.cpp`; 266 states for W = 6, 274 115 for W = 12).
+Its growth rate is a lower bound for the growth rate of all distributive lattices, and its
+excursions away from the empty frontier bound the vertically indecomposable ones.
+
+| | previous lower bound | certified here | numerical value |
+|---|---|---|---|
+| vertically indecomposable | 1.7250 (Kohonen 2021) | **1.7265363** | 1.72653630… |
+| all distributive lattices | 1.84 (Erné–Heitzig–Reinhold 2002) | **1.84337061** | 1.84337061669… |
+
+`scripts/run_bounded.sh` builds the automata for W = 2..12, computes the growth rates
+(`data/bounded_growth.txt`) and verifies the bounds in exact integer arithmetic
+(`scripts/bounded_certificate.py`, output in `data/bounded_certificates.txt`): a positive
+integer vector u with M u ≥ u on a strongly connected set of states, where M is the weighted
+transfer matrix at x = 1/bound. The automata were checked against brute force over all
+posets on ≤ 11 points for W = 3..8 (`src/brute_layers.cpp`). These are lower bounds only;
+they do not prove that the two growth rates differ.
+
 ## Semimodular and geometric lattices (A229202, A281574)
 
 `src/layers.cpp` is `modular.cpp` with the class as a parameter. The proof that the

@@ -47,6 +47,10 @@ We obtain the number of distributive lattices up to $\Ndist$ elements and of
 modular lattices up to $\Nmod$ elements; the previous records were $60$ and $35$.
 The frontier for modular lattices also serves for semimodular lattices, for which we
 obtain one further value ($26$ elements).
+For distributive lattices with layers of bounded size the transfer matrix is a finite
+automaton; from it we derive the certified bounds $1.7265363$ and $1.84337061$ for the
+exponential growth rates of the vertically indecomposable and of all distributive lattices
+(previously $1.7250$ and $1.84$).
 The $60$ known values for distributive lattices take $0.1$ seconds and the $35$
 known values for modular lattices take $19$ minutes on one processor core.  The
 new values are supported by the known ones, by duality checks, by brute force
@@ -349,7 +353,87 @@ Kohonen~\cite{Koh21} proved $d_{\mathrm{vi}}(n) = \Omega(1.7250^n)$ and remarked
 this bound appears to be close to the truth; the ratio $\ratiov$ supports that.  A
 proof that vertically indecomposable distributive lattices have a strictly smaller
 exponential growth rate than all distributive lattices would turn the numerical
-statement into a theorem.
+statement into a theorem.  Rigorous lower bounds for both growth rates are given in
+Section~\ref{sec:bounded}.
+
+\section{Bounded layers and growth rates}\label{sec:bounded}
+
+Let $\lambda_{\mathrm{vi}} = \limsup_n d_{\mathrm{vi}}(n)^{1/n}$ (by~\cite[Corollaries~7 and~11]{EHR}
+this is in fact a limit), and let
+$\beta$ be as in Proposition~\ref{prop:growth}.  The best published bounds are
+$\lambda_{\mathrm{vi}} \ge 1.7250$~\cite{Koh21} and $\beta \ge 1.84$~\cite{EHR}.  The transfer
+matrix of Section~\ref{sec:dist} gives much sharper lower bounds, because for lattices with
+layers of bounded size it is a \emph{finite} automaton.
+
+For $W \ge 2$ let $\mathcal{D}_W$ be the class of finite distributive lattices all of whose
+rank layers have at most $W$ elements.  A lower part belongs to a lattice of $\mathcal{D}_W$
+only if every layer that is already forced has at most $W$ elements, i.e.\ if its
+frontier $(\Lambda,\rho)$ has at most $W$ down-sets of each size $\ge \rho$
+(Proposition~\ref{prop:bound}).  Let $\mathcal{A}_W$ be the directed multigraph whose
+vertices are the states with this property that can be reached from $\varepsilon$, with one
+edge for every $\Gamma$-orbit of birth vectors, and with the weight $w(\sigma) \le W$ on the
+vertex $\sigma$.  By Theorem~\ref{thm:dist} the lattices in $\mathcal{D}_W$ with $n$ elements
+correspond to the closed walks at $\varepsilon$ whose entered vertices have total weight $n-1$,
+and the vertically indecomposable ones to the walks that do not pass through $\varepsilon$.
+
+\begin{proposition}\label{prop:finite}
+For $2 \le W \le 12$ the multigraph $\mathcal{A}_W$ is finite, with the numbers of vertices
+given in Table~\ref{tab:bounded}.  Consequently the generating function of $\mathcal{D}_W$ is
+rational for these $W$.
+\end{proposition}
+
+This is the outcome of a computation (the exploration of the reachable states terminates); we
+have no proof for general $W$.
+
+\begin{lemma}\label{lem:cw}
+Let $C$ be a strongly connected set of vertices of a finite directed multigraph with positive
+integer vertex weights $w$ and $e(s,t)$ edges from $s$ to $t$.  Suppose that $x > 0$ and
+$u \colon C \to \mathbb{R}_{>0}$ satisfy
+\begin{equation}\label{eq:cw}
+  \sum_{t \in C} e(s,t)\, x^{w(t)}\, u_t \;\ge\; u_s \qquad\text{for all } s \in C .
+\end{equation}
+Then for every $s \in C$ the number $c_s(n)$ of closed walks at $s$ inside $C$ whose entered
+vertices have total weight $n$ satisfies $\limsup_n c_s(n)^{1/n} \ge 1/x$.
+\end{lemma}
+
+\begin{proof}
+Let $M = (e(s,t)\,x^{w(t)})_{s,t \in C}$.  Then $\sum_n c_s(n) x^n = \sum_k (M^k)_{ss}$.  By
+\eqref{eq:cw}, $M^k u \ge u$ for all $k$.  If $\sum_k (M^k)_{ss}$ converged for one $s$, then,
+$M$ being irreducible, $\sum_k (M^k)_{tt'}$ would converge for all $t,t'$ (each entry of
+$M^k$ is bounded by a constant times a diagonal entry of $M^{k+j}$ for a fixed $j$), and
+$M^k u \to 0$, a contradiction.  So the power series $\sum_n c_s(n)x^n$ diverges at $x$.
+\end{proof}
+
+\begin{theorem}\label{thm:growth}
+$\lambda_{\mathrm{vi}} \ge 1.7265363$ and $\beta \ge 1.84337061$.
+\end{theorem}
+
+\begin{proof}
+Take $W = 12$.  For the first bound let $C$ be the strong component of
+$\mathcal{A}_{12} \setminus \{\varepsilon\}$ with $274\,096$ vertices; it can be reached from
+$\varepsilon$ and $\varepsilon$ can be reached from it.  Different walks give non-isomorphic
+lattices, so $d_{\mathrm{vi}}(n + j) \ge c_s(n)$ for a fixed $j$ and $s \in C$.  For the second
+bound let $C$ be all of $\mathcal{A}_{12}$, which is strongly connected, and $s = \varepsilon$;
+then $d(n+1) \ge c_\varepsilon(n)$.  In both cases a positive integer vector $u$ satisfying
+\eqref{eq:cw} with $x = 1/1.7265363$, respectively $x = 1/1.84337061$, was found by power
+iteration, and \eqref{eq:cw} and the strong connectivity were then verified in integer
+arithmetic (\texttt{scripts/bounded\_certificate.py}).  Lemma~\ref{lem:cw} gives the claim.
+\end{proof}
+
+The theorem is computer-assisted: it relies on the program that constructs $\mathcal{A}_{12}$.
+That program was checked against a brute-force count over all posets on at most $11$ points
+(for $W \le 8$, in every cell of the table by number of elements and number of
+join-irreducibles; see Section~\ref{sec:verify}).  Already $W = 6$, with $266$ states, gives
+$\lambda_{\mathrm{vi}} \ge 1.7262$.
+
+\boundedtable
+
+Table~\ref{tab:bounded} shows the growth rates of $\mathcal{D}_W$.  They converge quickly, and
+their limits agree with the ratios observed in Section~\ref{sec:dist}, which suggests
+$\lambda_{\mathrm{vi}} = 1.72653630\ldots$ and $\beta = 1.84337061\ldots$\,.  Lower bounds
+cannot show $\lambda_{\mathrm{vi}} < \beta$, the hypothesis of
+Proposition~\ref{prop:growth}(b); for that an upper bound on $d_{\mathrm{vi}}$ below
+$1.8433^n$ is needed, and the best known one is $2.33^n$~\cite{EHR}.
 
 \section{Modular lattices}\label{sec:mod}
 
@@ -649,6 +733,11 @@ implementation; modular: $N = 26, 28, 30, 32, 35, 36, 37, 38$; semimodular: $N =
 value in each table, in particular $m(38)$, has no such confirmation from a run with larger
 $N$; the corresponding boundary values $m(N)$ for $N \le 37$ were all correct.
 \end{enumerate}
+
+For the automata of Section~\ref{sec:bounded} we compared, for $W = 3,\dots,8$, the numbers of
+walks with at most $11$ steps and weight at most $119$ with a brute-force count of the
+vertically indecomposable lattices $J(P)$, $|P| \le 11$, with all layers of size at most $W$;
+they agree in every cell (up to $10\,340\,439$ lattices for $W = 8$).
 
 For semimodular lattices the checks are the known values for $n \le 25$, the runs with
 different $N$, and the agreement with the count of the dual class for small $n$.
