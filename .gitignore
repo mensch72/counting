@@ -20,3 +20,5 @@ runs/lay_*.err
 runs/lay2_*.err
 runs/ck_*.bin
 runs/ck_*.tmp
+/src/bounded
+/src/brute_layers

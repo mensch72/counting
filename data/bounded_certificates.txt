@@ -1,0 +1,9 @@
+floating point: spectral radius at x = 1/L is 1.000077388194 (must exceed 1)
+exact check passed on 261 states: (M U)_s >= U_s for all s in C (smallest ratio 1.000077388194)
+certified: growth rate of the vertically indecomposable lattices with all layers <= 6 is at least 8631/5000 = 1.7262
+floating point: spectral radius at x = 1/L is 1.000000003412 (must exceed 1)
+exact check passed on 274096 states: (M U)_s >= U_s for all s in C (smallest ratio 1.000000003412)
+certified: growth rate of the vertically indecomposable lattices with all layers <= 12 is at least 17265363/10000000 = 1.7265363
+floating point: spectral radius at x = 1/L is 1.000000007094 (must exceed 1)
+exact check passed on 274115 states: (M U)_s >= U_s for all s in C (smallest ratio 1.000000007094)
+certified: growth rate of the lattices with all layers <= 12 is at least 184337061/100000000 = 1.84337061
