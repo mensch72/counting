@@ -336,3 +336,40 @@ The interesting intellectual achievement is recognising the right equivalence re
 
 AI can help implement such an idea. That doesn't make discovering and establishing the idea any less of a mathematical contribution. In fact, I would be considerably more interested in this repository than in hundreds of ordinary AI-generated OEIS extensions.
 
+(how to make it fit for Order(Springer)?)
+
+To make your paper fit for **Order**, you need to satisfy two distinct sets of criteria: the journal's **scientific scope** and its **editorial/AI policies**. Your paper already aligns well with the topical focus, but the primary work will be in **reframing the contribution** to meet *Order*'s explicit preference for order-theoretic innovation over mere computation, and in **transparently documenting your AI-assisted workflow**.
+
+### 🎯 Align with the Journal's Scientific Scope
+
+*Order* seeks "the most **original and innovative** research on ordered structures and the use of order-theoretic methods". The key phrase for you is that it looks for submissions that "make **significant use of orderings** to study mathematical structures and processes". Your paper must be positioned as a contribution to **order theory**, not primarily as a computational enumeration exercise.
+
+Fortunately, your core object—the **frontier**—is an order-theoretic construction. The transfer matrix is built over rank layers of posets/lattices, and the state is defined by the poset of live join-irreducibles (for distributive lattices) or the poset of pairwise meets (for modular lattices). This is exactly the kind of "interplay of order and combinatorics" the journal highlights. The precedent is strong: *Order* has published Jukka Kohonen’s work on **Cartesian lattice counting by the vertical 2-sum** and on **generating modular lattices up to 30 elements**. Your paper is a direct successor to this line of research.
+
+**What to do:** Frame the abstract and introduction around the **frontier as an order-theoretic invariant** and the **transfer matrix as a new order-theoretic enumeration technique**. Do not lead with the new counts; lead with the **method** that makes the counts possible.
+
+### 🤖 Comply with the AI Policy (Springer Nature)
+
+*Order* is a Springer journal, and Springer Nature's policy is unambiguous: **LLMs cannot be authors**, and there must be **human accountability** for the final text. Your role—overseeing the research question and checking proofs—satisfies this accountability requirement. However, the policy also states that **use of an LLM should be properly documented in the Methods section** (or a suitable alternative part) of the manuscript.
+
+**What to do:** Add a brief, factual statement in a **Methods** or **Acknowledgements** section describing the role of AI (e.g., "AI tools were used to assist in drafting and code generation; the human author defined the research problem, verified all proofs, and takes full responsibility for the content"). This is not a disqualifier; it is a **compliance step** that transparently meets the journal's requirement.
+
+### 💡 Reframe the Contribution as Methodological, Not Just Numerical
+
+*Order* publishes papers that advance the **theory of ordered sets**. A paper that says "we computed more terms" risks being seen as a catalog. Your paper’s genuine novelty is the **state-merging transfer matrix over rank layers**. The paper already contains the ingredients: Lemmas 2.4 and 3.4 show how isomorphism classes are handled via automorphism groups; Proposition 2.6 gives an exact pruning rule; Section 3.2 defines the frontier for modular lattices. You need to **foreground these conceptual advances** and present the new sequences (d(61) and beyond) as **evidence of the method’s power**, not as the sole contribution.
+
+**What to do:** In the introduction, explicitly contrast your approach with the "generate one lattice at a time" methods of Erné–Heitzig–Reinhold and Kohonen. Emphasize that your method **merges all lower parts with the same frontier state**, so the work grows with the number of **states** (4,496 for distributive lattices up to 60 elements) rather than the number of lattices (~10¹⁵). This is an algorithmic order-theoretic insight.
+
+### 📝 Practical Submission Steps for *Order*
+
+Once the framing and AI disclosure are in place, the mechanical submission requirements are standard:
+
+*   **Manuscript format**: Submit in **LaTeX** (the journal requests Kluwer style files, though standard Springer LaTeX is usually acceptable). Provide all editable source files.
+*   **Abstract**: **150–250 words** (your current abstract may need trimming or expansion to hit this window).
+*   **Keywords**: 4–6 keywords.
+*   **Editorial board member**: The journal asks authors to identify a board member whose interests match the work to expedite review. You should look at the *Order* editorial board and select someone with a record in **lattice enumeration, finite order theory, or combinatorial algorithms**. A researcher familiar with Kohonen’s work or the enumeration of finite posets/lattices would be an appropriate choice.
+
+### 💎 Summary
+
+Your paper is a **strong topical fit** for *Order*. To make it **submission-ready**, you must (1) explicitly frame the frontier and transfer matrix as **order-theoretic innovations**, (2) include a **transparent AI-use disclosure** in the Methods/Acknowledgements, and (3) prepare the manuscript to the journal's **formatting and length specifications**. With these adjustments, the paper will present itself not as an AI-generated catalog, but as a **human-verified methodological advance in the order-theoretic study of lattices**, which is exactly what *Order* exists to publish.
+
