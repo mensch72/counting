@@ -161,7 +161,8 @@ bounds cut the search.
 | 37 | 6.9·10⁵ | 73 min |
 | 38 | 1.06·10⁶ | 142 min |
 
-For comparison, Kohonen (2021) reports 63 core-days for n = 35 alone.
+For comparison, Kohonen (2021) reports 63 core-days for n = 35 alone, and Kohonen (2023)
+1.6, 3.6 and 8.1 core-days for listing the racks with 36, 37 and 38 elements.
 
 *Checks.* `scripts/assemble_mod.py` asserts: all known terms of A006981 (n ≤ 35)
 and A342132; symmetry of the (atoms, coatoms) table; agreement between runs with
@@ -172,8 +173,10 @@ the distributive DP above for every n ≤ 40 (`runs/moddist_*.txt`): two program
 with different states, symmetry handling and pruning agree, including at
 budgets N = 36, 38, 40 where the last term is computed with no slack.
 
-There is no independent second method for the non-distributive modular
-lattices with n > 35; the new terms rest on the checks above.
+The values for n = 36, 37, 38 are not new: they agree with Table 1 of Kohonen's 2023
+preprint (arXiv:2311.16643), which reaches n = 40 by a different method (listing racks
+and Pólya counting). `scripts/assemble_mod.py` asserts this agreement. N = 39 and 40 have
+not been run here.
 
 ## Growth rates: certified lower bounds
 
