@@ -34,27 +34,11 @@ First terms beyond the current b-file:
     ...
     a(160) = 1079689902088453963903370538000719118
 
-## A006981 (unlabeled modular lattices on n nodes)
+## A006981 and A342132 (modular lattices): nothing new to submit
 
-- DATA / b-file: add a(36)..a(38) (`data/b006981.txt`).
-- EXTENSIONS: a(36)-a(38) from `<name>`, computed by a transfer matrix over the rank layers whose states are the posets of pairwise meets of a layer; a(0)-a(35) agree with Kohonen (2021).
+- The OEIS entries stop at n = 35, but J. Kohonen, arXiv:2311.16643 (2023), Table 1, gives both sequences for n <= 40.
+- The transfer matrix here reproduces n <= 38 and agrees with that table. The entries should be extended from Kohonen's paper, not from this computation.
 
-New terms:
-
-    a(36) = 681357605302
-    a(37) = 1647135247659
-    a(38) = 3985106742170
-
-## A342132 (vertically indecomposable modular lattices on n nodes)
-
-- DATA / b-file: add a(36)..a(38) (`data/b342132.txt`).
-- EXTENSIONS: a(36)-a(38) from `<name>`.
-
-New terms:
-
-    a(36) = 90998884153
-    a(37) = 218856768070
-    a(38) = 526836817969
 
 ## A229202 (semimodular lattices on n nodes)
 
@@ -70,7 +54,7 @@ New terms:
 
 - b-file: `data/b368461.txt` (n = 1..1000; currently n = 1..34).
 - FORMULA / COMMENT: every planar modular lattice is a planar distributive lattice with eyes inserted into covering squares (Graetzer and Quackenbush, 2010); with the lattice-path description of planar distributive lattices and Burnside's lemma for the mirror symmetry this gives a(n) for all n (see scripts/planar_modular.py).
-- EXTENSIONS: a(35)-a(1000) from `<name>`.
+- EXTENSIONS: a(35)-a(1000) from `<name>`. Note: the method combines Kohonen (arXiv:2311.16643) and the path count of A345734 (Howroyd); cite both.
 
 First new terms:
 

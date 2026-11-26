@@ -30,7 +30,6 @@ for n in rows: o.append(r'%d & {\footnotesize $%s$} & {\footnotesize $%s$}\\' % 
 o.append(r'\bottomrule\end{tabular}}')
 o.append(r'\newcommand{\tablemod}{\begin{tabular}{rrr}\toprule $n$ & $m(n)$ & $m_{\mathrm{vi}}(n)$\\\midrule')
 for n in range(33, NM + 1):
-    if n == 36: o.append(r'\midrule')
     o.append(r'%d & $%s$ & $%s$\\' % (n, num(m[n]), num(mv[n])))
 o.append(r'\bottomrule\end{tabular}}')
 # semimodular / geometric results (optional)

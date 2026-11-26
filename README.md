@@ -1,31 +1,27 @@
 # Counting distributive and modular lattices by a frontier transfer matrix
 
-This repository extends eight OEIS sequences past their published records:
+New terms for five OEIS sequences, and certified growth-rate bounds:
 
-| sequence | meaning | previous record | here |
+| sequence | meaning | previously known | here |
 |---|---|---|---|
 | [A006982](https://oeis.org/A006982) | unlabeled distributive lattices with n elements | n = 60 (Kohonen 2021) | n = 160 |
 | [A072361](https://oeis.org/A072361) | vertically indecomposable ones | n = 49 in OEIS, n = 60 in Kohonen's paper | n = 160 |
-| [A006981](https://oeis.org/A006981) | unlabeled modular lattices with n elements | n = 35 (Kohonen 2021) | n = 38 |
-| [A342132](https://oeis.org/A342132) | vertically indecomposable ones | n = 35 | n = 38 |
 | [A229202](https://oeis.org/A229202) | unlabeled semimodular lattices with n elements | n = 25 (Kohonen 2017) | n = 27 |
-| [A368461](https://oeis.org/A368461) | planar modular lattices | n = 34 (Kohonen 2023) | n = 1000 |
-| [A072407](https://oeis.org/A072407) | canonically 2-indecomposable posets with n antichains | n = 49 | n = 160 |
+| [A072407](https://oeis.org/A072407) | canonically 2-indecomposable posets with n antichains | n = 49 | n = 160 (function of A072361) |
 | [A186808](https://oeis.org/A186808) | n with A006982(n) prime | 10 terms | 12 terms (complete for n ≤ 160) |
 
-The same idea, with a different frontier, also reproduces and extends the
-modular lattices ([A006981](https://oeis.org/A006981), record n = 35); see the
-section "Modular lattices" below for those results.
+Not new, but reproduced or extended by known means:
 
-The tables are `data/b006982.txt` and `data/b072361.txt`. First new terms:
+| sequence | status |
+|---|---|
+| [A006981](https://oeis.org/A006981), [A342132](https://oeis.org/A342132) modular lattices | OEIS has n ≤ 35, but Kohonen's 2023 preprint (arXiv:2311.16643) has n ≤ 40. The transfer matrix here reproduces n ≤ 38 exactly (142 min on one core; his rack listing for n = 38 alone took 8.1 core-days). An earlier version of this README wrongly called n = 36..38 records. |
+| [A368461](https://oeis.org/A368461) planar modular lattices | OEIS has n ≤ 34. `data/b368461.txt` goes to n = 1000, but the method is a combination of known results (see "Supplement"), so it is a b-file extension, not a new result. |
+
+First new terms:
 
     A006982(61) = 1398297238937456
     A006982(62) = 2577577210993326
     A006982(63) = 4751419899674101
-
-    A006981(36) = 681357605302
-    A006981(37) = 1647135247659
-    A006981(38) = 3985106742170   (from the N = 38 run only; not confirmed by a run with larger N)
     A229202(26) = 13759007833
     A229202(27) = 49997352868   (from the N = 27 run only)
 
@@ -206,10 +202,12 @@ growth rates differ, and for modular lattices the rates are still rising with W.
 ## Supplement: planar modular lattices and dependent sequences
 
 - **A368461, planar modular lattices** (`scripts/planar_modular.py`, `data/b368461.txt`).
-  Not by the transfer matrix: by Grätzer–Quackenbush every planar modular lattice is a
-  planar distributive lattice with "eyes" inserted into covering squares, and planar
-  distributive lattices are regions between two lattice paths; Burnside for the mirror
-  symmetry gives the count. All 34 known terms are reproduced; computed to n = 1000.
+  Not by the transfer matrix and not a new method. Kohonen (arXiv:2311.16643) counts planar
+  modular lattices from planar distributive "frames" with eyes inserted into covering
+  squares (Grätzer–Quackenbush) by Pólya counting, from stored listings; Howroyd's formula
+  in A345734 counts the planar distributive lattices as regions between lattice paths. The
+  script merely puts the eye weights into that path count, which removes the need for
+  listings. All 34 known terms are reproduced; computed to n = 1000. Not in the paper.
   The vertically indecomposable counts are in `data/planar_modular_vi.txt` (not in OEIS).
 - **A072407** (`data/b072407.txt`, n ≤ 160): determined by A072361 through
   v(k) = Σ w(k−j)·v(j) (Erné–Heitzig–Reinhold, Corollary 7); the 49 known terms agree.

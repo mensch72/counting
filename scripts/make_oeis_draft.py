@@ -25,15 +25,9 @@ o += ["## A072361 (vertically indecomposable distributive lattices on n nodes)\n
 o += [f"    a({n}) = {vi[n]}" for n in range(50, 55)] + [f"    ...\n    a({max(vi)}) = {vi[max(vi)]}\n"]
 if os.path.exists(os.path.join(D, 'b006981.txt')):
     m, mv = rb('b006981.txt'), rb('b342132.txt')
-    o += ["## A006981 (unlabeled modular lattices on n nodes)\n",
-          f"- DATA / b-file: add a(36)..a({max(m)}) (`data/b006981.txt`).",
-          f"- EXTENSIONS: a(36)-a({max(m)}) from `<name>`, computed by a transfer matrix over the rank layers whose states are the posets of pairwise meets of a layer; a(0)-a(35) agree with Kohonen (2021).\n",
-          "New terms:\n"]
-    o += [f"    a({n}) = {m[n]}" for n in range(36, max(m) + 1)]
-    o += ["\n## A342132 (vertically indecomposable modular lattices on n nodes)\n",
-          f"- DATA / b-file: add a(36)..a({max(mv)}) (`data/b342132.txt`).",
-          f"- EXTENSIONS: a(36)-a({max(mv)}) from `<name>`.\n", "New terms:\n"]
-    o += [f"    a({n}) = {mv[n]}" for n in range(36, max(mv) + 1)]
+    o += ["## A006981 and A342132 (modular lattices): nothing new to submit\n",
+          "- The OEIS entries stop at n = 35, but J. Kohonen, arXiv:2311.16643 (2023), Table 1, gives both sequences for n <= 40.",
+          f"- The transfer matrix here reproduces n <= {max(m)} and agrees with that table. The entries should be extended from Kohonen's paper, not from this computation.\n"]
 if os.path.exists(os.path.join(D, 'b229202.txt')):
     sm = rb('b229202.txt')
     o += ["\n## A229202 (semimodular lattices on n nodes)\n",
@@ -46,7 +40,7 @@ if os.path.exists(os.path.join(D, 'b368461.txt')):
     o += ["\n## A368461 (planar modular lattices on n nodes)\n",
           f"- b-file: `data/b368461.txt` (n = 1..{max(pm)}; currently n = 1..34).",
           "- FORMULA / COMMENT: every planar modular lattice is a planar distributive lattice with eyes inserted into covering squares (Graetzer and Quackenbush, 2010); with the lattice-path description of planar distributive lattices and Burnside's lemma for the mirror symmetry this gives a(n) for all n (see scripts/planar_modular.py).",
-          f"- EXTENSIONS: a(35)-a({max(pm)}) from `<name>`.\n", "First new terms:\n"]
+          f"- EXTENSIONS: a(35)-a({max(pm)}) from `<name>`. Note: the method combines Kohonen (arXiv:2311.16643) and the path count of A345734 (Howroyd); cite both.\n", "First new terms:\n"]
     o += [f"    a({n}) = {pm[n]}" for n in range(35, 41)]
 if os.path.exists(os.path.join(D, 'b072407.txt')):
     w2 = rb('b072407.txt')

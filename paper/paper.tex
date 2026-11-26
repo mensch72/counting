@@ -43,8 +43,9 @@ meets of the elements of rank $r$.  We prove that these states determine all
 possible continuations up to isomorphism, so that the work grows with the number
 of states and not with the number of lattices.  For modular lattices the number
 of states is reduced further by a bound that rests on self-duality of the class.
-We obtain the number of distributive lattices up to $\Ndist$ elements and of
-modular lattices up to $\Nmod$ elements; the previous records were $60$ and $35$.
+We obtain the number of distributive lattices up to $\Ndist$ elements; the previous record
+was $60$.  For modular lattices we reproduce the known numbers up to $\Nmod$ elements in
+$142$ minutes on one processor core.
 The frontier for modular lattices also serves for semimodular lattices, for which we
 obtain two further values ($26$ and $27$ elements).
 For distributive lattices with layers of bounded size the transfer matrix is a finite
@@ -52,8 +53,7 @@ automaton; from it we derive the certified bounds $1.7265363$ and $1.84337061$ f
 exponential growth rates of the vertically indecomposable and of all distributive lattices
 (previously $1.7250$ and $1.84$), and $2.3951$ for vertically indecomposable modular
 lattices (previously $2.3122$).
-The $60$ known values for distributive lattices take $0.1$ seconds and the $35$
-known values for modular lattices take $19$ minutes on one processor core.  The
+The $60$ previously known values for distributive lattices take $0.1$ seconds.  The
 new values are supported by the known ones, by duality checks, by brute force
 over all posets on at most $11$ points, and by agreement of the two programs on
 distributive lattices.
@@ -81,7 +81,11 @@ that are not vertical $2$-sums of smaller ones; the computation for $n=60$ alone
 $17.2$ core-days, with a factor of about $1.66$ per additional element.
 Modular lattices were counted for $n \le 24$ by Jipsen and Lawless~\cite{JL} (the OEIS records a later correction of the value for $n=24$), for
 $n \le 30$ by Kohonen~\cite{Koh19}, and for $n \le 35$ in~\cite{Koh21}, where $n=35$
-took $63.1$ core-days, with a factor of about $2.66$ per element.  All these
+took $63.1$ core-days, with a factor of about $2.66$ per element.  In~\cite{Koh23} the
+count was extended to $n \le 40$ by listing only the \emph{racks}, i.e.\ the lattices from
+which certain doubly irreducible elements have been removed, and counting the remaining
+lattices by P\'olya's method; listing the racks took $70.4$ core-days, of which $8.1$ for
+$n = 38$ and $38.5$ for $n = 40$.  All these
 methods construct the lattices (or a large part of them) individually and remove
 isomorphic copies with canonical labellings~\cite{nauty}; see
 also~\cite{HR,GT} for general lattices and~\cite{BM} for posets.
@@ -104,9 +108,12 @@ $1.7\cdot 10^{15}$ of them, are accounted for by $4496$ states.
 \begin{itemize}
 \item $d(n)$ and $d_{\mathrm{vi}}(n)$ for all $n \le \Ndist$ (Table~\ref{tab:dist});
   the first new value is\\ $d(61) = 1\,398\,297\,238\,937\,456$.
-\item $m(n)$ and $m_{\mathrm{vi}}(n)$ for all $n \le \Nmod$ (Table~\ref{tab:mod}).
-\item Planar modular lattices for all $n \le 1000$ (previously $n \le 34$), and two sequences
-  that are functions of $d$ and $d_{\mathrm{vi}}$ (Section~\ref{sec:further}).
+\item $m(n)$ and $m_{\mathrm{vi}}(n)$ for all $n \le \Nmod$ (Table~\ref{tab:mod}).  These are
+  not new: they agree with~\cite{Koh23}, where $n \le 40$ is reached.  What is new is the
+  method and its cost.
+\item Certified lower bounds for the exponential growth rates of distributive and of modular
+  lattices (Sections~\ref{sec:bounded} and~\ref{sec:mod}).
+\item Two sequences that are functions of $d$ and $d_{\mathrm{vi}}$ (Section~\ref{sec:further}).
 \item The numbers of semimodular lattices with $26$ and $27$ elements
   (Section~\ref{sec:other}); the previous record was $25$~\cite{Koh19}.
 \end{itemize}
@@ -638,22 +645,24 @@ on $Q$, so there are at least $|Q|$ of them unless one contains $Q$), and a pair
 bound.
 
 \subsection{Results}
-Table~\ref{tab:mod} contains the new values.  The run with $N=35$, which reproduces all
-previously known values of $m$ and $m_{\mathrm{vi}}$, took $19$ minutes on one core and
-$0.55$\,GB of memory, with $3.0\cdot 10^5$ states.  The runs with $N=36$, $37$, $38$ took
-$37$, $73$ and $142$ minutes and used $4.5\cdot 10^5$, $6.9\cdot 10^5$ and $1.06\cdot 10^6$
-states; the cost grows by a factor of about $1.9$ per element.  The values for $n=36$ and
-$n=37$ were each obtained from at least two runs with different $N$.  The value for $n=38$
-comes from the run with $N=38$ alone, where it is computed with no slack in the pruning (see
-Section~\ref{sec:verify}, item~6).  The last
+Table~\ref{tab:mod} contains the values for $n \ge 33$.  The run with $N=35$ took $19$
+minutes on one core and $0.55$\,GB of memory, with $3.0\cdot 10^5$ states.  The runs with
+$N=36$, $37$, $38$ took $37$, $73$ and $142$ minutes and used $4.5\cdot 10^5$,
+$6.9\cdot 10^5$ and $1.06\cdot 10^6$ states; the cost grows by a factor of about $1.9$ per
+element.  All values agree with those of~\cite{Koh21} for $n \le 35$ and
+of~\cite[Table~1]{Koh23} for $36 \le n \le 38$, which were obtained by listing lattices or
+racks, an entirely different method.  For comparison, the listing of the racks with $36$, $37$
+and $38$ elements in~\cite{Koh23} took $1.6$, $3.6$ and $8.1$ core-days.  We have not
+run $N = 39$ and $N = 40$.  The last
 ratios are $m(\Nmod)/m(\Nmodprev) = \ratiom$ and
 $m_{\mathrm{vi}}(\Nmod)/m_{\mathrm{vi}}(\Nmodprev) = \ratiomv$; they are still increasing,
 as observed in~\cite{Koh21}.
 
 \begin{table}[ht]
 \tablemod
-\caption{Values of $m(n)$ (A006981) and $m_{\mathrm{vi}}(n)$ (A342132).  The values above
-the rule agree with~\cite{Koh21}; those below it are new.}\label{tab:mod}
+\caption{Values of $m(n)$ (A006981) and $m_{\mathrm{vi}}(n)$ (A342132) computed with the
+transfer matrix.  They agree with~\cite{Koh21} ($n \le 35$) and~\cite{Koh23}
+($n \le 38$).}\label{tab:mod}
 \end{table}
 
 \subsection{Growth rate}
@@ -734,9 +743,8 @@ on the atoms, and we did not extend that sequence.
 
 \resultsother
 
-\section{Further sequences}\label{sec:further}
+\section{Sequences determined by the tables}\label{sec:further}
 
-\subsection{Sequences determined by the tables}
 Two further OEIS sequences are functions of $d$ and $d_{\mathrm{vi}}$.  The numbers $w_k$ of
 canonically $2$-indecomposable posets with $k$ antichains (A072407) satisfy
 $d_{\mathrm{vi}}(k) = \sum_{j=0}^{k-1} w_{k-j}\, d_{\mathrm{vi}}(j)$ for $k > 1$, with the conventions
@@ -744,34 +752,6 @@ $d_{\mathrm{vi}}(0) = 1$, $d_{\mathrm{vi}}(1) = w_1 = 0$~\cite[Corollary~7]{EHR}
 $k \le \Ndist$ (previously $k \le 49$).  The numbers $n \le \Ndist$ for which $d(n)$ is prime
 (A186808) are $4, 5, 6, 10, 12, 13, 18, 21, 23, 26, 66, 88$; the last two are new, and
 primality was proved with PARI/GP.
-
-\subsection{Planar modular lattices}
-The number of planar modular lattices (A368461) was known for $n \le 34$.  It can be obtained
-for all $n$ from the planar distributive case, which we used as a check in
-Section~\ref{sec:verify}.  This count does not use the transfer matrix.
-
-By a theorem of Gr\"atzer and Quackenbush~\cite{GQ}, every planar modular lattice arises from
-a planar distributive lattice $D$ by inserting \emph{eyes}, i.e.\ doubly irreducible elements,
-into covering squares of $D$; the lattice $D$ and the numbers of eyes are determined up to
-isomorphism, because the doubly irreducible atoms of an interval of length two are
-interchangeable.  A vertically indecomposable planar distributive lattice with more than two
-elements is a region of the square grid between two monotone lattice paths; its layers are
-intervals of sizes $w_0 = 1, w_1, \dots, w_h = 1$ with $w_r \ge 2$ in between, where $w$
-changes by $+1$ or $-1$ (one way each) or $0$ (two ways).  It has exactly two such embeddings,
-which are mirror images, and a layer with $w$ points contains the middle elements of $w-1$
-covering squares.  Burnside's lemma for the mirror gives:
-
-\begin{proposition}\label{prop:planar}
-For $n \ge 4$ the number of vertically indecomposable planar modular lattices with $n$
-elements is $\tfrac12\bigl([x^n]A(x) + [x^n]S(x)\bigr)$, where $A$ is the sum over all sequences
-$(w_r)$ as above, counted with the multiplicities of their steps, of
-$\prod_r x^{w_r}(1-x)^{-(w_r-1)}$, and $S$ is the sum over the sequences with steps $\pm1$ only of
-$\prod_r x^{w_r}(1-x)^{-[w_r \text{ even}]}(1-x^2)^{-\lfloor (w_r-1)/2 \rfloor}$.
-\end{proposition}
-
-All planar modular lattices follow from~\eqref{eq:vsum}.  The resulting numbers agree with
-the $34$ known terms, and we computed them for $n \le 1000$; the first new one is
-$126\,716\,031\,349$ for $n = 35$.
 
 \section{Verification}\label{sec:verify}
 
@@ -782,7 +762,8 @@ list what supports them, and what does not.
 \item \emph{Known values.}  The distributive program reproduces $d(n)$ for $n \le 60$
 and $d_{\mathrm{vi}}(n)$ for $n \le 49$ as given in the OEIS, and $d_{\mathrm{vi}}(n)$
 for $50 \le n \le 60$ as printed in~\cite[Table~2]{Koh21}.  The modular
-program reproduces $m(n)$ and $m_{\mathrm{vi}}(n)$ for $n \le 35$.  The earlier
+program reproduces $m(n)$ and $m_{\mathrm{vi}}(n)$ for $n \le 35$~\cite{Koh21} and for
+$36 \le n \le 38$~\cite{Koh23}.  The earlier
 computations are structurally different from ours.
 \item \emph{Brute force beyond the known range.}  We generated all $49\,519\,391$ posets on at
 most $11$ points with \texttt{genposetg} from the \texttt{nauty} package and tabulated those whose down-set lattice
@@ -808,8 +789,9 @@ symmetry handling or pruning rule.
 $n = N$ is computed with no slack.  Runs with different $N$ agree on their common range
 (distributive: $N = 120, 130, 150, 160$, the first two also with an independent reference
 implementation; modular: $N = 26, 28, 30, 32, 35, 36, 37, 38$; semimodular: $N = 24, 25, 26, 27$).  The largest
-value in each table, in particular $m(38)$, has no such confirmation from a run with larger
-$N$; the corresponding boundary values $m(N)$ for $N \le 37$ were all correct.
+value in the tables for distributive and for semimodular lattices has no such confirmation from
+a run with larger $N$.  For modular lattices every boundary value $m(N)$, $N \le 38$, was
+correct.
 \end{enumerate}
 
 For the automata of Section~\ref{sec:bounded} we compared, for $W = 3,\dots,8$, the numbers of
@@ -821,8 +803,7 @@ For semimodular lattices the checks are the known values for $n \le 25$, the run
 different $N$, and the agreement with the count of the dual class for small $n$.
 
 There is no independent method for distributive lattices of width at least three with more than
-$110$ elements, nor for non-distributive modular lattices with more than $35$ elements or
-semimodular lattices with more than $25$; for
+$110$ elements, nor for semimodular lattices with more than $25$ elements; for
 these the evidence is items (4)--(6).  An independent recomputation would be valuable.
 
 \section{Remarks}
@@ -872,9 +853,6 @@ and as ancillary files.
 \bibitem{FS} P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics}, Cambridge
   University Press, 2009.
 
-\bibitem{GQ} G.~Gr\"atzer and R.~W.~Quackenbush, The variety generated by planar modular
-  lattices, \emph{Algebra Universalis} \textbf{63} (2010), 187--201.
-
 \bibitem{GT} V.~Gebhardt and S.~Tawn, Constructing unlabelled lattices,
   \emph{J.\ Algebra} \textbf{545} (2020), 213--236.
 
@@ -889,6 +867,9 @@ and as ancillary files.
 
 \bibitem{Koh21} J.~Kohonen, Cartesian lattice counting by the vertical 2-sum,
   \emph{Order} \textbf{39} (2022), 113--141.
+
+\bibitem{Koh23} J.~Kohonen, Simplifying modular lattices by removing doubly irreducible
+  elements, preprint, arXiv:2311.16643, 2023.
 
 \bibitem{nauty} B.~D.~McKay and A.~Piperno, Practical graph isomorphism, II,
   \emph{J.\ Symbolic Comput.} \textbf{60} (2014), 94--112.

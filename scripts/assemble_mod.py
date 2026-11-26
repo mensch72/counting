@@ -31,6 +31,10 @@ for path in sys.argv[1:]:
     bad_vi = [n for n in known_vi if 2 <= n <= N and vi[n] != known_vi[n]]
     print(f'N={N}: mismatches with A006981 (n<=35): {bad_f}; with A342132 (2<=n<=35): {bad_vi}')
     assert not bad_f and not bad_vi
+    k23 = [tuple(map(int, l.split())) for l in open(os.path.join(here, '..', 'data', 'kohonen2023_table1_36_40.txt')) if l.strip() and l[0] != '#']
+    bad23 = [n for (n, a, b) in k23 if n <= N and (vi[n], f[n]) != (a, b)]
+    print(f'      mismatches with Kohonen (2023), Table 1, for 36 <= n <= min(N, 40): {bad23}')
+    assert not bad23
     dual = path.replace('mod_', 'mod_dual_')
     M = {}
     for line in open(dual):
@@ -55,4 +59,4 @@ with open(os.path.join(here, '..', 'data', 'b006981.txt'), 'w') as o:
 with open(os.path.join(here, '..', 'data', 'b342132.txt'), 'w') as o:
     o.write(f'1 {known_vi[1]}\n')
     for n in range(2, N + 1): o.write(f'{n} {vi[n]}\n')
-for n in range(36, N + 1): print(f'A006981({n}) = {f[n]}   A342132({n}) = {vi[n]}')
+for n in range(36, N + 1): print(f'A006981({n}) = {f[n]}   A342132({n}) = {vi[n]}   (in Kohonen 2023 for n <= 40)')
