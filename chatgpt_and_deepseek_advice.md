@@ -403,3 +403,208 @@ To apply your framework to a new class of objects, you would need to identify:
 ### 💎 Summary
 
 Your method is a powerful template. Beyond distributive and modular lattices, it is most naturally suited for other **graded** ordered structures. The most promising immediate extensions would be to **graded posets with avoidance conditions** and **semimodular/geometric lattices**, as these share the closest structural DNA with the objects you've already successfully tackled. The core insight—using a symmetry-aware frontier state to merge lower parts—is portable to any graded class where isomorphism is the primary obstacle to efficient enumeration.
+
+(what is provable for the asymptotics?)
+
+
+
+Some progress, and a useful reduction. I haven't proved the full conjecture, but I have identified precisely what is missing and found an existing theorem that establishes part of the asymptotics.
+
+## **1. A result that is already provable: the exponential growth constant exists**
+
+Write
+
+\\[ v_n=d\_{\rm vi}(n),\qquad d_n=d(n). \\]
+
+The vertical-decomposition recurrence is
+
+\\[ d_n=\sum\_{k=2}^{n}v_kd\_{n-k+1}. \\]
+
+Now define
+
+\\[ a_j=v\_{j+1},\qquad s_j=d\_{j+1}. \\]
+
+Then
+
+\\[ s_0=1,\qquad s_n=\sum\_{j=1}^n a_js\_{n-j}. \\]
+
+This is precisely the type of *summatorial sequence* studied by Erné, Heitzig and Reinhold (2002).
+
+Their Corollary 11 proves that, provided the gcd of the support of \\(a\\) is one,
+
+\\[ \lim\_{n\to\infty}s_n^{1/n} \\]
+
+exists.
+
+Here this condition is immediate: \\(a_1=v_2=1\\).
+
+Consequently, we already have the rigorous result
+
+\\[ \boxed{\lambda_d:=\lim\_{n\to\infty}d_n^{1/n} \quad\text{exists}.} \\]
+
+This is stronger than merely having a limsup or liminf. It establishes a well-defined exponential growth rate, although not its numerical value or a constant-factor asymptotic.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://www.combinatorics.org\&sz=32)
+
+combinatorics.org
+
+
+
+Interestingly, the same theorem also applies to the vertically indecomposable counts. In their canonical 2-decomposition, Erné et al. obtain
+
+\\[ v(x)=\frac{1}{1-W(x)}, \\]
+
+where \\(W\\) counts canonically 2-indecomposable posets. Their sequence has \\(w_2=w_9=1\\), so the support has gcd one. Thus
+
+\\[ \boxed{\lambda_v:=\lim\_{n\to\infty}v_n^{1/n} \quad\text{also exists}.} \\]
+
+[image](https://www.google.com/s2/favicons?domain=https://www.combinatorics.org\&sz=32)
+
+combinatorics.org+1
+
+This gives us two well-defined growth constants to compare.
+
+## **2. A sufficient condition for the conjectured asymptotic**
+
+Define
+
+\\[ V(z)=\sum\_{k\ge2}v_kz^{k-1}, \qquad D(z)=\sum\_{n\ge1}d_nz^{n-1}. \\]
+
+The recurrence gives
+
+\\[ D(z)=\frac{1}{1-V(z)}. \\]
+
+Here is a useful theorem for your problem.
+
+**Proposition.** Suppose that
+
+\\[ \lambda_v<\lambda_d. \\]
+
+Then there exists \\(C>0\\) such that
+
+\\[ \boxed{d_n\sim C\lambda_d^n.} \\]
+
+*Proof.*
+
+Put \\(r=1/\lambda_d\\).
+
+Since \\(\lambda_v<\lambda_d\\), the radius of convergence of \\(V\\) is strictly greater than \\(r\\). Thus \\(V\\) is analytic in a neighbourhood of the closed disk \\(|z|\le r\\).
+
+Since \\(d_n^{1/n}\to\lambda_d\\), the radius of convergence of \\(D\\) is exactly \\(r\\).
+
+For \\(0\le x\<r\\), we have \\(V(x)<1\\). By continuity, \\(V(r)\le1\\).
+
+But \\(D\\) has a singularity at the positive real point \\(r\\), by Pringsheim's theorem. Since \\(V\\) is analytic there, the identity \\(D=1/(1-V)\\) implies
+
+\\[ V(r)=1. \\]
+
+Furthermore,
+
+\\[ V'(r)>0, \\]
+
+because \\(v_2=1\\).
+
+Therefore \\(D\\) has a simple pole at \\(r\\).
+
+There cannot be another pole on \\(|z|=r\\): equality in
+
+\\[ |V(z)|\le V(|z|)=1 \\]
+
+would require all nonzero terms to have the same argument. Since the coefficient of \\(z\\) is positive, this requires \\(z=r\\).
+
+Analyticity beyond the circle and uniqueness of the dominant pole now give
+
+\\[ d_n\sim \frac{1}{V'(r)}r^{-n}. \\]
+
+Hence
+
+\\[ \boxed{C=\frac{1}{V'(1/\lambda_d)}.} \\]
+
+\\(\square\\)
+
+This is exactly the simple-pole argument suggested in Section 2.4 of your paper, but now with its missing hypothesis made explicit.
+
+paper.pdf
+
+## **3. What is actually missing?**
+
+It is the strict inequality
+
+\\[ \boxed{\lambda_v<\lambda_d.} \\]
+
+The available bounds are unfortunately insufficient:
+
+| Quantity                                                         | Rigorous bound                  |
+| ---------------------------------------------------------------- | ------------------------------- |
+| \\(\lambda_v\\), vertically indecomposable distributive lattices | \\(1.7250\le\lambda_v\le2.33\\) |
+| \\(\lambda_d\\), all distributive lattices                       | \\(1.84\le\lambda_d\le2.39\\)   |
+
+The lower bound for \\(\lambda_v\\) is improved by Kohonen; the upper bound comes from the coding argument of Erné et al.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://d-nb.info\&sz=32)
+
+d-nb.info+2
+
+
+
+The intervals overlap substantially.
+
+Your new computations suggest
+
+\\[ \lambda_v\approx1.7265,\qquad \lambda_d\approx1.84337, \\]
+
+but the finite computations through 160 cannot establish the strict inequality.
+
+There is also a more elementary way of expressing the missing condition. We need to establish that
+
+\\[ \sum\_{k\ge2} v_k\lambda_d^{-(k-1)}=1 \\]
+
+with sufficient convergence control, and preferably that the corresponding first moment is finite. The strict growth-rate inequality supplies both automatically.
+
+## **4. Can the existing frontier method help?**
+
+I think this is where the most promising new work lies.
+
+Your frontier algorithm does something the earlier enumeration approaches did not: it merges partial constructions according to a finite mathematical summary of what remains possible above them.
+
+The empirical state growth is remarkably slow compared with the growth of the number of lattices. At \\(N=160\\), you have 17.5 million states, against approximately \\(10^{36}\\) vertically indecomposable lattices.
+
+There may be an opportunity to turn this into a rigorous asymptotic argument.
+
+One possible strategy:
+
+1. Partition the distributive lattices according to frontier size and structure.
+2. Prove an exponential upper bound for the contribution of large frontiers.
+3. Show that the remaining small-frontier contribution can be bounded using a finite transfer system.
+4. Establish an upper bound \\(\lambda_v<1.84\\), or at least \\(\lambda_v<\lambda_d\\).
+
+The difficulty is step 2. The observed state counts do not themselves establish a uniform bound on the number of paths through those states.
+
+Nevertheless, this is a more concrete programme than trying to infer convergence of ratios from increasingly large tables.
+
+## **5. What about modular lattices?**
+
+The analogous vertical-decomposition recurrence also holds:
+
+\\[ M(z)=\frac{1}{1-W(z)}, \\]
+
+where \\(W\\) is the generating function of vertically indecomposable modular lattices.
+
+But the paper's observations of increasing successive ratios at \\(n=35,36\\) are not enough to establish an asymptotic regime. There is not yet an equivalent useful strict-growth-separation result for that problem.
+
+paper.pdf
+
+## **My recommendation**
+
+I would add the root-limit theorem to your paper's discussion, cite Erné et al., and explicitly state the following hierarchy of results:
+
+- **Proved:** Both \\(d_n^{1/n}\\) and \\(v_n^{1/n}\\) converge.
+- **Numerically strongly supported:** Their limits are approximately 1.84337 and 1.7265, respectively.
+- **Still open:** Proving that the two limits are strictly different.
+- **Consequence:** That strict inequality would establish the conjectured simple-pole asymptotic \\(d_n\sim C\beta^n\\).
+
+This also gives a particularly clean mathematical research question:
+
+**Prove that the number of vertically indecomposable distributive lattices grows strictly more slowly, exponentially, than the number of all distributive lattices.**
+
+That is the real missing theorem. And it is considerably more interesting than proving that a sequence of numerical ratios happens to settle down.
