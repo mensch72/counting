@@ -1,11 +1,13 @@
 # Counting distributive and modular lattices by a frontier transfer matrix
 
-This repository extends two OEIS sequences well past their published records:
+This repository extends four OEIS sequences past their published records:
 
 | sequence | meaning | previous record | here |
 |---|---|---|---|
 | [A006982](https://oeis.org/A006982) | unlabeled distributive lattices with n elements | n = 60 (Kohonen 2021) | n = 160 |
 | [A072361](https://oeis.org/A072361) | vertically indecomposable ones | n = 49 in OEIS, n = 60 in Kohonen's paper | n = 160 |
+| [A006981](https://oeis.org/A006981) | unlabeled modular lattices with n elements | n = 35 (Kohonen 2021) | see `data/b006981.txt` |
+| [A342132](https://oeis.org/A342132) | vertically indecomposable ones | n = 35 | see `data/b342132.txt` |
 
 The same idea, with a different frontier, also reproduces and extends the
 modular lattices ([A006981](https://oeis.org/A006981), record n = 35); see the
@@ -140,10 +142,28 @@ Enumerating the clique partitions (linear spaces) is the expensive part; partial
 partitions are rejected up to isomorphism, and de Bruijn–Erdős and pair-counting
 bounds cut the search.
 
+*Cost.* One core, under 2 GB:
+
+| N | states | time |
+|---|---|---|
+| 30 | 3.7·10⁴ | 47 s |
+| 32 | 8.4·10⁴ | 2.7 min |
+| 35 | 3.0·10⁵ | 19 min |
+| 36 | 4.5·10⁵ | 37 min |
+
+For comparison, Kohonen (2021) reports 63 core-days for n = 35 alone.
+
 *Checks.* `scripts/assemble_mod.py` asserts: all known terms of A006981 (n ≤ 35)
 and A342132; symmetry of the (atoms, coatoms) table; agreement between runs with
 different N (the pruning depends on N, and the largest n of each run is computed
-with no slack). There is no independent second method for n > 35.
+with no slack). In addition, `modular N file dist` restricts the same program to distributive
+lattices (no interval of length 2 with three atoms). Its output equals that of
+the distributive DP above for every n ≤ 40 (`runs/moddist_*.txt`): two programs
+with different states, symmetry handling and pruning agree, including at
+budgets N = 36, 38, 40 where the last term is computed with no slack.
+
+There is no independent second method for the non-distributive modular
+lattices with n > 35; the new terms rest on the checks above.
 
 ## Reproduce
 
@@ -159,6 +179,11 @@ Needs g++ and nauty (`apt-get install nauty libnauty-dev`).
     for t in 1 2 3 4 5 6 7; do ./frontier2 160 $t > ../runs/dual_160_t$t.txt; done
     python3 ../scripts/check_dual.py ../runs/vi_160.txt ../runs/dual_160_t*.txt
     ./frontier2 160 0 2 > planar.txt && python3 ../scripts/planar_check.py 160 planar.txt
+    # modular lattices
+    g++ -O2 -march=native -o modular modular.cpp -lnauty
+    ./modular 36 ../runs/mod_dual_36.txt > ../runs/mod_36.txt      # 37 min
+    python3 ../scripts/assemble_mod.py ../runs/mod_3[5-9].txt
+    ./modular 40 /dev/null dist > ../runs/moddist_40.txt           # distributive cross-check
     # brute-force check
     for k in 1 2 3 4 5 6 7 8 9 10 11; do nauty-genposetg $k t q; done | ./brute_rank 110 > brute.txt
     ./frontier 110 rank > rank.txt      # compare "n k count" with "n k 0 count"
