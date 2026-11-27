@@ -22,6 +22,7 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | `PosetCount/Insertion.lean` | inserting an antichain along a cut, and the converse |
 | `PosetCount/Flags.lean` | the relation `≼` on antichains; structure of a flag |
 | `PosetCount/Band.lean` | band posets: many posets of small width |
+| `PosetCount/Threshold.lean` | general threshold theorem for supermodular functions on finite lattices of sets; pairs of down-sets avoiding a set of pairs |
 
 ## Coverage
 
@@ -40,6 +41,8 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | Lemma 8, Theorem 9 (counting formula) | — | |
 | Proposition 11 (band posets are posets; chains are total; data recovered from the order) | ✓ | `BandData.isStrictOrder`, `BandData.chain_total`, `BandData.lt_iff_of_ne` |
 | Proposition 11, the count `c(ℓ,a)^(w(w-1))` | — | |
+| (new, not in the note) Threshold theorem: in a finite family closed under `⊔`, `⊓`, the members with a supermodular `s ≥ k` have Euler characteristic 1 | ✓ | `redEuler_threshold_eq_zero` |
+| (new) Pairs of down-sets `I' ⊆ I` whose difference avoids a set `R` of pairs and has ≥ k points | ✓ | `redEuler_pairsAvoiding_eq_zero` |
 | Complexity statements (Theorem 1, Propositions 10, 11) | — | not planned: running-time claims are outside the formalisation |
 
 ## Design
