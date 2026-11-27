@@ -590,8 +590,10 @@ most $7$ points.
 
 \section{Narrow posets and templates}
 
-This section reduces the count of narrow posets to a finite extremal problem. It is a
-proof sketch that has not yet been refereed; the numerical evaluation is in progress.
+This section reduces the count of narrow posets to a finite extremal problem. The argument
+was refereed by a second language-model pass against the text of~\cite{FOU}, whose
+corrections are included; the numerical evaluation is in progress. Theorem and proposition
+numbers of~\cite{FOU} refer to the arXiv version.
 
 \subsection*{Templates}
 Let $C_1,\dots,C_m$ be disjoint chains of lengths $a_1,\dots,a_m$. An order extending them
@@ -635,7 +637,7 @@ In particular $\pi(\mathcal Q)\le\mathrm{ex}(3,\mathcal Q)/3$.
 
 \begin{theorem}\label{thm:templates}
 For all $K\ge1$ and $\varepsilon>0$ there is $w_0$ such that for all $w\ge w_0$ and all
-disjoint chains $C_1,\dots,C_w$ of lengths $a_i\le K$, the number of orders extending them is
+disjoint chains $C_1,\dots,C_w$ of lengths $0\le a_i\le K$, the number of orders extending them is
 at most
 \[
  2^{\,\frac{w^2}{6}\,\mathbb{E}\,\tau_3(X,Y,Z)+\varepsilon w^2},
@@ -653,8 +655,10 @@ $\varepsilon w^2/3$ for $g$ large and then $w$ large.
 \emph{The property.} Colour the edge $ij$ ($i<j$) of $K_B$ by the order induced on the union
 of bundles $i$ and $j$; the colour set is finite and depends only on $(\gamma_\ell)$.
 Let $\mathcal Q_B$ consist of the colourings that come from an order on the union of all
-bundles. This is order-hereditary. There are finitely many vectors $(\gamma_\ell)$ for given
-$g,K$, so the constant in \cite[Cor.~2.15]{FOU} can be chosen uniformly.
+bundles. This is order-hereditary. For $B\ge2$ an order on the bundled chains is determined by its colouring, and an order on
+all chains is determined by its restrictions to pairs of chains. The threshold $n_0$ in
+\cite[Cor.~2.15]{FOU} depends on the property and on $\varepsilon$; there are finitely many
+vectors $(\gamma_\ell)$ for given $g,K$, so take the largest $n_0$ and require $B\ge n_0$.
 
 \emph{Three bundles.} Let $t$ be a template on $K_3$ with all realisations in $\mathcal Q_3$.
 Each vertex lies in two edges whose colours are chosen independently, so the order inside
@@ -671,23 +675,34 @@ $\mathrm{ex}(3,\mathcal Q)\le\frac1{g'}\sum_{x,y,z}\tau_3(a_x,a_y,a_z)
 
 \emph{Conclusion.} $\log_2|\mathcal Q_B|\le\binom B2\bigl(\tfrac{g'^2}{3}\mathbb{E}\,\tau_3(X',Y',Z')
 +\varepsilon'\bigr)$, $Bg'\le w$, and the distribution of the lengths in a bundle differs
-from the empirical one by at most $(K+1)/g$ in each coordinate, while
+from the empirical one by at most $(K+1)/(g-K-1)$ in each coordinate, while
 $\tau_3\le 3\log_2P(K,K)\le12K$.
 \end{proof}
 
-The same argument with $m$ bundles gives $\frac{w^2}{2}\,\mathbb{E}\,\tau_m/\binom m2$, and
-these bounds decrease to the truth as $m\to\infty$, because
-$\mathrm{ex}(m,\mathcal Q)/\binom m2\to\pi(\mathcal Q)$ and
-$|\mathcal Q_B|\ge2^{\pi(\mathcal Q)\binom B2}$.
+The same argument with $m$ bundles gives the bound
+$\frac{w^2}{2}\,\mathbb{E}\,\tau_m/\binom m2$. For a fixed distribution of lengths these
+bounds decrease to the true exponent as $m\to\infty$: $\mathbb{E}\,\tau_m/\binom m2$ is
+non-increasing in $m$ (average over the restrictions of a template on $m$ chains to $m-1$
+chains, as in \cite[Prop.~2.10]{FOU}); and the realisations of a template are distinct
+orders, so the number of orders on $w$ chains with independent random lengths is at least
+$2^{\tau_w}$, whose expected exponent is at least $\binom w2$ times the limit. A random
+profile differs from any profile with nearly the same distribution in $o(w)$ chains, which
+changes the count by $2^{o(w^2)}$.
 
-\medskip\noindent\emph{Consequence.} After cutting long chains as in the previous section,
+\medskip\noindent\emph{Consequence.} Let $h(\alpha)=\limsup_n n^{-2}\log_2$ of the number
+of posets on $[n]$ of width at most $\alpha n$. Such a poset is a union of $w=\alpha n$
+chains. Cut every chain into pieces of length at most $K$; there are at most
+$w+n/K=\tilde\alpha n$ pieces. Pad with empty chains to exactly
+$W=\lceil\tilde\alpha n\rceil$ chains. There are at most $n!\,2^{O(n)}$ such systems of
+chains, and the poset is one of the orders extending its pieces. Theorem~\ref{thm:templates}
+with $w=W$ applies uniformly to all profiles; $\mathbb{E}\,\tau_3$ changes by $O(K/n)$ under
+the rounding of the mean. Hence
 \[
 h(\alpha)\ \le\ \frac{\tilde\alpha^{2}}{6}\,\sup\bigl\{\mathbb{E}_{\mu^{3}}\tau_3:\ 
 \mu\text{ on }\{0,\dots,K\}\text{ with mean }1/\tilde\alpha\bigr\},\qquad
 \tilde\alpha=\alpha+1/K,
 \]
-where $2^{h(\alpha)n^2}$ is the number of posets of width at most $\alpha n$. The
-three-chain \emph{count} used before is replaced by the three-chain \emph{template}, which
+The three-chain \emph{count} used before is replaced by the three-chain \emph{template}, which
 is much smaller: a randomised search (a lower estimate of $\tau_3$, not a bound) gives
 $8.73$ bits per pair for three chains of length $5$, against $14.24$ for the pair count,
 about $12.7$ for the three-chain count and $8.34$ for the band construction.
