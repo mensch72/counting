@@ -22,3 +22,5 @@ runs/ck_*.bin
 runs/ck_*.tmp
 /src/bounded
 /src/brute_layers
+/src/layers2_mod
+runs/mod_4*.err

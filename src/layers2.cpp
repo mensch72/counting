@@ -36,6 +36,7 @@
 #include <bits/stdc++.h>
 #include <thread>
 #include <atomic>
+#include <mutex>
 #define MAXN 128
 #include <nauty/nauty.h>
 #include <nauty/nautinv.h>
@@ -80,7 +81,7 @@ static const int SINGLE=0;
 // of the dual lattice with the same distance matrix.  So a frontier can only be completed with w
 // further elements if some lower part with the same distance profile has w elements below its top
 // layer.  firstA[profile] = least such w seen (the DP runs in increasing weight, so the first is least).
-static unordered_map<string,int> firstA;
+static unordered_map<string,int> firstA; static std::mutex firstA_mtx;
 static string dist_profile(int k, const vector<u64>& adj){
   vector<string> rows(k);
   for(int s0=0;s0<k;s0++){ string r; u64 seen=1ull<<s0, fr=seen; int d=0; while(true){ u64 nx=0,f=fr; while(f){ int x=__builtin_ctzll(f); f&=f-1; nx|=adj[x]; } nx&=~seen; if(!nx) break; d++; r.append(__builtin_popcountll(nx),(char)d); seen|=nx; fr=nx; } rows[s0]=r; }
@@ -279,11 +280,14 @@ static void expand(int sid, int B, vector<Pending>& out){
     if(mod){
       fb=diameter_bound(k,nadj); if(fb<0) return; if(k+fb>B) return;
       if(AUTW){ fb=1; if(k>AUTW) return; } else {
-      string prof=dist_profile(k,nadj); auto it=firstA.find(prof); int anow=N-B;
-      int w = (it==firstA.end())? anow : it->second;
+      // All entries made at the current weight level have the value anow, which is also what a
+      // missing entry counts as; so the result does not depend on the order within a level and
+      // the states of a level can be expanded in parallel.
+      string prof=dist_profile(k,nadj); int anow=N-B; int w; bool found;
+      { std::lock_guard<std::mutex> lk(firstA_mtx); auto it=firstA.find(prof); found=(it!=firstA.end()); w = found? it->second : anow; }
       if(w>fb) fb=w;
       if(k+fb>B) return;
-      if(it==firstA.end()) firstA.emplace(move(prof),anow); }
+      if(!found){ std::lock_guard<std::mutex> lk(firstA_mtx); firstA.emplace(move(prof),anow); } }
     } else {
       // lower semimodular: elements without a common lower cover have no common upper cover
       if(modeD){ u64 fk=(1ull<<k)-1; for(int c=0;c<k;c++) if(nadj[c]!=(fk&~(1ull<<c))){ fb=3; break; } }
@@ -489,28 +493,40 @@ int main(int argc,char**argv){
   int nthreads=argc>4?atoi(argv[4]):1;
   const char* ckfile=argc>5?argv[5]:nullptr;
   const bool mod = modeU && modeD;
-  if(mod) nthreads=1;                 // the duality bound uses a shared table, filled in order
   const bool storeTr = mod;            // modular mode keeps the transitions (expansion order matters there)
   const bool tag = dualfile!=nullptr;  // tag the counts by the number of atoms (for the duality table)
-  if(ckfile && (mod||tag)){ fprintf(stderr,"checkpoints are only supported in the non-modular modes without duality table\n"); return 1; }
   { static string single="__single__"; idx[single]=0; slots.push_back({&idx.find(single)->first,0,0,1,0,true}); }
   vector<unordered_map<u64,u128>> by(N+2); vector<u128> vi(N+2,0); map<array<int,3>,u128> viAB;
   int astart=2;
+  u64 ntrStored=0;
+  auto put_tr=[&](int sid, const vector<u32>& tr){
+    if(trChunks.empty() || trChunks.back().size()+tr.size()>trChunks.back().capacity()){ trChunks.emplace_back(); trChunks.back().reserve(max(TRCHUNK,tr.size())); }
+    Slot& sl=slots[sid]; sl.trOff=((u64)(trChunks.size()-1)<<32)|trChunks.back().size(); sl.trCnt=tr.size(); sl.expanded=true;
+    trChunks.back().insert(trChunks.back().end(),tr.begin(),tr.end()); ntrStored+=tr.size(); };
+  const u64 CKMAGIC=0x4c41594552533244ull;
   auto save_ck=[&](int adone){
     string tmp=string(ckfile)+".tmp"; FILE* f=fopen(tmp.c_str(),"wb"); if(!f) die("cannot write checkpoint");
-    u64 hdr[4]={0x4c41594552533243ull,(u64)N,(u64)adone,(u64)slots.size()}; fwrite(hdr,8,4,f);
-    for(size_t i=1;i<slots.size();i++){ u32 len=slots[i].key->size(); fwrite(&len,4,1,f); fwrite(slots[i].key->data(),1,len,f); fwrite(&slots[i].nt,1,1,f); fwrite(&slots[i].fut,1,1,f); }
+    u64 hdr[4]={CKMAGIC,(u64)N,(u64)adone,(u64)slots.size()}; fwrite(hdr,8,4,f);
+    for(size_t i=1;i<slots.size();i++){ const Slot& sl=slots[i]; u32 len=sl.key->size(); fwrite(&len,4,1,f); fwrite(sl.key->data(),1,len,f); fwrite(&sl.nt,1,1,f); fwrite(&sl.fut,1,1,f);
+      u8 ex=sl.expanded; fwrite(&ex,1,1,f); if(ex){ fwrite(&sl.trCnt,4,1,f); fwrite(trChunks[sl.trOff>>32].data()+(u32)sl.trOff,4,sl.trCnt,f); } }
     fwrite(vi.data(),sizeof(u128),N+2,f);
     for(int a2=adone+1;a2<=N;a2++){ u64 cnt=by[a2].size(); fwrite(&cnt,8,1,f); for(auto& kv: by[a2]){ fwrite(&kv.first,8,1,f); fwrite(&kv.second,sizeof(u128),1,f); } }
+    { u64 cnt=firstA.size(); fwrite(&cnt,8,1,f); for(auto& kv: firstA){ u32 len=kv.first.size(); fwrite(&len,4,1,f); fwrite(kv.first.data(),1,len,f); fwrite(&kv.second,sizeof(int),1,f); } }
+    { u64 cnt=viAB.size(); fwrite(&cnt,8,1,f); for(auto& kv: viAB){ fwrite(kv.first.data(),sizeof(int),3,f); fwrite(&kv.second,sizeof(u128),1,f); } }
     if(fclose(f)) die("checkpoint write failed"); rename(tmp.c_str(),ckfile);
     fprintf(stderr,"checkpoint written after acc=%d (%zu states)\n",adone,slots.size()); };
   auto load_ck=[&]()->bool{
     FILE* f=fopen(ckfile,"rb"); if(!f) return false;
-    u64 hdr[4]; if(fread(hdr,8,4,f)!=4 || hdr[0]!=0x4c41594552533243ull || hdr[1]!=(u64)N) die("bad checkpoint");
-    string key;
-    for(u64 i=1;i<hdr[3];i++){ u32 len; u8 nt,fut; if(fread(&len,4,1,f)!=1) die("bad checkpoint"); key.resize(len); if(fread(&key[0],1,len,f)!=len||fread(&nt,1,1,f)!=1||fread(&fut,1,1,f)!=1) die("bad checkpoint"); if(intern_key(key,nt,fut)!=(int)i) die("bad checkpoint order"); }
-    if(fread(vi.data(),sizeof(u128),N+2,f)!=(size_t)(N+2)) die("bad checkpoint");
-    for(int a2=hdr[2]+1;a2<=N;a2++){ u64 cnt; if(fread(&cnt,8,1,f)!=1) die("bad checkpoint"); for(u64 j=0;j<cnt;j++){ u64 k; u128 v; if(fread(&k,8,1,f)!=1||fread(&v,sizeof(u128),1,f)!=1) die("bad checkpoint"); by[a2][k]=v; } }
+    auto rd=[&](void* p,size_t sz,size_t n){ if(fread(p,sz,n,f)!=n) die("bad checkpoint"); };
+    u64 hdr[4]; rd(hdr,8,4); if(hdr[0]!=CKMAGIC || hdr[1]!=(u64)N) die("bad checkpoint");
+    string key; vector<pair<int,vector<u32>>> trs;
+    for(u64 i=1;i<hdr[3];i++){ u32 len; u8 nt,fut,ex; rd(&len,4,1); key.resize(len); rd(&key[0],1,len); rd(&nt,1,1); rd(&fut,1,1); rd(&ex,1,1);
+      if(intern_key(key,nt,fut)!=(int)i) die("bad checkpoint order");
+      if(ex){ u32 c; rd(&c,4,1); vector<u32> tr(c); if(c) rd(tr.data(),4,c); put_tr(i,tr); } }
+    rd(vi.data(),sizeof(u128),N+2);
+    for(int a2=hdr[2]+1;a2<=N;a2++){ u64 cnt; rd(&cnt,8,1); for(u64 j=0;j<cnt;j++){ u64 k; u128 v; rd(&k,8,1); rd(&v,sizeof(u128),1); by[a2][k]=v; } }
+    { u64 cnt; rd(&cnt,8,1); for(u64 j=0;j<cnt;j++){ u32 len; int v; rd(&len,4,1); key.resize(len); rd(&key[0],1,len); rd(&v,sizeof(int),1); firstA[key]=v; } }
+    { u64 cnt; rd(&cnt,8,1); for(u64 j=0;j<cnt;j++){ array<int,3> k; u128 v; rd(k.data(),sizeof(int),3); rd(&v,sizeof(u128),1); viAB[k]=v; } }
     fclose(f); astart=hdr[2]+1; fprintf(stderr,"resumed from checkpoint after acc=%d (%zu states)\n",(int)hdr[2],slots.size()); return true; };
   // from the single-element frontier: m >= 1 new elements all covering it
   // (m = 1 gives the 2-element chain)
@@ -520,14 +536,11 @@ int main(int argc,char**argv){
       NS.cls.assign(m,0); Perm id(m); iota(id.begin(),id.end(),0); NS.H={id}; NS.fut=1; if(ATOM) NS.nat=m;
       { vector<u64> full(m); for(int c=0;c<m;c++) full[c]=((1ull<<m)-1)&~(1ull<<c); firstA.emplace(dist_profile(m,full),1); }
       int t=intern_key(make_key(NS),m,1); by[1+m][((u64)t<<8)|(tag?m:0)]+=1; } }
-  time_t t0=time(0), tck=time(0); u64 ncells=0, ntrStored=0;
+  time_t t0=time(0), tck=time(0); u64 ncells=0;
   auto store_tr=[&](int sid, vector<Pending>& pend){
     vector<u32> tr; tr.reserve(pend.size());
     for(auto& p: pend) tr.push_back(p.key.empty()? SINGLE : (u32)intern_key(p.key,p.nt,p.fut));
-    sort(tr.begin(),tr.end());
-    if(trChunks.empty() || trChunks.back().size()+tr.size()>trChunks.back().capacity()){ trChunks.emplace_back(); trChunks.back().reserve(max(TRCHUNK,tr.size())); }
-    Slot& sl=slots[sid]; sl.trOff=((u64)(trChunks.size()-1)<<32)|trChunks.back().size(); sl.trCnt=tr.size(); sl.expanded=true;
-    trChunks.back().insert(trChunks.back().end(),tr.begin(),tr.end()); ntrStored+=tr.size(); };
+    sort(tr.begin(),tr.end()); put_tr(sid,tr); };
   for(int a=astart;a<=N;a++){
     vector<pair<u64,u128>> items(by[a].begin(),by[a].end()); unordered_map<u64,u128>().swap(by[a]);
     sort(items.begin(),items.end(),[](const pair<u64,u128>&x,const pair<u64,u128>&y){return x.first<y.first;});
