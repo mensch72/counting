@@ -85,8 +85,13 @@ def core_sum_A(q,rel,j,k,A):
         v=count(E)
         total+=(-1)**len(E)*v
         if depth>=q+j+1: return
+        later=0
+        for X in E[1:]: later|=X
+        first=E[0] if E else 0
         for S in ac:
             if bin(S).count('1')+j<k: continue
+            if S & later & ~first: continue   # interval sequences only (Lemma 5)
+            if E and S==first and j==0: continue
             rec2([S]+E,depth+1)
     rec2([],0)
     return total
