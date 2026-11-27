@@ -588,6 +588,110 @@ Theorem~\ref{thm:main2} slightly, but the transfer matrix for labelled posets wi
 bound has not been written out or tested; only the lemma was checked, on all posets with at
 most $7$ points.
 
+\section{Narrow posets and templates}
+
+This section reduces the count of narrow posets to a finite extremal problem. It is a
+proof sketch that has not yet been refereed; the numerical evaluation is in progress.
+
+\subsection*{Templates}
+Let $C_1,\dots,C_m$ be disjoint chains of lengths $a_1,\dots,a_m$. An order extending them
+is given by non-decreasing maps $d_{ij}\colon[a_i]\to\{0,\dots,a_j\}$ for $i\ne j$: the
+element at position $t$ of $C_i$ is above exactly the first $d_{ij}(t)$ elements of $C_j$
+(put $d(0)=0$). Transitivity through a third chain reads
+\begin{equation}\label{eq:tri}
+  d_{ik}(t)\ \ge\ d_{jk}(d_{ij}(t))\qquad(i,j,k\text{ distinct}).
+\end{equation}
+A \emph{template} assigns to each pair $\{i,j\}$ a non-empty set $A_{ij}$ of orders on
+$C_i\cup C_j$ such that every choice of one member from each set gives an order on
+$C_1\cup\dots\cup C_m$. Its \emph{entropy} is $\sum_{i<j}\log_2|A_{ij}|$, and
+$\tau_m(a_1,\dots,a_m)$ is the largest entropy of a template. The band posets of
+Proposition~\ref{prop:band} are the realisations of templates.
+
+\begin{lemma}[envelopes]\label{lem:env}
+Let $H_{ij}$ be the pointwise maximum of $d_{ij}$ over $A_{ij}$. Then every member of
+$A_{ik}$ satisfies $d_{ik}\ge H_{jk}\circ H_{ij}$ for every third chain~$j$. Hence
+$\tau_3(a_1,a_2,a_3)\le\tau_3^{\rm up}(a_1,a_2,a_3)$, the maximum over six non-decreasing
+maps $H_{ij}$ of $\sum_{\{i,k\}}\log_2$ of the number of orders $(d_{ik},d_{ki})$ on
+$C_i\cup C_k$ with $H_{jk}\circ H_{ij}\le d_{ik}\le H_{ik}$ and
+$H_{ji}\circ H_{kj}\le d_{ki}\le H_{ki}$.
+\end{lemma}
+\begin{proof}
+Fix $t$. Choose a member of $A_{ij}$ with $d_{ij}(t)=H_{ij}(t)=:s$ and a member of $A_{jk}$
+with $d_{jk}(s)=H_{jk}(s)$. Together with any member of $A_{ik}$ they form an order, so
+\eqref{eq:tri} gives $d_{ik}(t)\ge H_{jk}(H_{ij}(t))$.
+\end{proof}
+
+\subsection*{The counting theorem}
+We use the following result of Falgas-Ravry, O'Connell and Uzzell~\cite{FOU}. A property
+$\mathcal Q=(\mathcal Q_B)_B$ of colourings of the edges of $K_B$ (vertex set $[B]$) with a
+fixed finite set of colours is \emph{order-hereditary} if it is closed under restriction to
+subsets of $[B]$ with the induced order. A template for $K_B$ gives each edge a non-empty
+palette; $\mathrm{ex}(B,\mathcal Q)$ is the largest entropy (here in bits) of a template all of
+whose realisations lie in $\mathcal Q_B$. Then $\mathrm{ex}(B,\mathcal Q)/\binom B2$ is
+non-increasing with limit $\pi(\mathcal Q)$ \cite[Prop.~2.10]{FOU}, and for every
+$\varepsilon>0$ and all large $B$,
+$\log_2|\mathcal Q_B|\le(\pi(\mathcal Q)+\varepsilon)\binom B2$ \cite[Cor.~2.15]{FOU}.
+In particular $\pi(\mathcal Q)\le\mathrm{ex}(3,\mathcal Q)/3$.
+
+\begin{theorem}\label{thm:templates}
+For all $K\ge1$ and $\varepsilon>0$ there is $w_0$ such that for all $w\ge w_0$ and all
+disjoint chains $C_1,\dots,C_w$ of lengths $a_i\le K$, the number of orders extending them is
+at most
+\[
+ 2^{\,\frac{w^2}{6}\,\mathbb{E}\,\tau_3(X,Y,Z)+\varepsilon w^2},
+\]
+where $X,Y,Z$ are independent with the empirical distribution of $(a_1,\dots,a_w)$.
+\end{theorem}
+\begin{proof}[Proof sketch]
+\emph{Bundles.} Fix a large $g$. Let $w_\ell$ be the number of chains of length $\ell$,
+$\gamma_\ell=\lfloor gw_\ell/w\rfloor$, $g'=\sum_\ell\gamma_\ell\in[g-K-1,g]$ and
+$B=\lfloor w/g\rfloor$. Form $B$ \emph{bundles}, each consisting of $\gamma_\ell$ chains of
+length $\ell$ for every $\ell$. At most $w(K+1)/g+g$ chains are left over; their relations
+to all chains contribute at most $4K\,w\,(w(K+1)/g+g)$ bits, which is at most
+$\varepsilon w^2/3$ for $g$ large and then $w$ large.
+
+\emph{The property.} Colour the edge $ij$ ($i<j$) of $K_B$ by the order induced on the union
+of bundles $i$ and $j$; the colour set is finite and depends only on $(\gamma_\ell)$.
+Let $\mathcal Q_B$ consist of the colourings that come from an order on the union of all
+bundles. This is order-hereditary. There are finitely many vectors $(\gamma_\ell)$ for given
+$g,K$, so the constant in \cite[Cor.~2.15]{FOU} can be chosen uniformly.
+
+\emph{Three bundles.} Let $t$ be a template on $K_3$ with all realisations in $\mathcal Q_3$.
+Each vertex lies in two edges whose colours are chosen independently, so the order inside
+each bundle is the same for all colours of all palettes. A colour of the edge $ij$ is
+therefore determined by the orders on the pairs $C_x\cup C_y$, $x$ in bundle~$i$, $y$ in
+bundle~$j$, and $|t(ij)|\le\prod_{x,y}|A_{xy}|$, where $A_{xy}$ is the set of orders on
+$C_x\cup C_y$ occurring in $t(ij)$. For $x,y,z$ in three different bundles every
+combination from $A_{xy}\times A_{xz}\times A_{yz}$ occurs in a realisation, so
+$(A_{xy},A_{xz},A_{yz})$ is a template and
+$\log_2|A_{xy}|+\log_2|A_{xz}|+\log_2|A_{yz}|\le\tau_3(a_x,a_y,a_z)$.
+Each pair $(x,y)$ lies in $g'$ such triples, so
+$\mathrm{ex}(3,\mathcal Q)\le\frac1{g'}\sum_{x,y,z}\tau_3(a_x,a_y,a_z)
+=g'^2\,\mathbb{E}\,\tau_3(X',Y',Z')$ with $X',Y',Z'$ distributed as the lengths in a bundle.
+
+\emph{Conclusion.} $\log_2|\mathcal Q_B|\le\binom B2\bigl(\tfrac{g'^2}{3}\mathbb{E}\,\tau_3(X',Y',Z')
++\varepsilon'\bigr)$, $Bg'\le w$, and the distribution of the lengths in a bundle differs
+from the empirical one by at most $(K+1)/g$ in each coordinate, while
+$\tau_3\le 3\log_2P(K,K)\le12K$.
+\end{proof}
+
+The same argument with $m$ bundles gives $\frac{w^2}{2}\,\mathbb{E}\,\tau_m/\binom m2$, and
+these bounds decrease to the truth as $m\to\infty$, because
+$\mathrm{ex}(m,\mathcal Q)/\binom m2\to\pi(\mathcal Q)$ and
+$|\mathcal Q_B|\ge2^{\pi(\mathcal Q)\binom B2}$.
+
+\medskip\noindent\emph{Consequence.} After cutting long chains as in the previous section,
+\[
+h(\alpha)\ \le\ \frac{\tilde\alpha^{2}}{6}\,\sup\bigl\{\mathbb{E}_{\mu^{3}}\tau_3:\ 
+\mu\text{ on }\{0,\dots,K\}\text{ with mean }1/\tilde\alpha\bigr\},\qquad
+\tilde\alpha=\alpha+1/K,
+\]
+where $2^{h(\alpha)n^2}$ is the number of posets of width at most $\alpha n$. The
+three-chain \emph{count} used before is replaced by the three-chain \emph{template}, which
+is much smaller: a randomised search (a lower estimate of $\tau_3$, not a bound) gives
+$8.73$ bits per pair for three chains of length $5$, against $14.24$ for the pair count,
+about $12.7$ for the three-chain count and $8.34$ for the band construction.
+
 \section{Remarks}
 
 \begin{enumerate}
@@ -605,6 +709,9 @@ reach of computation ($n\approx20$).
 \begin{thebibliography}{9}
 \bibitem{B} A.~Bj\"orner, Topological methods, in: \emph{Handbook of Combinatorics},
   Vol.~2, Elsevier, 1995, 1819--1872.
+\bibitem{FOU} V.~Falgas-Ravry, K.~O'Connell and A.~Uzzell, Multicolour containers, extremal
+  entropy and counting, \emph{Random Structures Algorithms} \textbf{54} (2019), 676--720;
+  arXiv:1801.05195.
 \bibitem{KR75} D.~J.~Kleitman and B.~L.~Rothschild, Asymptotic enumeration of partial
   orders on a finite set, \emph{Trans.\ Amer.\ Math.\ Soc.} \textbf{205} (1975), 205--220.
 \bibitem{Q} D.~Quillen, Homotopy properties of the poset of nontrivial $p$-subgroups of a
