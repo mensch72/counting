@@ -296,10 +296,21 @@ Hence, using~\cite{KR75}, $W_k(n)$ is computed in time
 \]
 
 \subsection*{Narrow posets}
-Let $w=k-1$. An \emph{encoding} consists of
+\emph{Listing.} The restriction of a poset of width less than $k$ to $[m-1]$ has width
+less than~$k$. So the depth-first search above, cut off at posets of width at least $k$,
+lists exactly the posets of width less than $k$. Adding a new point above all others shows
+$N_k(m-1)\le N_k(m)$, so this takes time $N_k(n)\,2^{O(n)}$ and polynomial space.
+Together with the wide part:
+
+\begin{proposition}\label{prop:time}
+For every $k$, $L(n)$ can be computed in time
+$\bigl(L(n-k)+N_k(n)\bigr)\,2^{O(n\log n)}$ and polynomial space.
+\end{proposition}
+
+\emph{Counting.} Let $w=k-1$. An \emph{encoding} consists of
 \begin{itemize}
-\item an ordered list of $w'\le w$ non-empty sequences $C_1,\dots,C_{w'}$ that partition $[n]$
-  (at most $n!\,2^n$ possibilities), and
+\item an ordered list of $w'\le w$ non-empty sequences $C_1,\dots,C_{w'}$ that partition
+  $[n]$ (at most $n!\,2^n$ possibilities), and
 \item for every ordered pair $i\ne i'$ a non-increasing map
   $g_{ii'}\colon C_i\to\{0,\dots,|C_{i'}|\}$, where $C_i$ is ordered as a sequence.
 \end{itemize}
@@ -308,21 +319,62 @@ for $c\in C_i$, exactly the last $g_{ii'}(c)$ elements of $C_{i'}$ are above~$c$
 The number of non-increasing maps from an $a$-chain to $\{0,\dots,b\}$ is
 $\binom{a+b}{a}\le2^{a+b}$, and $\sum_{i\ne i'}(|C_i|+|C_{i'}|)=2(w'-1)n$. So there are at
 most $2^{2wn+O(n\log n)}$ encodings.
-
 Every poset of width at most $w$ has an encoding: by Dilworth's theorem it is a union of
 $w'\le w$ disjoint chains, and for $c\in C_i$ the elements of $C_{i'}$ above $c$ form a
-final segment of $C_{i'}$ that shrinks as $c$ increases. Conversely, a relation defined by
-an encoding that is a strict partial order has width at most~$w$.
-
-To count each poset once, run through all encodings; for each one whose relation is a
-strict partial order $P$, run through all encodings of $P$ with at most $w$ chains
-(at most $n!\,2^n$ lists of chains, each determining its maps $g_{ii'}$), and count $P$
-only if the current encoding is the lexicographically smallest among them. This takes time $2^{2(k-1)n+O(n\log n)}$ and polynomial space.
+final segment of $C_{i'}$ that shrinks as $c$ increases. Hence
+\begin{equation}\label{eq:narrow}
+  N_k(n)\le 2^{2(k-1)n+O(n\log n)} .
+\end{equation}
 
 \subsection*{Balancing}
 Take $k=\lceil\alpha n\rceil$ with $\alpha=5-2\sqrt6$, the smaller root of
 $(1-\alpha)^2=8\alpha$. Then $(n-k)^2/4\le(1-\alpha)^2n^2/4=2\alpha n^2$ and
-$2(k-1)n\le2\alpha n^2$, and $2\alpha=10-4\sqrt6=0.20204\ldots$ \qed
+$2(k-1)n\le2\alpha n^2$, and $2\alpha=10-4\sqrt6=0.20204\ldots$ Theorem~\ref{thm:main}
+follows from Proposition~\ref{prop:time}, \cite{KR75} and \eqref{eq:narrow}. \qed
+
+\section{How far can listing the narrow posets go?}
+
+By Proposition~\ref{prop:time}, the exponent is governed by $N_k(n)$, and \eqref{eq:narrow}
+is only an upper bound. The following lower bound limits what a better count can give.
+
+\begin{proposition}\label{prop:band}
+Let $w,\ell,a\ge1$ and let $c(\ell,a)$ be the number of non-decreasing maps
+$d\colon[\ell]\to\{0,\dots,\ell\}$ with $\max(0,t-2a)\le d(t)\le\max(0,t-a)$ for all~$t$.
+Then $N_{w+1}(w\ell)\ge c(\ell,a)^{w(w-1)}$.
+\end{proposition}
+\begin{proof}
+Take points $(i,t)$, $i\in[w]$, $t\in[\ell]$, and for each ordered pair $i\ne j$ such a map
+$d_{ij}$. Put $(i,s)<(i,t)$ iff $s<t$, and $(j,s)<(i,t)$ iff $s\le d_{ij}(t)$ for $i\ne j$.
+A relation $(j,s)<(i,t)$ implies $s<t$, and $s\le t-a$ if $i\ne j$; so the relation is
+irreflexive and has no cycles. Transitivity: let $(k,u)<(j,s)<(i,t)$.
+If $i,j,k$ are distinct, $u\le s-a\le t-2a$, so $t-2a\ge1$ and $u\le d_{ik}(t)$.
+If $i=k\ne j$, then $u<t$. If $i=j\ne k$, then $u\le d_{ik}(s)\le d_{ik}(t)$.
+If $j=k\ne i$, then $u<s\le d_{ij}(t)$. The $w$ rows are chains, so the width is at
+most~$w$, and $d_{ij}(t)$ is recovered as the largest $s$ with $(j,s)<(i,t)$.
+\end{proof}
+
+For $\ell=5$, $a=1$ one has $c(5,1)=2^4$ (two choices of $d(t)$ for each $t\ge2$), so
+$N_{w+1}(5w)\ge 2^{4w(w-1)}=2^{0.16\,n^2-O(n)}$ with $n=5w$, that is, for width at most
+$n/5$. Since the wide part costs $2^{(1-\alpha)^2n^2/4}\ge2^{0.16n^2}$ for
+$k=\alpha n\le n/5$, and $N_k$ is non-decreasing in $k$:
+
+\begin{quote}
+\emph{Any algorithm that follows Proposition~\ref{prop:time}, listing the posets of width
+less than $k$, has exponent $c\ge0.16$.}
+\end{quote}
+
+So sharper counting of narrow posets can move the exponent only within
+$[0.16,\,0.2021]$. Going below $0.16$ requires counting the narrow posets without listing
+them.
+
+\medskip\noindent\emph{A generalisation that fails.} In the posets of
+Proposition~\ref{prop:band} there are convex subsets of about $n/3$ points that are
+disjoint unions of pairwise incomparable chains, and such a subset can be inserted into
+the remaining poset chain by chain. The direct analogue of Theorem~\ref{thm:euler} is
+false, however: the poset of pairs $I'\subseteq I$ of down-sets for which $I\setminus I'$
+is a disjoint union of pairwise incomparable chains with at least $k$ points, ordered
+componentwise, has Euler characteristic $2$ for the poset $\{0,1\}<2<3$ and $k=3$
+(computer search over all posets on at most $5$ points: $414$ failures in $16\,675$ cases).
 
 \section{Remarks}
 
