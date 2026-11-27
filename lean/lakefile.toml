@@ -9,6 +9,7 @@ autoImplicit = false
 relaxedAutoImplicit = false
 weak.linter.unusedSectionVars = false
 weak.linter.style.header = false
+weak.linter.deprecated = false
 
 [[require]]
 name = "mathlib"

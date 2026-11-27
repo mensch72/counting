@@ -3,3 +3,4 @@ import PosetCount.EulerChar
 import PosetCount.WideDownsets
 import PosetCount.Insertion
 import PosetCount.Flags
+import PosetCount.Band

@@ -21,6 +21,7 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | `PosetCount/WideDownsets.lean` | the poset `J_k(P)`; Euler characteristic; flag identity |
 | `PosetCount/Insertion.lean` | inserting an antichain along a cut, and the converse |
 | `PosetCount/Flags.lean` | the relation `≼` on antichains; structure of a flag |
+| `PosetCount/Band.lean` | band posets: many posets of small width |
 
 ## Coverage
 
@@ -37,6 +38,8 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | Lemma 5 (d) (interval property) | ✓ | `notMem_of_dominated` |
 | Lemma 5 (a), (c); Proposition 7 (bijection with valid configurations) | — | |
 | Lemma 8, Theorem 9 (counting formula) | — | |
+| Proposition 11 (band posets are posets; chains are total; data recovered from the order) | ✓ | `BandData.isStrictOrder`, `BandData.chain_total`, `BandData.lt_iff_of_ne` |
+| Proposition 11, the count `c(ℓ,a)^(w(w-1))` | — | |
 | Complexity statements (Theorem 1, Propositions 10, 11) | — | not planned: running-time claims are outside the formalisation |
 
 ## Design
@@ -63,3 +66,7 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
    argument in the note is not needed.
 4. In the insertion lemma the cut `A` need not be a down-set; only `D x ⊆ A` and
    `U x ⊆ Aᶜ` are used.
+5. Band posets are formalised on `ι × ℕ` with heights starting at 0; `e i j t` is the number of
+   elements of chain `j` below the element of chain `i` at height `t`, so the band condition
+   reads `t + 1 - 2a ≤ e i j t ≤ t + 1 - a` (truncated subtraction). The finite posets of the
+   note are the restrictions to heights below `ℓ`.
