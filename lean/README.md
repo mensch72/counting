@@ -19,6 +19,8 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | `PosetCount/Submodular.lean` | maximal elements of a finite set; submodularity lemma |
 | `PosetCount/EulerChar.lean` | reduced Euler characteristic of a finite subposet; cones; removing a point whose upper link is a cone; closure operators |
 | `PosetCount/WideDownsets.lean` | the poset `J_k(P)`; Euler characteristic; flag identity |
+| `PosetCount/Insertion.lean` | inserting an antichain along a cut, and the converse |
+| `PosetCount/Flags.lean` | the relation `≼` on antichains; structure of a flag |
 
 ## Coverage
 
@@ -29,8 +31,11 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | Theorem 3, flag identity (signed number of `k`-flags is 1 or 0) | ✓ | `flag_identity` |
 | `J_k(P)` non-empty ⇔ an antichain of size ≥ k exists | ✓ | `Jk_nonempty_iff` |
 | Theorem 3, contractibility of the order complex | — | not formalised; only the Euler characteristic is used in the note |
-| Lemma 4 (insertion) | — | |
-| Lemma 5, Proposition 7 (structure of a flag, bijection) | — | |
+| Lemma 4 (insertion: the constructed relation is a strict partial order) | ✓ | `InsData.lt`, instance `IsStrictOrder` |
+| Converse of Lemma 4 (every order with the new elements as an antichain arises this way) | ✓ | `InsData.ofOrder`, `InsData.ofOrder_lt` |
+| Lemma 5 (b) (parts `N_i ∩ M` increase) | ✓ | `mem_of_dominated` |
+| Lemma 5 (d) (interval property) | ✓ | `notMem_of_dominated` |
+| Lemma 5 (a), (c); Proposition 7 (bijection with valid configurations) | — | |
 | Lemma 8, Theorem 9 (counting formula) | — | |
 | Complexity statements (Theorem 1, Propositions 10, 11) | — | not planned: running-time claims are outside the formalisation |
 
@@ -54,3 +59,7 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
    counting formula needs.
 2. The Lean proof does not use a maximum antichain. It takes a down-set in `J_k(P)` with the
    largest number of maximal elements, which is all that the argument needs.
+3. Lemma 5 (d) follows directly from Lemma 5 (b) (`notMem_of_dominated`); the separate
+   argument in the note is not needed.
+4. In the insertion lemma the cut `A` need not be a down-set; only `D x ⊆ A` and
+   `U x ⊆ Aᶜ` are used.
