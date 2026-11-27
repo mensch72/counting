@@ -1,0 +1,15 @@
+  bisect alpha=0.13600 h3=0.20437 wide=0.18662
+  bisect alpha=0.12900 h3=0.19667 wide=0.18966
+  bisect alpha=0.12550 h3=0.19291 wide=0.19119
+  bisect alpha=0.12375 h3=0.19105 wide=0.19195
+  bisect alpha=0.12462 h3=0.19198 wide=0.19157
+  bisect alpha=0.12419 h3=0.19152 wide=0.19176
+  bisect alpha=0.12441 h3=0.19175 wide=0.19167
+  bisect alpha=0.12430 h3=0.19163 wide=0.19171
+  bisect alpha=0.12435 h3=0.19169 wide=0.19169
+  bisect alpha=0.12432 h3=0.19166 wide=0.19170
+  bisect alpha=0.12434 h3=0.19168 wide=0.19170
+  bisect alpha=0.12434 h3=0.19168 wide=0.19169
+  bisect alpha=0.12435 h3=0.19169 wide=0.19169
+  bisect alpha=0.12435 h3=0.19169 wide=0.19169
+crossing: alpha<=0.12435  c<=0.19169

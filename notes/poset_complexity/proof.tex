@@ -24,7 +24,8 @@
 \maketitle
 
 \noindent\textbf{Status.} AI-assisted. The proofs below were written by a language
-model and have not been checked by a human. The counting formula of
+model and have not been checked by a human. Section~2 and parts of Sections~3, 6 and~8 are
+machine-checked in Lean (see \texttt{lean/README.md} for the exact coverage). The counting formula of
 Theorem~\ref{thm:formula} agrees with brute force for all $n\le 5$ and all $k$, in two
 independently written programs. A second language-model pass refereed the proofs; its
 corrections are included.
@@ -375,6 +376,129 @@ false, however: the poset of pairs $I'\subseteq I$ of down-sets for which $I\set
 is a disjoint union of pairwise incomparable chains with at least $k$ points, ordered
 componentwise, has Euler characteristic $2$ for the poset $\{0,1\}<2<3$ and $k=3$
 (computer search over all posets on at most $5$ points: $414$ failures in $16\,675$ cases).
+
+\section{A sharper count of narrow posets}
+
+Let $P(a,b)$ be the number of partial orders on the disjoint union of an $a$-chain and a
+$b$-chain that extend both chains.
+
+\begin{lemma}\label{lem:two}
+$P(a,b)=\binom{a+b}{a}^2-\binom{a+b}{a-1}\binom{a+b}{a+1}
+=\dfrac{(a+b)!\,(a+b+1)!}{a!\,(a+1)!\,b!\,(b+1)!}$.
+\end{lemma}
+\begin{proof}
+Let the chains be $a_1<\dots<a_a$ and $b_1<\dots<b_b$. Such an order is given by maps
+$d,e\colon[a]\to\{0,\dots,b\}$ with $b_s<a_t$ iff $s\le d(t)$ and $a_t<b_s$ iff $s>e(t)$.
+Transitivity through $a_t<a_{t'}$ says that $d$ and $e$ are non-decreasing;
+$b_s<a_t<b_{s'}\Rightarrow s<s'$ says $d\le e$; and $a_t<b_s<a_{t'}\Rightarrow t<t'$ then
+holds automatically, since $t\ge t'$ would give $e(t)\ge e(t')\ge d(t')$. So $P(a,b)$ is the
+number of pairs $d\le e$ of non-decreasing maps, that is, of pairs of non-crossing lattice
+paths, and the formula is the Lindstr\"om--Gessel--Viennot determinant.
+\end{proof}
+
+\begin{lemma}[smoothing]\label{lem:smooth}
+Among all $(a_1,\dots,a_w)\in\mathbb{Z}_{\ge0}^w$ with sum $n$, the product
+$\prod_{i<j}P(a_i,a_j)$ is largest when $|a_i-a_j|\le1$ for all $i,j$.
+\end{lemma}
+\begin{proof}
+From Lemma~\ref{lem:two},
+\[
+\frac{P(a+1,c)}{P(a,c)}=\Bigl(1+\frac{c}{a+1}\Bigr)\Bigl(1+\frac{c}{a+2}\Bigr),\qquad
+\frac{P(a-1,b+1)}{P(a,b)}=\frac{a(a+1)}{(b+1)(b+2)} .
+\]
+The first ratio is non-increasing in $a$; the second is at least $1$ if $a\ge b+1$.
+If $a_i\ge a_j+2$, replace $(a_i,a_j)$ by $(a_i-1,a_j+1)$. The factor of the pair $\{i,j\}$
+does not decrease by the second identity. For $k\ne i,j$ and $c=a_k$ the two factors change
+by $\frac{P(a_j+1,c)}{P(a_j,c)}\big/\frac{P(a_i,c)}{P(a_i-1,c)}\ge1$, because
+$a_j\le a_i-1$. The move decreases $\sum a_i^2$, so finitely many moves lead to a balanced
+profile.
+\end{proof}
+
+\begin{theorem}\label{thm:narrow}
+Let $n=qw+r$ with $0\le r<w$. Then
+\[
+N_{w+1}(n)\le n!\,2^{n+w}\,P(q,q)^{\binom{w-r}{2}}\,P(q,q+1)^{r(w-r)}\,P(q+1,q+1)^{\binom r2}.
+\]
+\end{theorem}
+\begin{proof}
+A poset of width at most $w$ is the union of $w$ disjoint chains, some possibly empty. There
+are at most $n!\binom{n+w-1}{w-1}\le n!\,2^{n+w}$ ordered $w$-tuples of disjoint sequences
+covering $[n]$. For fixed chains $C_1,\dots,C_w$ the poset is determined by its restrictions
+to the sets $C_i\cup C_j$, so there are at most $\prod_{i<j}P(|C_i|,|C_j|)$ posets.
+Apply Lemma~\ref{lem:smooth}.
+\end{proof}
+
+With $1/\alpha=q+\theta$, $0\le\theta<1$, and $F=\log_2P$, Theorem~\ref{thm:narrow} gives
+$N_{\alpha n}(n)\le2^{h_2(\alpha)n^2+O(n\log n)}$ with
+\[
+h_2(\alpha)=\frac{\alpha^2}{2}\Bigl[(1-\theta)^2F(q,q)+2\theta(1-\theta)F(q,q+1)
++\theta^2F(q+1,q+1)\Bigr].
+\]
+The equation $h_2(\alpha)=(1-\alpha)^2/4$ has the solution $\alpha=0.12260\ldots$
+(with $q=8$), and Proposition~\ref{prop:time} yields:
+
+\begin{theorem}\label{thm:main2}
+$L(n)$ can be computed in time $2^{c\,n^2+O(n\log n)}$ and polynomial space with
+$c<0.1925$.
+\end{theorem}
+
+Lemma~\ref{lem:two} was checked by brute force for $a+b\le5$, and
+Lemma~\ref{lem:smooth} exhaustively for $n\le14$, $w\le5$.
+
+\medskip\noindent\emph{Further.} Using exact counts of orders on three chains and
+Shearer's entropy inequality, a computer-assisted argument gives $c\le0.1909$; under an
+unproved log-concavity conjecture for the three-chain counts (no violation in $2101$
+computed cases) it would give $c\le0.1872$. These are documented in
+\texttt{narrow\_bounds/} and are not claimed here.
+
+\medskip\noindent\emph{A better lower bound.} Proposition~\ref{prop:band} generalises: let
+$\mathit{hi}\colon\{0,\dots,L\}\to\{0,\dots,L-1\}$ be non-decreasing with
+$\mathit{hi}(0)=0$ and $\mathit{hi}(t)<t$ for $t\ge1$, and require
+$\mathit{hi}(\mathit{hi}(t))\le d_{ij}(t)\le\mathit{hi}(t)$. The same proof applies (two
+steps down reach at most $\mathit{hi}(\mathit{hi}(t))$). With
+$\mathit{hi}=(0,1,1,3,3,5)$ on $t=1,\dots,6$ and chains of lengths $5$ and $6$ one gets
+$18$ and $54$ admissible maps, and the bound of the previous section becomes:
+\emph{any algorithm that lists the posets of width less than $k$ has exponent
+$c\ge0.1651$.} So this method is confined to $0.1651\le c<0.1925$.
+
+\section{More general identities}
+
+The following statements are machine-checked (Lean~4 with Mathlib; see \texttt{lean/}).
+
+\begin{theorem}[threshold]\label{thm:threshold}
+Let $\mathcal L$ be a finite set of elements of a lattice, closed under joins and meets, and
+let $s\colon\mathcal L\to\mathbb{Z}$ satisfy $s(p)+s(q)\le s(p\vee q)+s(p\wedge q)$. If
+$\{p\in\mathcal L:s(p)\ge k\}$ is non-empty, the signed number of its non-empty chains is~$1$.
+\end{theorem}
+\begin{proof}
+Let $m$ maximise $s$ on $\mathcal L$. Then $s(p\vee m)\ge s(p)+s(m)-s(p\wedge m)\ge s(p)$, so
+$p\mapsto p\vee m$ is a closure operator on the set whose image has the least element~$m$.
+\end{proof}
+
+Theorem~\ref{thm:euler} is the case $\mathcal L=J(P)$, $s(I)=|\max I|$. Two further cases:
+
+\begin{enumerate}
+\item \emph{Pairs of down-sets.} Fix any set $R$ of pairs $x<y$. The pairs $I'\subseteq I$
+of down-sets such that no $(x,y)\in R$ has $x,y\in I\setminus I'$ are closed under
+componentwise union and intersection, and $s=|I\setminus I'|$ is modular. With $R$ the set
+of all comparable pairs, $I\setminus I'$ is an antichain; with other choices it can be forced
+to be a convex union of pairwise incomparable chains.
+\item \emph{Stacks.} Tuples $I'_1\subseteq I_1\subseteq I'_2\subseteq\dots\subseteq I_h$ of
+down-sets such that each $S_j=I_j\setminus I'_j$ is an antichain and, for $j<j'$, every
+element of $I_j$ lies below every element outside $I'_{j'}$. They are closed under
+componentwise union and intersection, and $s=\sum_j|S_j|$ is modular.
+\end{enumerate}
+
+In a stack the poset has the form $Q_0,S_1,Q_1,\dots,S_h,Q_h$ with $Q_i<Q_{i'}$ whenever
+$i'\ge i+2$, and each element of $S_{j}$ is determined by a down-set of $Q_{j-1}$ and an
+up-set of $Q_j$, so the layers can be inserted in product form as in
+Lemma~\ref{lem:ins} (this insertion is worked out on paper only). In the posets of
+Proposition~\ref{prop:band} with $\ell=5$, $a=1$, the levels $1,3,5$ form a stack with
+$3n/5$ points, while the largest antichain has $n/5$.
+
+These identities do not yet improve Theorem~\ref{thm:main2}: no bound is known for the
+number of posets without a large stack, other than the bound for narrow posets, and the
+listing step relies on narrowness being inherited by sub-posets.
 
 \section{Remarks}
 

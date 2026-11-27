@@ -40,8 +40,9 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | Lemma 5 (d) (interval property) | ✓ | `notMem_of_dominated` |
 | Lemma 5 (a), (c); Proposition 7 (bijection with valid configurations) | — | |
 | Lemma 8, Theorem 9 (counting formula) | — | |
-| Proposition 11 (band posets are posets; chains are total; data recovered from the order) | ✓ | `BandData.isStrictOrder`, `BandData.chain_total`, `BandData.lt_iff_of_ne` |
-| Proposition 11, the count `c(ℓ,a)^(w(w-1))` | — | |
+| Proposition 11 and its generalisation (band posets over a height bound `g` are posets; chains are total; data recovered from the order) | ✓ | `BandData.isStrictOrder`, `BandData.chain_total`, `BandData.lt_iff_of_ne`, `BandData.ofOffset` |
+| Proposition 11, the counts of admissible maps | — | |
+| Lemma 12 (orders on two chains), Lemma 13 (smoothing), Theorem 14 (count of narrow posets) | — | |
 | (new, not in the note) Threshold theorem: in a finite family closed under `⊔`, `⊓`, the members with a supermodular `s ≥ k` have Euler characteristic 1 | ✓ | `redEuler_threshold_eq_zero` |
 | (new) Pairs of down-sets `I' ⊆ I` whose difference avoids a set `R` of pairs and has ≥ k points | ✓ | `redEuler_pairsAvoiding_eq_zero` |
 | (new) Stacked antichains: layers are antichains, lower layers lie entirely below higher ones; closed under componentwise `∪`, `∩`; threshold identity | ✓ | `IsStack.layer_antichain`, `IsStack.layer_lt`, `isStack_sup`, `isStack_inf`, `redEuler_stackSet_eq_zero` |
@@ -71,7 +72,8 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
    argument in the note is not needed.
 4. In the insertion lemma the cut `A` need not be a down-set; only `D x ⊆ A` and
    `U x ⊆ Aᶜ` are used.
-5. Band posets are formalised on `ι × ℕ` with heights starting at 0; `e i j t` is the number of
-   elements of chain `j` below the element of chain `i` at height `t`, so the band condition
-   reads `t + 1 - 2a ≤ e i j t ≤ t + 1 - a` (truncated subtraction). The finite posets of the
-   note are the restrictions to heights below `ℓ`.
+5. Band posets are formalised on `ι × ℕ` with heights starting at 0 and a height bound `g`
+   with `g t ≤ t`: `e i j t` is the number of elements of chain `j` below the element of chain
+   `i` at height `t`, with `e i j t ≤ g t` and `g s ≤ e i j t` for all `s < g t`. The bands of
+   the note are `g t = t + 1 - a` (`BandData.ofOffset`); the finite posets of the note are the
+   restrictions to heights below `ℓ`.
