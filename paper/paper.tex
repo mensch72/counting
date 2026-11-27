@@ -23,9 +23,8 @@
 \input{tables.tex}
 
 \title[Counting distributive and modular lattices]{Counting distributive and modular lattices\\ with a frontier transfer matrix}
-\author{[Author name]}
-\address{[Affiliation and e-mail to be supplied by the author]}
-\date{\today}
+\author{Jobst Heitzig}
+\address{Potsdam Institute for Climate Impact Research, Telegrafenberg A31, 14473 Potsdam, Germany}
 \keywords{distributive lattice, modular lattice, counting, transfer matrix, down-set, OEIS}
 \subjclass[2020]{06D05, 06C05, 05A15, 06A07, 05-04}
 
@@ -318,10 +317,10 @@ $160$ & $1.75\cdot 10^{7}$ & $16$ min & $7.9$ GB\\\bottomrule
 \end{table}
 
 \begin{table}[ht]
+\centering\setlength{\tabcolsep}{4pt}
 \tabledist
-\caption{New values of $d(n)$ (A006982) and $d_{\mathrm{vi}}(n)$ (A072361).  The values
-for $50 \le n \le 60$ of $d_{\mathrm{vi}}$ and for $n \le 60$ of $d$ agree
-with~\cite{Koh21}.  All values for $n \le \Ndist$ are in the ancillary files.}\label{tab:dist}
+\caption{Values of $d(n)$ (A006982) and $d_{\mathrm{vi}}(n)$ (A072361) for $n > 60$.  The
+computed values for $n \le 60$ agree with~\cite{Koh21}.  All values for $n \le \Ndist$ are in the ancillary files.}\label{tab:dist}
 \end{table}
 
 \subsection{Growth}
@@ -755,7 +754,7 @@ primality was proved with PARI/GP.
 
 \section{Verification}\label{sec:verify}
 
-The results are the output of two programs of about $220$ and $400$ lines of C++.  We
+The results are the output of a few C++ programs of a few hundred lines each.  We
 list what supports them, and what does not.
 
 \begin{enumerate}
@@ -830,10 +829,11 @@ frontiers with many pairwise adjacent elements dominates the running time.
 \end{remark}
 
 \subsection*{Declaration on the use of AI}
-The algorithms, the proofs, the programs and the text of this paper were produced by an AI
-system (Claude, Anthropic) in an interactive session, at the request of the author and
-under the author's direction.  [The author should state here which parts were checked
-independently, and takes responsibility for the content.]
+This work was carried out with substantial assistance from an AI system (Claude, by
+Anthropic), used interactively under the direction of the author.  The AI system proposed and
+implemented the algorithms, wrote the programs, ran the computations, and drafted the proofs
+and the text.  The author has reviewed the paper and takes full responsibility for its
+content.  The numerical results rest on the checks described in Section~\ref{sec:verify}.
 
 \subsection*{Data availability}
 The programs, the logs of all runs and the complete tables are available at~\cite{code}
@@ -880,8 +880,8 @@ and as ancillary files.
 \bibitem{Stanley} R.~P.~Stanley, \emph{Enumerative Combinatorics}, Vol.~1, 2nd ed.,
   Cambridge University Press, 2012.
 
-\bibitem{code} Programs and data for this paper, [repository URL to be supplied by the
-  author].
+\bibitem{code} Programs and data for this paper,
+  \url{https://github.com/mensch72/counting}.
 
 \end{thebibliography}
 

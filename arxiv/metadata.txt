@@ -1,0 +1,8 @@
+Title:     Counting distributive and modular lattices with a frontier transfer matrix
+Authors:   Jobst Heitzig
+Category:  math.CO (primary); cross-list: cs.DM
+MSC class: 06D05, 06C05, 05A15, 06A07, 05-04
+Comments:  14 pages, 6 tables; ancillary files contain the tables and the programs
+License:   (choose on the form; CC BY 4.0 is common)
+Abstract:  see abstract.txt
+Upload:    arxiv.tar.gz (paper.tex compiles with pdflatex; the anc/ directory becomes the ancillary files)

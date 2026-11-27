@@ -24,3 +24,4 @@ runs/ck_*.tmp
 /src/brute_layers
 /src/layers2_mod
 runs/mod_4*.err
+arxiv/build/
