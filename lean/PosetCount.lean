@@ -6,3 +6,4 @@ import PosetCount.Flags
 import PosetCount.Band
 import PosetCount.Threshold
 import PosetCount.Stacked
+import PosetCount.StackHeredity

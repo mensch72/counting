@@ -24,6 +24,7 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | `PosetCount/Band.lean` | band posets: many posets of small width |
 | `PosetCount/Threshold.lean` | general threshold theorem for supermodular functions on finite lattices of sets; pairs of down-sets avoiding a set of pairs |
 | `PosetCount/Stacked.lean` | stacks of antichains separated by gaps |
+| `PosetCount/StackHeredity.lean` | one-point extensions cannot destroy the largest stack if the new point is chosen suitably |
 
 ## Coverage
 
@@ -46,6 +47,7 @@ Lean `v4.37.0-rc1`, Mathlib `v4.37.0-rc1`. No `sorry`, no `admit`, no added axio
 | (new, not in the note) Threshold theorem: in a finite family closed under `⊔`, `⊓`, the members with a supermodular `s ≥ k` have Euler characteristic 1 | ✓ | `redEuler_threshold_eq_zero` |
 | (new) Pairs of down-sets `I' ⊆ I` whose difference avoids a set `R` of pairs and has ≥ k points | ✓ | `redEuler_pairsAvoiding_eq_zero` |
 | (new) Stacked antichains: layers are antichains, lower layers lie entirely below higher ones; closed under componentwise `∪`, `∩`; threshold identity | ✓ | `IsStack.layer_antichain`, `IsStack.layer_lt`, `isStack_sup`, `isStack_inf`, `redEuler_stackSet_eq_zero` |
+| (new) Heredity for stacks: if `y` has the largest strict down-set, every stack of `P - y` gives a stack of `P` of the same size | ✓ | `exists_stack_of_avoiding` |
 | Complexity statements (Theorem 1, Propositions 10, 11) | — | not planned: running-time claims are outside the formalisation |
 
 ## Design
