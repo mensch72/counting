@@ -25,14 +25,15 @@
 
 \noindent\textbf{Status.} AI-assisted. The proofs below were written by a language
 model and have not been checked by a human. The counting formula of
-Theorem~\ref{thm:formula} agrees with brute force for all $n\le 4$ and all $k$, and for
-$n=5$, $k\in\{3,4,5\}$.
+Theorem~\ref{thm:formula} agrees with brute force for all $n\le 5$ and all $k$, in two
+independently written programs. A second language-model pass refereed the proofs; its
+corrections are included.
 
 \section{Statement}
 
 Let $\cP_n$ be the set of strict partial orders on $[n]=\{1,\dots,n\}$ and $L(n)=|\cP_n|$.
-By Kleitman and Rothschild~\cite{KR75}, $\log_2 L(n) = n^2/4 + O(n)$. Listing all posets
-therefore takes time at least $2^{n^2/4}$.
+By Kleitman and Rothschild~\cite{KR75}, $\log_2 L(n) = n^2/4 + 3n/2 + O(\log n)$. Listing
+all posets therefore takes time at least $2^{n^2/4}$ for large~$n$.
 
 \begin{theorem}\label{thm:main}
 $L(n)$ can be computed in time $2^{c\,n^2+O(n\log n)}$ and polynomial space, where
@@ -48,7 +49,7 @@ $\max(I)$ is the set of maximal elements of $I$; $\dn N$ is the down-set generat
 The maps $I\mapsto\max(I)$ and $N\mapsto\dn N$ are mutually inverse bijections between
 $J(P)$ and the set of antichains of~$P$. For antichains write $N\preceq N'$ if
 $\dn N\subseteq\dn N'$, that is, if every element of $N$ is below or equal to some element
-of~$N'$.
+of~$N'$, and $N\prec N'$ if $N\preceq N'$ and $N\ne N'$.
 
 \begin{definition}
 For $k\ge1$ let $\cJ_k(P)=\{I\in J(P): |\max(I)|\ge k\}$, ordered by inclusion.
@@ -83,9 +84,11 @@ If $\width(P)\ge k$, the order complex of $\cJ_k(P)$ is contractible. Consequent
 If $\width(P)<k$ there are no $k$-flags. Otherwise let $A^*$ be an antichain of maximum
 size $w\ge k$ and $I^*=\dn A^*\in\cJ_k(P)$. For $I\in\cJ_k(P)$, Lemma~\ref{lem:submod} and
 $|\max(I\cap I^*)|\le w$ give $|\max(I\cup I^*)|\ge|\max I|\ge k$. So $f(I)=I\cup I^*$ is an
-order-preserving map $\cJ_k(P)\to\cJ_k(P)$ with $f(I)\supseteq I$. By Quillen's homotopy
-property~\cite[1.3]{Q} (see also \cite[Cor.~10.12]{B}), $\cJ_k(P)$ is homotopy equivalent
-to $f(\cJ_k(P))$. This image has the least element $I^*=f(I^*)$, so its order complex is a
+order-preserving map $\cJ_k(P)\to\cJ_k(P)$ with $f(I)\supseteq I$ and $f\circ f=f$, that
+is, a closure operator. Hence $\cJ_k(P)$ is homotopy equivalent to $f(\cJ_k(P))$
+\cite[Cor.~10.12]{B}: with $\iota$ the inclusion of the image, $\iota\circ f\ge\mathrm{id}$
+and $f\circ\iota=\mathrm{id}$, and comparable order-preserving maps are
+homotopic~\cite[1.3]{Q}. This image has the least element $I^*=f(I^*)$, so its order complex is a
 cone. The left side of the formula is the Euler characteristic of the order complex.
 \end{proof}
 
@@ -117,13 +120,14 @@ $q<x$ iff $q\in D_x$; $x<q$ iff $q\in U_x$; no relations inside~$M$. This is a s
 partial order $P$, in which $M$ is an antichain and $\dn M\setminus M=\bigcup_x D_x$.
 \end{lemma}
 \begin{proof}
-Irreflexivity is clear. For transitivity let $a<b<c$.
-If $a,b,c\in Q$ this holds in $Q$.
+Irreflexivity is clear, and $q<x$, $x<q$ are never both declared, because
+$D_x\cap U_x\subseteq A\cap(Q\setminus A)=\emptyset$. For transitivity let $a<b<c$.
+At most one of $a,b,c$ lies in $M$: adjacent elements of $M$ are unrelated, and
+$a,c\in M$, $b\in Q$ would give $b\in U_a\cap D_c\subseteq(Q\setminus A)\cap A=\emptyset$.
+If $a,b,c\in Q$, transitivity holds in $Q$.
 If $c=x\in M$: $b\in D_x$ and $a<b$ in $Q$, so $a\in D_x$ as $D_x$ is a down-set.
 If $a=x\in M$: $b\in U_x$ and $b<c$ in $Q$, so $c\in U_x$.
 If $b=x\in M$: $a\in D_x$, $c\in U_x$, so $a<c$ by the definition of a type.
-Two elements of $M$ cannot both occur: $a,c\in M$ would give $b\in U_a\cap D_c\subseteq
-(Q\setminus A)\cap A=\emptyset$, and adjacent elements of $M$ are unrelated.
 A transitive irreflexive relation is a strict partial order.
 \end{proof}
 
@@ -294,7 +298,7 @@ Hence, using~\cite{KR75}, $W_k(n)$ is computed in time
 \subsection*{Narrow posets}
 Let $w=k-1$. An \emph{encoding} consists of
 \begin{itemize}
-\item a partition of $[n]$ into $w'\le w$ non-empty sequences $C_1,\dots,C_{w'}$
+\item an ordered list of $w'\le w$ non-empty sequences $C_1,\dots,C_{w'}$ that partition $[n]$
   (at most $n!\,2^n$ possibilities), and
 \item for every ordered pair $i\ne i'$ a non-increasing map
   $g_{ii'}\colon C_i\to\{0,\dots,|C_{i'}|\}$, where $C_i$ is ordered as a sequence.
@@ -311,9 +315,9 @@ final segment of $C_{i'}$ that shrinks as $c$ increases. Conversely, a relation 
 an encoding that is a strict partial order has width at most~$w$.
 
 To count each poset once, run through all encodings; for each one whose relation is a
-strict partial order $P$, run through all at most $n!\,2^n$ chain partitions of $P$,
-compute their encodings, and count $P$ only if the current encoding is the
-lexicographically smallest. This takes time $2^{2(k-1)n+O(n\log n)}$ and polynomial space.
+strict partial order $P$, run through all encodings of $P$ with at most $w$ chains
+(at most $n!\,2^n$ lists of chains, each determining its maps $g_{ii'}$), and count $P$
+only if the current encoding is the lexicographically smallest among them. This takes time $2^{2(k-1)n+O(n\log n)}$ and polynomial space.
 
 \subsection*{Balancing}
 Take $k=\lceil\alpha n\rceil$ with $\alpha=5-2\sqrt6$, the smaller root of

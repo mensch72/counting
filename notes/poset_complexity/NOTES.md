@@ -1,8 +1,8 @@
 # Counting labelled posets below the 2^(n²/4) barrier: working notes
 
-Status: AI-assisted sketch. Lemmas 1 and 2 have short complete proofs below.
+Status: AI-assisted. Full proofs are in `proof.pdf`; this file is the earlier overview.
 The algorithm (Section 3) is a proof sketch and has been checked numerically
-only for n ≤ 5. Nothing here has been checked by a human.
+for n ≤ 5. Nothing here has been checked by a human.
 
 L(n) is the number of partial orders on {1,…,n}; L(n) = 2^(n²/4 + o(n²)).
 Generating all posets costs at least L(n). The claim is
