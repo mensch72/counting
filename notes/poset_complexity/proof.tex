@@ -534,6 +534,60 @@ examples. The family that blocks further progress consists of two blocks of pair
 incomparable $2$-chains with free relations between the blocks; it calls for layers that
 are unions of chains (case~1 above) instead of antichains.
 
+\subsection*{Layers that are unions of chains}
+
+Call a set of consecutive levels of a generalised band poset a \emph{window} if elements of
+different rows in it are incomparable. A window is a convex union of pairwise incomparable
+chains, and can be inserted chain by chain.
+
+\begin{lemma}\label{lem:third}
+Every generalised band poset on $n$ points has a stack of windows (windows
+$W_1,\dots,W_m$ such that every point of level at most $\max W_j$ lies below every point of
+level at least $\min W_{j+1}$) containing at least $n/3$ points.
+\end{lemma}
+\begin{proof}
+Let $h_0=L$ and $h_{i+1}=\mathit{hi}(h_i)$, and let $B_i$ be the set of levels in
+$(h_i,h_{i-1}]$. $B_i$ is a window, because $\mathit{hi}(t)\le h_i$ for $t\le h_{i-1}$.
+For $s=h_i+1=\min B_i$ we have
+$\mathit{hi}(\mathit{hi}(s))\ge\mathit{hi}(\mathit{hi}(h_i))=h_{i+2}=\max B_{i+3}$,
+so every point of level at most $\max B_{i+3}$ lies below every point of level at least
+$\min B_i$. Hence the blocks $B_i$ with $i$ in a fixed residue class modulo $3$ form a stack
+of windows, and one of the three classes contains at least a third of the levels.
+\end{proof}
+
+So for all the constructions known to us, a method based on stacks of chain-union layers
+would need only the posets on $2n/3$ points. What is missing is the same as before: a bound
+on the number of posets without such a stack.
+
+\subsection*{The frontier by rank}
+
+The transfer matrix of our earlier paper on distributive lattices also counts posets by
+number of points. Build $P$ in the order of $|{\downarrow}x|$. Let
+$X_r=\{x:|{\downarrow}x|<r\}$, $b=|X_r|$, and call $z\in X_r$ \emph{dead} if
+$|{\uparrow}z\cap X_r|\ge b-r+2$.
+
+\begin{lemma}
+A dead element lies below every element outside $X_r$. If $z$ is not dead and $x\in X_r$,
+then $|{\uparrow}z\cap X_r|+|{\downarrow}x|\le b$.
+\end{lemma}
+\begin{proof}
+Let $y\notin X_r$ have the smallest $|{\downarrow}y|$ among the elements outside $X_r$ that
+are not above $z$. Its strict down-set $D$ has at least $r-1$ elements and avoids
+${\uparrow}z$; by the choice of $y$ it lies in $X_r\setminus{\uparrow}z$, which has at most
+$r-2$ elements. The second statement is the definition, with $|{\downarrow}x|\le r-1$.
+\end{proof}
+
+So a state only needs the poset induced on the live elements (and counters), and that poset
+satisfies $\max|{\uparrow}z|+\max|{\downarrow}x|\le n$. Counting the up-staircases of
+$w$ chains under this constraint with a generating-function bound gives at most
+$2^{f(\alpha)n^2}$ live posets of width below $\alpha n$, with
+$f(\alpha)=\min_{0<t<1/2}\bigl[\alpha\log_2\frac1t
++\alpha^2\log_2\bigl(1+\frac{t^2}{1-2t}\bigr)\bigr]$, and
+$f(\alpha)=(1-\alpha)^2/4$ at $\alpha\approx0.136$ with value $0.1865$. This would improve
+Theorem~\ref{thm:main2} slightly, but the transfer matrix for labelled posets with a width
+bound has not been written out or tested; only the lemma was checked, on all posets with at
+most $7$ points.
+
 \section{Remarks}
 
 \begin{enumerate}
